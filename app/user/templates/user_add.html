@@ -111,7 +111,6 @@
         </div>
     </div>
     <div id="user-detail-bottom">
-        {%if current_user.level == 'Admin'%}
         <form action="" method="post">
             <div id="user-detail-bottom-form">
                 <div id="user-det-bottom-left">
@@ -142,12 +141,6 @@
                 </div>        
             </div>
         </form>
-        {%else%}
-        <div id="user-detail-bottom-form-reguler">
-            <h3>Sorry you're not authorized to access this page</h3>
-            <h5>Only admin can access this page</h5>
-        </div>
-        {%endif%}
     </div>
 </div>
 {%endblock%}
