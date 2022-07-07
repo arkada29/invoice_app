@@ -157,6 +157,7 @@ def user_edit(id):
                             )
 
 @bp.route('/user/password_change/<int:id>', methods=['GET', 'POST'])
+@login_required
 def user_change_password(id):
     edit_form = UserForm() 
     user = User.query.get_or_404(id)
@@ -174,6 +175,7 @@ def user_change_password(id):
     return render_template('user_change_password.html', edit_form=edit_form)
 
 @bp.route('/user/user_list')
+@login_required
 def user_list():
     edit_form = UserForm() 
     count_data = db.session.query(User.id).count()
@@ -193,6 +195,7 @@ def user_list():
                             )
 
 @bp.route('/logout')
+@login_required
 def logout():
     logout_user()
     session.clear()
