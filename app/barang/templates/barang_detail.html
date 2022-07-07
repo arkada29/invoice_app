@@ -1,0 +1,243 @@
+{%include 'side-nav.html'%}
+{%block content%}
+<style>
+    :root{
+        --btn-prim:teal;
+    }
+    .alert{
+        position: relative;
+        margin-left: 5%;
+        width: 400px;
+        max-width: 400px;
+        margin-top: 1%;
+        z-index: 1;
+    }
+    .barang-detail-container{
+        margin-left: 5%;
+    }
+    #barang-detail-top{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-top: 1%;
+        margin-right: 2%;
+    }
+    #barang-det-top-left{
+        margin-left: 2%;
+        flex: 30%;
+        max-width: 30%;
+    }
+    #barang-det-top-left > a > img{
+        width: 30px;
+        height: 30px;
+        background-color: teal;
+        border-radius: 50%;
+        padding: 6px 6px;
+    }
+    #barang-det-top-left > #add-barang {
+        margin-left: 1%;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;        
+        font-weight: 550;
+    }
+    #barang-det-top-right > a > span {
+        background-color: var(--btn-prim);
+        color: white;
+        font-family: sans-serif;
+        font-size: 0.7em;
+        padding: 5px 10px;
+    }
+
+    #barang-detail-middle{
+        margin-top: 1%;
+        margin-left: 2%;
+        margin-right: 2%;
+    }
+    #barang-detail-middle-form{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    #barang-det-middle-left{
+        flex: 20%;
+        max-width: 20%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }   
+    #barang-det-mid-picture{
+        flex: 40%;
+        max-width: 40%;
+        margin-top: 2%;
+        margin-left: 5%;
+    }
+    #barang-det-mid-picture > img {
+        width: 15vh;
+        height: 15vh;
+        border-radius: 5px;
+        object-fit: cover;
+        object-position: center;
+    }
+    #barang-det-mid-name{
+        flex: 50%;
+        max-width: 50%;
+        /* margin-left: 5%; */
+    }
+    #det-name-label{
+        font-size: 0.8em;
+        font-weight: 550;
+        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    }
+    #det-name-val{
+        font-size: 0.7em;
+        font-family: sans-serif;
+    }
+    #barang-det-middle-right{
+        flex: 50%;
+        max-width: 50%;
+        display: flex;
+        justify-content: flex-end;
+    }
+    #barang-det-mid-date-kat{
+        padding-right: 2%;
+    }
+    #det-date-label{
+        font-size: 0.8em;
+        font-weight: 550;
+        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    }
+    #det-date-value{
+        font-size: 0.7em;
+        font-family: sans-serif;
+        background-color: grey;
+        color: white;
+        padding: 3px 7px;
+    }
+
+
+    #barang-detail-bottom{
+        margin-top: 1.5%;
+        margin-right: 2%;
+        margin-left: 2%;
+        border: 1px solid rgba(0, 0, 0, 0.5);
+        border-radius: 5px;
+    }
+    #barang-detail-bottom-form{
+        display: flex;
+        flex-direction: row;
+        margin-top: 1%;
+        margin-bottom: 1%;
+    }
+    #barang-detail-bottom-form-reguler{
+        margin-top: 1%;
+        margin-bottom: 1%;
+    }
+    #barang-det-bottom-left{
+        flex: 30%;
+        max-width: 30%;
+        /* margin-right: 2%; */
+        margin-left: 1%;
+    }
+    #barang-det-bottom-middle{
+        flex: 30%;
+        max-width: 30%;
+        /* margin-right: 1%;
+        margin-left: 1%; */
+    }
+    #barang-det-bottom-right{
+        flex: 30%;
+        max-width: 30%;
+        margin-right: 2%;
+        margin-left: 1%;
+    }
+    .btn-warning{
+        color: white;
+    }
+</style>
+<div class="barang-detail-container">
+    {%for message in get_flashed_messages()%}
+    <div class="alert alert-success alert-dismissible show" role="alert">
+        {{message}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {%endfor%}
+    <div id="barang-detail-top">
+        <div id="barang-det-top-left">
+            <a href="{{url_for('barang.barang_list')}}">
+                <img src="{{url_for('static', filename='images/arrow_back_white.svg')}}" alt="">
+            </a>
+            <span id="add-barang">ADD BARANG</span>
+        </div>
+        <div id="barang-det-top-right">
+            <a href="{{url_for('barang.barang_list')}}">
+                <span class="btn btn-sm">Daftar Barang</span>
+            </a>
+        </div>
+    </div>
+    <div id="barang-detail-middle">
+        <div id="barang-detail-middle-form">
+            <div id="barang-det-middle-left">
+                <div id="barang-det-mid-picture">
+                    {%if barang_detail.barang_pic%}
+                    <img src="{{url_for('static', filename='images/'+ barang_detail.barang_pic)}}" alt="">
+                    {%else%}
+                    <img src="{{url_for('static', filename='images/wolf_img.jpg')}}" alt="">
+                    {%endif%}
+                </div>
+                <div id="barang-det-mid-name">
+                    <span id="det-name-label">Kode Barang</span><br>
+                    <span id="det-name-val">{{barang_detail.kode_barang}}</span><br>
+                    <span id="det-name-label">Nama Barang</span><br>
+                    <span id="det-name-val">{{barang_detail.nama_barang}}</span>
+                </div>
+            </div>
+            <div id="barang-det-middle-right">
+                <div id="barang-det-mid-date-kat">
+                    <span id="det-name-label">Tanggal Masuk</span><br>
+                    <span id="det-date-value">{{barang_detail.created_date.date()}}</span><br>
+                    <span id="det-name-label">Kategori</span><br>
+                    <span id="det-date-value">{{barang_detail.kategori_barang.nama_kategori}}</span>
+                </div>
+            </div>     
+        </div>
+</div>
+    <div id="barang-detail-bottom">
+            <div id="barang-detail-bottom-form">
+                <div id="barang-det-bottom-left">
+                    <span id="det-name-label">Stok</span><br>
+                    <span id="det-date-value">{{barang_detail.stok}}</span>
+                    <br>
+                    <br>
+                    <span id="det-name-label">Diskon</span><br>
+                    <span id="det-date-value">{{barang_detail.diskon}}</span>
+                    <br>
+                    <br>
+                    <span id="det-name-label">Harga Beli</span><br>
+                    <span id="det-date-value">{{barang_detail.harga_beli}}</span>
+                    <br>
+                    <br>
+                    <a href="{{url_for('barang.barang_edit', id=barang_detail.id_barang)}}">
+                        <span class="btn btn-warning btn-sm">Edit</span>
+                    </a>
+                    <a href="{{url_for('barang.barang_delete', id=barang_detail.id_barang)}}">
+                        <span class="btn btn-danger btn-sm">Delete</span>
+                    </a>
+                </div>
+                <div id="barang-det-bottom-middle">
+                    <span id="det-name-label">Harga Jual</span><br>
+                    <span id="det-date-value">{{barang_detail.harga_jual}}</span>
+                    <br>
+                    <br>
+                    <span id="det-name-label">Satuan</span><br>
+                    <span id="det-date-value">{{barang_detail.satuan_bareng.satuan}}</span>
+                    <br>
+                    <br>
+                    <span id="det-name-label">Status</span><br>
+                    <span id="det-date-value">{{barang_detail.status}}</span>
+                    <br>
+                </div>   
+                <div id="barang-det-bottom-right">
+                </div>     
+            </div>
+    </div>
+</div>
+{%endblock%}

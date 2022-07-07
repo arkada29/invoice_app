@@ -1,0 +1,152 @@
+{%include 'side-nav.html'%}
+{%block content%}
+<style>
+    :root{
+        --btn-prim:teal;
+    }
+    .alert{
+        position: relative;
+        margin-left: 5%;
+        width: 400px;
+        max-width: 400px;
+        margin-top: 1%;
+        z-index: 1;
+    }
+    .diskon-khusus-add-container{
+        margin-left: 5%;
+    }
+    #diskon-khusus-add-top{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-top: 1%;
+        margin-right: 2%;
+    }
+    #diskon-khusus-add-top-left{
+        margin-left: 2%;
+        flex: 30%;
+        max-width: 30%;
+    }
+    #diskon-khusus-add-top-left > a > img{
+        width: 30px;
+        height: 30px;
+        background-color: teal;
+        border-radius: 50%;
+        padding: 6px 6px;
+    }
+    #diskon-khusus-add-top-left > #diskon-khusus-list {
+        margin-left: 1%;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;        
+        font-weight: 550;
+    }
+    #diskon-khusus-add-top-right > a > span {
+        background-color: var(--btn-prim);
+        color: white;
+        font-family: sans-serif;
+        font-size: 0.7em;
+        padding: 5px 10px;
+    }
+    #diskon-khusus-add-bottom{
+        margin-top: 1.5%;
+        margin-right: 2%;
+        margin-left: 2%;
+        border: 1px solid rgba(0, 0, 0, 0.5);
+        border-radius: 5px;
+    }
+    #diskon-khusus-add-bottom-form{
+        display: flex;
+        flex-direction: row;
+        margin-top: 1%;
+        margin-bottom: 1%;
+    }
+    #diskon-khusus-add-bottom-form-reguler{
+        margin-top: 1%;
+        margin-bottom: 1%;
+    }
+    #diskon-khusus-add-bottom-left{
+        flex: 30%;
+        max-width: 30%;
+        margin-right: 2%;
+        margin-left: 1%;
+    }
+    #diskon-khusus-add-bottom-middle{
+        flex: 30%;
+        max-width: 30%;
+        margin-right: 1%;
+        margin-left: 1%;
+    }
+    #diskon-khusus-add-bottom-right{
+        flex: 30%;
+        max-width: 30%;
+        margin-right: 2%;
+        margin-left: 1%;
+    }
+    .form-label{
+        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        font-weight: 550;
+        font-size: 0.8em;
+    }
+    .form-label > span {
+        color: red;
+    }
+    .form-control{
+        font-family: sans-serif;
+        font-size: 0.75em;
+    }
+    .btn-info{
+        color: white;
+    }
+</style>
+<div class="diskon-khusus-add-container">
+    {%for message in get_flashed_messages()%}
+    <div class="alert alert-success alert-dismissible show" role="alert">
+        {{message}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {%endfor%}
+    <div id="diskon-khusus-add-top">
+        <div id="diskon-khusus-add-top-left">
+            <a href="{{url_for('unit.unit_change')}}">
+                <img src="{{url_for('static', filename='images/arrow_back_white.svg')}}" alt="">
+            </a>
+            <span id="diskon-khusus-list">UNIT CHANGE</span>
+        </div>
+        <!-- <div id="diskon-khusus-add-top-right">
+            <a href="{{url_for('penjualan.penjualan_add')}}">
+                <span class="btn btn-sm">Tambah Unit</span>
+            </a>
+        </div> -->
+    </div>
+    <div id="diskon-khusus-add-bottom">
+        {%if current_user.level == 'Admin'%}
+        <form action="" method="post" enctype="multipart/form-data">
+            <div id="diskon-khusus-add-bottom-form">
+                <div id="diskon-khusus-add-bottom-left">
+                    {{diskon_khusus_form.hidden_tag()}}
+                    {{diskon_khusus_form.kode_diskon.label(class='form-label')}}
+                    {{diskon_khusus_form.kode_diskon(class='form-control', placeholder="input kode diskon-khusus")}}
+                    <br>
+                    {{diskon_khusus_form.nama_diskon.label(class='form-label')}}
+                    {{diskon_khusus_form.nama_diskon(class='form-control', placeholder="input nama diskon-khusus")}}
+                    <br>
+                    {{diskon_khusus_form.besaran_diskon.label(class='form-label')}}
+                    {{diskon_khusus_form.besaran_diskon(class='form-control', placeholder="input besaran diskon-khusus")}}
+                    <br>
+                    {{diskon_khusus_form.submit(class='btn btn-success btn-sm')}}
+                </div>
+                <div id="diskon-khusus-add-bottom-middle">
+                   
+                </div>   
+                <div id="diskon-khusus-add-bottom-right">
+                </div>     
+            </div>
+        </form>
+        {%else%}
+        <div id="diskon-khusus-add-bottom-form-reguler">
+            <h3>Sorry you're not authorized to access this page</h3>
+            <h5>Only admin can access this page</h5>
+        </div>
+        {%endif%}
+    </div>
+</div>
+{%endblock%}

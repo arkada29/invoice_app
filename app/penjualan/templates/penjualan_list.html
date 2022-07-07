@@ -1,0 +1,293 @@
+{%include 'side-nav.html'%}
+{%block content%}
+<style>
+:root{
+        --btn-prim:teal;
+    }
+    .penjualan-list-container{
+        margin-left: 5%;
+    }
+    .alert{
+        position: relative;
+        margin-left: 5%;
+        width: 400px;
+        max-width: 400px;
+        margin-top: 1%;
+        z-index: 1;
+    }
+    #penjualan-list-top{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-top: 1%;
+        margin-right: 2%;
+    }
+    #penjualan-list-top-left{
+        margin-left: 2%;
+        flex: 30%;
+        max-width: 30%;
+    }
+    #penjualan-list-top-left > a > img{
+        width: 30px;
+        height: 30px;
+        background-color: teal;
+        border-radius: 50%;
+        padding: 6px 6px;
+    }
+    #penjualan-list-top-left > #add-user {
+        margin-left: 1%;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;        
+        font-weight: 550;
+    }
+    #penjualan-list-top-right > span {
+        font-family: sans-serif;
+        font-size: 0.7em;
+        background-color: blue;
+        padding: 5px 10px;
+        border-radius: 2px;
+        margin-right: 5px;
+        color: white;
+    }
+    #penjualan-list-top-right > a > span {
+        background-color: var(--btn-prim);
+        color: white;
+        font-family: sans-serif;
+        font-size: 0.7em;
+        padding: 5px 10px;
+    }
+    #penjualan-list-bottom{
+        display: flex;
+        margin-top: 1%;
+        margin-right: 2%;
+        margin-left: 2%;
+    }
+    .table > thead > tr > th {
+        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        font-weight: 400;
+        font-size: 0.8em;
+    }
+    .table > tbody > tr > td, th {
+        font-family: sans-serif;
+        font-weight: 400;
+        font-size: 0.7em;
+    }
+    #tbl-detail-btn > a > img {
+        width: 5.5vh;
+        height: 5.5vh;
+        background-color: #00ccff;
+        border-radius: 5px;
+        padding: 6px 6px;
+    }
+    #tbl-edit-btn > a > img {
+        width: 5.5vh;
+        height: 5.5vh;
+        background-color: orange;
+        border-radius: 5px;
+        padding: 6px 6px;
+    }
+    #tbl-delete-btn > span > img {
+        width: 5.5vh;
+        height: 5.5vh;
+        background-color: red;
+        border-radius: 5px;
+        padding: 6px 6px;
+    }
+    .delete-btn-pop{
+        position: fixed;
+        top:10%;
+        right: 2%;
+        /* display: flex; */
+        display: none;
+        flex-direction: column;
+        width: fit-content;
+        border-radius: 5px;
+        border: 1px solid rgba(0, 0, 0, 0.3);
+        margin-left: 10%;
+        padding: 5px 10px;
+        justify-content: center;
+        align-items: center;
+        background-color: rgba(255, 255, 255, 0.9);
+    }
+    #delete-btn-content > p {
+        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    
+    }
+    #delete-btn-choice{
+        display: flex;
+        justify-content: space-between;
+        
+    }
+    #delete-btn-choice > span {
+        font-family: sans-serif;
+        font-size: 0.7em;
+    }
+
+    .pagination{
+        margin-left: 2%;
+    margin-top: 2%;
+  }
+  .page-item{
+    margin-left: 2px;
+  }
+  .page-item a{
+    color: black;
+    text-decoration: none;
+    border-radius: 5px; 
+    padding: 2px 7px 2px 7px;
+    margin-right: 5px;
+    transition: 1s;
+  }
+  .navigation-example ul li.hovered a{
+    transform: translateY(-10px);
+    background-color: blueviolet;
+    color: white;
+    }
+    .navigation-example ul li:hover a{
+    transform: translateY(-10px);
+    background-color: #db0038;
+    color: white;
+    }
+</style>
+<div class="penjualan-list-container">
+    {%for message in get_flashed_messages()%}
+    <div class="alert alert-success" role="alert">
+        {{message}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {%endfor%}
+    <div id="penjualan-list-top">
+        <div id="penjualan-list-top-left">
+            <a href="{{url_for('dashboard.dashboard')}}">
+                <img src="{{url_for('static', filename='images/cottage_white.svg')}}" alt="">
+            </a>
+            <span id="add-penjualan">DAFTAR PENJUALAN</span>
+        </div>
+        <div id="penjualan-list-top-right">
+            <span>{{penjualan_list|length}}</span>
+            <a href="{{url_for('penjualan.penjualan_add')}}">
+                <span class="btn btn-sm">Tambah Penjualan</span>
+            </a>
+        </div>
+    </div>
+    <div id="penjualan-list-bottom">
+            <table class="table table-hover">
+                <thead class="table-secondary">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Kode Penjualan</th>
+                        <th scope="col">Jumlah Barang</th>
+                        <th scope="col">Total Bayar</th>
+                        <th scope="col">Total Kembalian</th>
+                        <th scope="col">Grand Total</th>
+                        <th scope="col">Tanggal Penjualan</th>
+                        <th scope="col">User</th>
+                        <th scope="col" colspan="3">Action</th>
+                        <!-- <th scope="col">Edit</th>
+                        <th scope="col">Delete</th> -->
+                    </tr>
+                </thead>
+                <tbody>
+                    {%for p in penjualan_list%}
+                    <tr>
+                        <th scope="row">{{p.id_penjualan}}</th>
+                        <td>{{p.kode_penjualan}}</td>
+                        <td>{{p.jumlah_penjualan}}</td>
+                        <td>{{p.total_pembayaran}}</td>
+                        <td>{{p.total_kembalian}}</td>
+                        <td>{{p.grand_total}}</td>
+                        <td>{{p.tanggal_penjualan.date()}}</td>
+                        <td>{{p.user_penjualan.name}}</td>
+                        {%if current_user.level == 'Admin'%}
+                        <td id="tbl-detail-btn">
+                            <a href="{{url_for('penjualan.penjualan_detail', id=p.id_penjualan)}}">
+                                <img src="{{url_for('static', filename='images/info_white.svg')}}" alt="">
+                            </a>
+                        </td>
+                        <td id="tbl-edit-btn">
+                            <a href="{{url_for('penjualan.penjualan_edit', id=p.id_penjualan)}}">
+                                <img src="{{url_for('static', filename='images/edit_white.svg')}}" alt="">
+                            </a>
+                        </td>
+                        <td id="tbl-delete-btn">
+                            <span class="button-choice" id="-{{loop.index}}">
+                                <img src="{{url_for('static', filename='images/delete_white.svg')}}" alt="">
+                            </span>
+                            <div class="delete-btn-pop" id="delete-choice-{{loop.index}}">
+                                <div id="delete-btn-content">
+                                    <p>Are you sure ?</p>
+                                    <div class="button-choice delete-btn-choice" id="delete-choice-{{loop.index}}">
+                                        <a href="{{url_for('penjualan.penjualan_delete', id=p.id_penjualan)}}">
+                                            <span class="btn btn-danger btn-sm">Yes</span>
+                                        </a>
+                                        <span class="btn btn-success btn-sm btn-cancel">No</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        {%endif%}
+                    </tr>
+                    {%endfor%}
+                </tbody>
+            </table>
+    </div>
+
+    <nav aria-label="Page navigation example" class="navigation-example">
+        <ul class="pagination pagination-sm">
+          <li class="page-item">
+            {%if prev_url%}
+            <a class="page-link" href="{{prev_url}}" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+              <!-- <span class="sr-only">Older Post</span> -->
+            </a>
+            {%endif%}
+          </li>
+          {%set i = cp // 10%}
+          {%if i >=1 and cp % 10 == 0%}      
+            {%for c in range(1,i+1)%}
+            <li class="page-item"><a class="page-link numbered" href="http://127.0.0.1:5003/penjualan/penjualan_list?page={{c}}">{{c}}</a></li>
+            {%endfor%}
+          {%elif i>=1 and cp%10 != 0%}
+            {%for c in range(1,i+2)%}
+            <li class="page-item"><a class="page-link numbered" href="http://127.0.0.1:5003/penjualan/penjualan_list?page={{c}}">{{c}}</a></li>
+            {%endfor%}
+          {%else%}
+            <li class="page-item"><a class="page-link numbered" href="http://127.0.0.1:5003/penjualan/penjualan_list?page={{c}}">1</a></li>
+          {%endif%}
+          <li class="page-item">
+            {%if next_url%}
+            <a class="page-link" href="{{next_url}}" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+              <!-- <span class="sr-only">Newer Post</span> -->
+            </a>
+            {%endif%}
+          </li>
+        </ul>
+      </nav>
+</div>
+
+<script src="{{url_for('static', filename='js/pagination.js')}}"></script>
+<script>
+ $('.button-choice').click(function(){
+        let left = $(this).offset().left - 140
+            let top = $(this).offset().top + 40
+            // let position = (left - top).toString()
+            let pos_fix_left = left.toString().substring(0, left.toString().indexOf('.')) + 'px'
+            let pos_fix_top = top.toString().substring(0, top.toString().indexOf('.')) + 'px'
+
+            // $('#delete-choice'+$(this).attr('id')).toggle(300)
+            if($('#delete-choice'+$(this).attr('id')).is(':visible')){
+                $('#delete-choice'+$(this).attr('id')).css('left', pos_fix_left)
+                $('#delete-choice'+$(this).attr('id')).css('top', pos_fix_top)
+                $('#delete-choice'+$(this).attr('id')).slideUp()
+            }else{
+                $('#delete-choice'+$(this).attr('id')).css('left', pos_fix_left)
+                $('#delete-choice'+$(this).attr('id')).css('top', pos_fix_top)
+                $('#delete-choice'+$(this).attr('id')).slideDown()
+            }
+    })
+
+    $('.btn-cancel').click(function(){
+        $('.delete-btn-pop').slideUp()
+    })
+</script>
+{%endblock%}

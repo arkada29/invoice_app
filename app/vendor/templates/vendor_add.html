@@ -1,0 +1,220 @@
+{%include 'side-nav.html'%}
+{%block content%}
+<style>
+    :root{
+        --btn-prim:teal;
+    }
+    .alert{
+        position: relative;
+        margin-left: 5%;
+        width: 400px;
+        max-width: 400px;
+        margin-top: 1%;
+        z-index: 1;
+    }
+    .vendor-add-container{
+        margin-left: 5%;
+    }
+    #vendor-add-top{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-top: 1%;
+        margin-right: 2%;
+    }
+    #vendor-add-top-left{
+        margin-left: 2%;
+        flex: 30%;
+        max-width: 30%;
+    }
+    #vendor-add-top-left > a > img{
+        width: 30px;
+        height: 30px;
+        background-color: teal;
+        border-radius: 50%;
+        padding: 6px 6px;
+    }
+    #vendor-add-top-left > #add-vendor {
+        margin-left: 1%;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;        
+        font-weight: 550;
+    }
+    #vendor-add-top-right > a > span {
+        background-color: var(--btn-prim);
+        color: white;
+        font-family: sans-serif;
+        font-size: 0.7em;
+        padding: 5px 10px;
+    }
+    #vendor-add-bottom{
+        margin-top: 1.5%;
+        margin-right: 2%;
+        margin-left: 2%;
+        border: 1px solid rgba(0, 0, 0, 0.5);
+        border-radius: 5px;
+    }
+    #vendor-add-bottom-form{
+        display: flex;
+        flex-direction: row;
+        margin-top: 1%;
+        margin-bottom: 1%;
+    }
+    #vendor-add-bottom-form-reguler{
+        margin-top: 1%;
+        margin-bottom: 1%;
+    }
+    #vendor-add-bottom-left{
+        flex: 30%;
+        max-width: 30%;
+        margin-right: 2%;
+        margin-left: 1%;
+    }
+    #vendor-add-bottom-middle{
+        flex: 30%;
+        max-width: 30%;
+        margin-right: 1%;
+        margin-left: 1%;
+    }
+    #vendor-add-bottom-right{
+        flex: 30%;
+        max-width: 30%;
+        margin-right: 2%;
+        margin-left: 1%;
+    }
+    .form-label{
+        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        font-weight: 550;
+        font-size: 0.8em;
+    }
+    .form-label > span {
+        color: red;
+    }
+    .form-control{
+        font-family: sans-serif;
+        font-size: 0.75em;
+    }
+</style>
+<div class="vendor-add-container">
+    {%for message in get_flashed_messages()%}
+    <div class="alert alert-success alert-dismissible show" role="alert">
+        {{message}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {%endfor%}
+    <div id="vendor-add-top">
+        <div id="vendor-add-top-left">
+            <a href="{{url_for('vendor.vendor_list')}}">
+                <img src="{{url_for('static', filename='images/arrow_back_white.svg')}}" alt="">
+            </a>
+            <span id="add-vendor">ADD VENDOR</span>
+        </div>
+        <div id="vendor-add-top-right">
+            <a href="{{url_for('vendor.vendor_list')}}">
+                <span class="btn btn-sm">Daftar Vendor</span>
+            </a>
+        </div>
+    </div>
+    <div id="vendor-add-bottom">
+        {%if current_user.level == 'Admin'%}
+        <form action="" method="post">
+            <div id="vendor-add-bottom-form">
+                <div id="vendor-add-bottom-left">
+                    {{vendor_add_form.hidden_tag()}}
+                    {{vendor_add_form.nama_vendor.label(class='form-label')}}
+                    {{vendor_add_form.nama_vendor(class='form-control')}}
+                    <br>
+                    {{vendor_add_form.barang.label(class='form-label')}}
+                    {{vendor_add_form.barang(class='form-control')}}
+                    <br>
+                    {{vendor_add_form.jumlah.label(class='form-label')}}
+                    {{vendor_add_form.jumlah(class='form-control jumlah-barang', onkeyup="changeSisa()")}}
+                    <br>
+                    {{vendor_add_form.terjual.label(class='form-label')}}
+                    {{vendor_add_form.terjual(class='form-control terjual-barang', onkeyup="changeSisa()")}}
+                    <br>
+                    {{vendor_add_form.submit(class='btn btn-success btn-sm')}}
+                    <span class="btn btn-danger btn-sm">Delete</span>
+                </div>
+                <div id="vendor-add-bottom-middle">
+                    {{vendor_add_form.tanggal_drop.label(class='form-label')}}
+                    {{vendor_add_form.tanggal_drop(class='form-control')}}
+                    <br>
+                    {{vendor_add_form.sisa.label(class='form-label')}}
+                    <!-- {{vendor_add_form.sisa(class='form-control sisa-barang')}} -->
+                    <input type="number" class="form-control sisa-barang" value="0" name="sisa-barang" readonly>
+                    <br>
+                    {{vendor_add_form.harga_satuan.label(class='form-label')}}
+                    {{vendor_add_form.harga_satuan(class='form-control harga-satuan', onkeyup="changeSisa()")}}
+                    <br>
+                    {{vendor_add_form.harga_total.label(class='form-label')}}
+                    <!-- {{vendor_add_form.harga_total(class='form-control harga-total')}} -->
+                    <input type="number" class="form-control harga-total" value="0" name="harga-total" readonly>
+                    <br>
+                </div>   
+                <div id="vendor-add-bottom-right">
+                    {{vendor_add_form.kategori.label(class='form-label')}} (pilih kategori)
+                    <select {{vendor_add_form.kategori(class='form-control')}}>
+                        {%for c in category%}
+                        <option value="{{c.nama_kategori}}">{{c.nama_kategori}}</option>
+                        {%endfor%}
+                    </select>
+                    <br>
+                    {{vendor_add_form.satuan.label(class='form-label')}} (pilih satuan)
+                    <select {{vendor_add_form.satuan(class='form-control')}}>
+                        {%for s in satuan%}
+                        <option value="{{s.satuan}}">{{s.satuan}}</option>
+                        {%endfor%}
+                    </select>
+                    <br>
+                    {{vendor_add_form.user.label(class='form-label')}}
+                    <input type="text" class="form-control" value="{{user}}" name="user" readonly>
+                    <br>
+                </div>     
+            </div>
+        </form>
+        {%else%}
+        <div id="vendor-add-bottom-form-reguler">
+            <h3>Sorry you're not authorized to access this page</h3>
+            <h5>Only admin can access this page</h5>
+        </div>
+        {%endif%}
+    </div>
+</div>
+<script>
+    let harga_total = parseInt($('.harga-total').val())
+    let harga_satuan = parseInt($('.harga-satuan').val())
+    let sisa_barang = parseInt($('.sisa-barang').val())
+    let terjual_barang = parseInt($('.terjual-barang').val())
+    let jumlah_barang = parseInt($('.jumlah-barang').val())
+
+    // $('.harga-satuan').keyup(function(){
+    //     console.log(parseInt($('.terjual-barang').val()))
+    //     console.log(jQuery.type(parseInt($('.terjual-barang').val())))
+    //     if(parseInt($('.terjual-barang').val()) == 0){
+    //         console.log(parseInt($('.terjual-barang').val()))
+    //         $('.harga-total').val(0 + (parseInt($('.terjual-barang').val()) + parseInt($('.harga-satuan').val() || 0)))
+    //     }else{
+    //         console.log('tai')
+    //         console.log($('.terjual-barang').val())
+    //         $('.harga-total').val(0 + (parseInt($('.terjual-barang').val()) * parseInt($('.harga-satuan').val())))
+    //     }
+        
+    // })
+    
+    function changeSisa(){
+        $('.sisa-barang').val(0 + (parseInt($('.jumlah-barang').val() || 0) - parseInt($('.terjual-barang').val() || 0)))
+        if(parseInt($('.terjual-barang').val()) == 0){
+            $('.harga-total').val(0 + (parseInt($('.terjual-barang').val()) + parseInt($('.harga-satuan').val() || 0)))
+        }else{
+            $('.harga-total').val(0 + (parseInt($('.terjual-barang').val()) * parseInt($('.harga-satuan').val())))
+        }
+    }
+
+//     const total_amount = parseInt($('.total_amount').val());
+
+// $('#delivery_charge').keyup(function() {
+//   $('.total_amount').val(total_amount + parseInt($(this).val() || 0));
+// });
+
+</script>
+{%endblock%}

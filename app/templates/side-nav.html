@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.min.css')}}">
+    <script type="text/javascript" src="{{url_for('static', filename='js/jquery-3.6.0.min.js')}}"></script>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/all.min.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/jquery-ui.css')}}">
+    <title>Document</title>
+    <script src="{{url_for('static', filename='js/bootstrap.min.js')}}"></script>
+    <script src="{{url_for('static', filename='js/jquery-1.12.4.js')}}"></script>
+    <script src="{{url_for('static', filename='js/jquery-ui.js')}}"></script>
+    <script src="{{url_for('static', filename='js/chart.js')}}"></script>
+    <script src="{{url_for('static', filename='js/chartjs-plugin-datalabels.min.js')}}"></script>
+    <script src="{{url_for('static', filename='js/popper.min.js')}}"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.0.0/chartjs-plugin-datalabels.min.js" integrity="sha512-R/QOHLpV1Ggq22vfDAWYOaMd5RopHrJNMxi8/lJu8Oihwi4Ho4BRFeiMiCefn9rasajKjnx9/fTQ/xkWnkDACg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
+</head>
+<style>
+    html,body{
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        font-family: var(--font);
+    }
+    * > a{
+        text-decoration: none;
+    }
+    /* html, body {
+  height: 100%;
+  margin: 0;
+} */
+
+/* .full-height {
+  height: 100%;
+  background: yellow;
+} */
+    :root{
+        --font:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        --fontColor:#696969;
+    }
+    .top_nav{
+        display: flex;
+        flex-direction: row;
+        position: relative;
+        height: 50px;
+        width: 100%;
+        z-index: 2;
+        background-color: teal;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+        /* box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.7); */
+    }
+    .top-left-nav {
+        margin-left: 1%;
+        width: 45%;
+        max-width: 45%;
+        /* border: 1px solid blue; */
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+    .top-left-nav > span {
+        font-size: 18px;
+        font-family: var(--font);
+        text-transform: uppercase;
+        color: white;
+    }
+    .top-right-nav{
+        width: 60%;
+        max-width: 60%;
+        /* border: 1px solid rebeccapurple; */
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+    }
+    .top-right-nav > img {
+        position: relative;
+        border-radius: 50%;
+        /* border: 1px solid black; */
+        width: 35px;
+        height: 35px;
+        margin-right: 4%;
+        /* margin-top: 0.3em; */
+        margin-left: 3%;
+        cursor: pointer;
+        object-fit: cover;
+        object-position: center;
+    }
+    .top-right-nav > span {
+        /* margin-top: 1.5%; */
+        font-size: 1.2em;
+        color: white;
+        text-transform: uppercase;
+        font-family: var(--font);
+    }
+    #side-nav{
+        position: absolute;
+        /* flex-wrap: wrap; */
+        top: 0;
+        display: flex;
+        flex-direction: column;
+        width: 5%;
+        height: 100%;
+        max-width: 100%;
+        /* height: calc(100% - 50px); */
+        z-index: 1;
+        background-color: #db0038;
+        align-items: center;
+        /* justify-content: space-between; */
+        
+    }
+    .side-bottom-nav{
+        position: absolute;
+        bottom: 5%;
+    }
+    /* .dashboard-info{
+        position: relative;
+        flex: 65%;
+        max-width: 65%;
+        background-color: goldenrod;
+    }
+    .dashboard-profile{
+        position: relative;
+        flex: 20%;
+        max-width: 20%;
+        background-color: green;
+    } */
+    #simbol-toko{
+        display: flex;
+        flex-direction: row;
+        position: relative;
+    }
+    #simbol-toko > .name {
+        position: absolute;
+        bottom: 15px;
+        left: 72px;
+        color: var(--fontColor);
+        font-size: 14px;
+    }
+    .name-toko{
+        margin-bottom: 5%;
+        padding-bottom: 10%;
+        /* border-bottom: 1px solid rgba(0, 0, 0, 0.3); */
+    }
+    #simbol-toko > .alamat {
+        position: absolute;
+        bottom: 3px;
+        left: 55px;
+        margin-left: 20px;
+        font-size: 10px;
+        color: var(--fontColor);
+    }
+    .simbol{
+        margin-top: 5px;
+    }
+    .simbol > img {
+        position: relative;
+        top:50px;
+        left:0;
+        height: 40px;
+        width: 40px;
+        border-radius: 10px;
+        object-fit: cover;
+        object-position: center;
+        /* background-image: linear-gradient(110deg, blue, yellow); */
+    } 
+    .supply-button, .barang-button, .transaksi-button, .user-button, .unit-button{
+        position: relative;
+        margin-top: 50px;
+        /* margin-left: 20px; */
+        cursor: pointer;
+    }
+    #side-menu-list{
+        font-size: 13px;
+        color: var(--fontColor);
+    }
+    .close-button{
+        position: absolute;
+        bottom: 2%;
+        left: 35%;
+    }
+    #top-right-nav-dropdown {
+        position: fixed;   
+        height: fit-content;
+        width: fit-content;
+        top:10%;
+        right: 2%;
+        border-radius: 5px;
+        /* background-color: rgba(255, 255, 255, 0.8); */
+        background-color: mediumseagreen;
+        /* background-image: linear-gradient(120deg, dimgray, white); */
+        opacity: 0.8;
+        box-shadow: 1px 1px 2px black;
+        z-index: 1;
+        display: none;
+    }
+    #top-right-nav-menu{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: left;     
+    }
+    #top-right-nav-menu a{
+        color: white;    
+        padding:5px 10px;
+        font-family: sans-serif;
+        font-size: 14px;
+        font-weight: 500;
+    }
+    #top-right-nav-menu > a:nth-child(4){
+        color: red;
+    }
+
+    .barang-choice{
+        position: fixed;
+        left: 65px;
+        bottom: 280px;
+        height: fit-content;
+        width: fit-content;
+        min-height: fit-content;
+        min-width: fit-content;
+        z-index: 1;
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        background-color: white;
+        display: none;
+    }
+    #barang-choice-content{
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        padding: 3px 5px;
+    }
+    #barang-content-tambah, #barang-content-list, #barang-content-grosir {
+        display: flex;
+        flex-direction: row;
+        margin-bottom: 5px;
+        margin-top: 5px;
+    }
+    #barang-content-tambah:hover, #barang-content-list:hover, #barang-content-grosir:hover{
+        background-color: #696969;
+        padding: 2px 5px;
+        border-radius: 5px;
+    }
+    #barang-content-tambah > #box, #barang-content-list > #box, #barang-content-grosir > #box {
+        margin-top: 5px;
+        margin-right: 5px;
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background-color: black;
+    }
+    #barang-content-tambah > a, #barang-content-list > a, #barang-content-grosir > a{
+        color: black;
+        font-size: 12px;
+        font-family: sans-serif;
+    }
+    
+    .penjualan-choice{
+        position: fixed;
+        left: 65px;
+        bottom: 210px;
+        height: fit-content;
+        width: fit-content;
+        min-height: fit-content;
+        min-width: fit-content;
+        z-index: 1;
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        background-color: white;
+        display: none;
+    }
+    #penjualan-choice-content{
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        padding: 3px 5px;
+    }
+    #penjualan-content-tambah, #penjualan-content-list {
+        display: flex;
+        flex-direction: row;
+        margin-bottom: 5px;
+        margin-top: 5px;
+    }
+    #penjualan-content-tambah:hover, #penjualan-content-list:hover{
+        background-color: #696969;
+        padding: 2px 5px;
+        border-radius: 5px;
+    }
+    #penjualan-content-tambah > #box, #penjualan-content-list > #box {
+        margin-top: 5px;
+        margin-right: 5px;
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background-color: black;
+    }
+    #penjualan-content-tambah > a, #penjualan-content-list > a{
+        color: black;
+        font-size: 12px;
+        font-family: sans-serif;
+    }
+
+    .user-choice{
+        position: fixed;
+        left: 65px;
+        bottom: 140px;
+        height: fit-content;
+        width: fit-content;
+        min-height: fit-content;
+        min-width: fit-content;
+        z-index: 1;
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        background-color: white;
+        display: none;
+    }
+    #user-choice-content{
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        padding: 3px 5px;
+    }
+    #user-content-tambah, #user-content-list {
+        display: flex;
+        flex-direction: row;
+        margin-bottom: 5px;
+        margin-top: 5px;
+    }
+    #user-content-tambah:hover, #user-content-list:hover{
+        background-color: #696969;
+        padding: 2px 5px;
+        border-radius: 5px;
+    }
+    #user-content-tambah > #box, #user-content-list > #box {
+        margin-top: 5px;
+        margin-right: 5px;
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background-color: black;
+    }
+    #user-content-tambah > a, #user-content-list > a{
+        color: black;
+        font-size: 12px;
+        font-family: sans-serif;
+    }
+
+    .supply-choice{
+        position: fixed;
+        left: 65px;
+        bottom: 70px;
+        height: fit-content;
+        width: fit-content;
+        min-height: fit-content;
+        min-width: fit-content;
+        z-index: 1;
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        background-color: white;
+        display: none;
+    }
+    #supply-choice-content{
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        padding: 3px 5px;
+    }
+    #supply-content-tambah, #supply-content-list {
+        display: flex;
+        flex-direction: row;
+        margin-bottom: 5px;
+        margin-top: 5px;
+    }
+    #supply-content-tambah:hover, #supply-content-list:hover{
+        background-color: #696969;
+        padding: 2px 5px;
+        border-radius: 5px;
+    }
+    #supply-content-tambah > #box, #supply-content-list > #box {
+        margin-top: 5px;
+        margin-right: 5px;
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background-color: black;
+    }
+    #supply-content-tambah > a, #supply-content-list > a{
+        color: black;
+        font-size: 12px;
+        font-family: sans-serif;
+    }
+
+    .unit-choice{
+        position: fixed;
+        left: 65px;
+        bottom: 10px;
+        height: fit-content;
+        width: fit-content;
+        min-height: fit-content;
+        min-width: fit-content;
+        z-index: 1;
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        background-color: white;
+        display: none;
+    }
+    #unit-choice-content{
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        padding: 3px 5px;
+    }
+    #unit-content-tambah, #unit-content-list {
+        display: flex;
+        flex-direction: row;
+        margin-bottom: 5px;
+        margin-top: 5px;
+    }
+    #unit-content-tambah:hover, #unit-content-list:hover{
+        background-color: #696969;
+        padding: 2px 5px;
+        border-radius: 5px;
+    }
+    #unit-content-tambah > #box, #unit-content-list > #box {
+        margin-top: 5px;
+        margin-right: 5px;
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background-color: black;
+    }
+    #unit-content-tambah > a, #unit-content-list > a{
+        color: black;
+        font-size: 12px;
+        font-family: sans-serif;
+    }
+
+    #toggle {
+    width: 100px;
+    height: 100px;
+    background: #ccc;
+    margin-left: 7%;
+  }
+</style>
+<body>
+    <div class="top_nav">
+        <div class="top-left-nav">
+            <span>Welcome {{current_user.level}}</span>
+        </div>
+        <div class="top-right-nav">
+            <span>{{current_user.name}}</span>
+            {%if current_user.profile_pic%}
+            <img src="{{url_for('static', filename='images/' + current_user.profile_pic)}}" alt="">
+            {%else%}
+            <img src="{{url_for('static', filename='images/wolf_img.jpg')}}" alt="">
+            {%endif%}
+        </div>
+    </div>
+    <div id="side-nav">
+        <div class="side-top-nav">
+            <div class="name-toko">
+                <div id="simbol-toko">
+                    <a href="{{url_for('dashboard.dashboard')}}">
+                        <div class="simbol">
+                            <img src="{{url_for('static', filename='images/ubisof_game.jpg')}}" alt="">
+                        </div>
+                    </a>
+                    <!-- <span class="name">Toko Sembako</span>
+                    <span class="alamat">Jl.Dayu</span> -->
+                    <!-- <div class="dashboard-nav"> -->  
+                </div>
+            </div>   
+        </div>      
+        <div class="side-bottom-nav">
+            <div class="barang-button" data-toggle="tooltip" data-placement="top" title="BARANG">
+                <img src="{{url_for('static', filename='images/work_white.svg')}}" alt="barang-button">
+                <!-- <span id="side-menu-list">Master Barang</span> -->
+                <div class="barang-choice">
+                    <div id="barang-choice-content">
+                        <div id="barang-content-tambah">
+                            <div id="box"></div>
+                            <!-- <span> </span> -->
+                            <a href="{{url_for('barang.barang_add')}}">Tambah Barang</a>
+                        </div>
+                        <div id="barang-content-list">
+                            <div id="box"></div>
+                            <a href="{{url_for('barang.barang_list')}}">Daftar Barang</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="transaksi-button" data-toggle="tooltip" data-placement="top" title="TRANSAKSI">
+                <img src="{{url_for('static', filename='images/receipt_white.svg')}}" alt="barang-button">
+                <!-- <span id="side-menu-list">Master Transaksi</span> -->
+                <div class="penjualan-choice">
+                    <div id="penjualan-choice-content">
+                        <div id="penjualan-content-tambah">
+                            <div id="box"></div>
+                            <!-- <span> </span> -->
+                            <a href="{{url_for('penjualan.penjualan_add')}}">Penjualan</a>
+                        </div>
+                        <div id="penjualan-content-list">
+                            <div id="box"></div>
+                            <a href="{{url_for('penjualan.penjualan_list')}}">Daftar Penjualan</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="user-button" data-toggle="tooltip" data-placement="top" title="USER">
+                <img src="{{url_for('static', filename='images/group_white.svg')}}" alt="barang-button">
+                <!-- <span id="side-menu-list">Master User</span> -->
+                <div class="user-choice">
+                    <div id="user-choice-content">
+                        <div id="user-content-tambah">
+                            <div id="box"></div>
+                            <!-- <span> </span> -->
+                            <a href="{{url_for('user.user_add')}}">Tambah User</a>
+                        </div>
+                        <div id="user-content-list">
+                            <div id="box"></div>
+                            <a href="{{url_for('user.user_list')}}">Daftar User</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="supply-button" data-toggle="tooltip" data-placement="top" title="VENDOR">
+                <img src="{{url_for('static', filename='images/inventory_2_white_24dp.svg')}}" alt="supply-button">
+                <!-- <span id="side-menu-list">Dashboard</span> -->
+                <div class="supply-choice">
+                    <div id="supply-choice-content">
+                        <div id="supply-content-tambah">
+                            <div id="box"></div>
+                            <!-- <span> </span> -->
+                            <a href="{{url_for('vendor.vendor_add')}}">Tambah Vendor</a>
+                        </div>
+                        <div id="supply-content-list">
+                            <div id="box"></div>
+                            <a href="{{url_for('vendor.vendor_list')}}">Daftar Vendor</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="unit-button" data-toggle="tooltip" data-placement="top" title="UNIT">
+                <img src="{{url_for('static', filename='images/sell_white_24dp.svg')}}" alt="supply-button">
+                <!-- <span id="side-menu-list">Dashboard</span> -->
+                <div class="unit-choice">
+                    <div id="unit-choice-content">
+                        <div id="unit-content-tambah">
+                            <div id="box"></div>
+                            <!-- <span> </span> -->
+                            <a href="{{url_for('unit.unit_change')}}">Tambah Satuan</a>
+                        </div>
+                        <!-- <div id="unit-content-list">
+                            <div id="box"></div>
+                            <a href="{{url_for('vendor.vendor_list')}}">Daftar Vendor</a>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+            <!-- <span class="btn btn-danger btn-sm close-button">Close</span> -->
+        <!-- </div>       -->
+        
+        <!-- <div class="dashboard-info"></div>
+        <div class="dashboard-profile"></div>   -->
+    
+        </div>        
+    </div>
+    
+    <!-- <div class="gear">
+        <img src="{{url_for('static', filename='images/settings_black.svg')}}" alt="">
+    </div> -->
+    <div class="bg">
+        {%block content%}
+        {%endblock%}
+    </div>
+
+    <div id="top-right-nav-dropdown">
+        <div id="top-right-nav-menu">
+            <!-- <span>
+                <a href="">Home</a>
+            </span>
+            <span>
+                <a href="">Profile</a>
+            </span>
+            <span>
+                <a href="">Edit</a>
+            </span>
+            <span>
+                <a href="">Exit</a>
+            </span> -->
+            <a href="{{url_for('dashboard.dashboard', id=current_user.id)}}">
+                <span>Home</span>
+            </a>
+            {%if current_user.level =='Admin'%}
+            <a href="{{url_for('dashboard.dashboard_admin', id=current_user.id)}}">
+                <span>Profile</span>
+            </a>
+            {%else%}
+            <a href="{{url_for('dashboard.dashboard_user', id=current_user.id)}}">
+                <span>Profile</span>
+            </a>
+            {%endif%}
+            <a href="{{url_for('user.user_edit', id=current_user.id)}}">
+                <span>Edit</span>
+            </a>
+            <a href="{{url_for('user.logout')}}">
+                <span>Exit</span>
+            </a>
+        </div>
+    </div>
+</body>
+<script>
+$('.top-right-nav > img').click(function(){
+    // alert($(window).scrollTop())
+    if($('#top-right-nav-dropdown').is(':visible')){
+        $('#top-right-nav-dropdown').slideUp()
+    }else{
+        $('#top-right-nav-dropdown').slideDown()
+    }
+})
+
+$('.barang-button').click(function(){
+    // if($('.user-choice').is(':visible')){
+        $('.barang-choice').toggle("slide")
+    // }
+})
+
+$('.user-button').click(function(){
+    // if($('.user-choice').is(':visible')){
+        $('.user-choice').toggle("slide")
+    // }
+})
+
+$('.transaksi-button').click(function(){
+    // if($('.user-choice').is(':visible')){
+        $('.penjualan-choice').toggle("slide")
+    // }
+})
+
+$('.supply-button').click(function(){
+    // if($('.user-choice').is(':visible')){
+        $('.supply-choice').toggle("slide")
+    // }
+})
+
+$('.unit-button').click(function(){
+    // if($('.user-choice').is(':visible')){
+        $('.unit-choice').toggle("slide")
+    // }
+})
+</script>
+</html>

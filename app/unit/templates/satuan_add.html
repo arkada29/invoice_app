@@ -1,0 +1,146 @@
+{%include 'side-nav.html'%}
+{%block content%}
+<style>
+    :root{
+        --btn-prim:teal;
+    }
+    .alert{
+        position: relative;
+        margin-left: 5%;
+        width: 400px;
+        max-width: 400px;
+        margin-top: 1%;
+        z-index: 1;
+    }
+    .satuan-add-container{
+        margin-left: 5%;
+    }
+    #satuan-add-top{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-top: 1%;
+        margin-right: 2%;
+    }
+    #satuan-add-top-left{
+        margin-left: 2%;
+        flex: 30%;
+        max-width: 30%;
+    }
+    #satuan-add-top-left > a > img{
+        width: 30px;
+        height: 30px;
+        background-color: teal;
+        border-radius: 50%;
+        padding: 6px 6px;
+    }
+    #satuan-add-top-left > #satuan-list {
+        margin-left: 1%;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;        
+        font-weight: 550;
+    }
+    #satuan-add-top-right > a > span {
+        background-color: var(--btn-prim);
+        color: white;
+        font-family: sans-serif;
+        font-size: 0.7em;
+        padding: 5px 10px;
+    }
+    #satuan-add-bottom{
+        margin-top: 1.5%;
+        margin-right: 2%;
+        margin-left: 2%;
+        border: 1px solid rgba(0, 0, 0, 0.5);
+        border-radius: 5px;
+    }
+    #satuan-add-bottom-form{
+        display: flex;
+        flex-direction: row;
+        margin-top: 1%;
+        margin-bottom: 1%;
+    }
+    #satuan-add-bottom-form-reguler{
+        margin-top: 1%;
+        margin-bottom: 1%;
+    }
+    #satuan-add-bottom-left{
+        flex: 30%;
+        max-width: 30%;
+        margin-right: 2%;
+        margin-left: 1%;
+    }
+    #satuan-add-bottom-middle{
+        flex: 30%;
+        max-width: 30%;
+        margin-right: 1%;
+        margin-left: 1%;
+    }
+    #satuan-add-bottom-right{
+        flex: 30%;
+        max-width: 30%;
+        margin-right: 2%;
+        margin-left: 1%;
+    }
+    .form-label{
+        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        font-weight: 550;
+        font-size: 0.8em;
+    }
+    .form-label > span {
+        color: red;
+    }
+    .form-control{
+        font-family: sans-serif;
+        font-size: 0.75em;
+    }
+    .btn-info{
+        color: white;
+    }
+</style>
+<div class="satuan-add-container">
+    {%for message in get_flashed_messages()%}
+    <div class="alert alert-success alert-dismissible show" role="alert">
+        {{message}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {%endfor%}
+    <div id="satuan-add-top">
+        <div id="satuan-add-top-left">
+            <a href="{{url_for('unit.unit_change')}}">
+                <img src="{{url_for('static', filename='images/arrow_back_white.svg')}}" alt="">
+            </a>
+            <span id="satuan-list">UNIT CHANGE</span>
+        </div>
+        <!-- <div id="satuan-add-top-right">
+            <a href="{{url_for('penjualan.penjualan_add')}}">
+                <span class="btn btn-sm">Tambah Unit</span>
+            </a>
+        </div> -->
+    </div>
+    <div id="satuan-add-bottom">
+        {%if current_user.level == 'Admin'%}
+        <form action="" method="post" enctype="multipart/form-data">
+            <div id="satuan-add-bottom-form">
+                <div id="satuan-add-bottom-left">
+                    {{satuan_add_form.hidden_tag()}}
+                    {{satuan_add_form.satuan.label(class='form-label')}}
+                    {{satuan_add_form.satuan(class='form-control', placeholder="input new satuan")}}
+                    <br>
+                    {{satuan_add_form.submit(class='btn btn-success btn-sm')}}
+                </div>
+                <div id="satuan-add-bottom-middle">
+                   
+                </div>   
+                <div id="satuan-add-bottom-right">
+                </div>     
+            </div>
+        </form>
+        {%else%}
+        <div id="satuan-add-bottom-form-reguler">
+            <h3>Sorry you're not authorized to access this page</h3>
+            <h5>Only admin can access this page</h5>
+        </div>
+        {%endif%}
+    </div>
+</div>
+{%endblock%}

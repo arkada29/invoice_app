@@ -1,0 +1,205 @@
+{%include 'side-nav.html'%}
+{%block content%}
+<style>
+    :root{
+        --btn-prim:teal;
+    }
+    .alert{
+        position: relative;
+        margin-left: 5%;
+        width: 400px;
+        max-width: 400px;
+        margin-top: 1%;
+        z-index: 1;
+    }
+    .user-detail-container{
+        margin-left: 5%;
+    }
+    #user-detail-top{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-top: 1%;
+        margin-right: 2%;
+    }
+    #user-det-top-left{
+        margin-left: 2%;
+        flex: 30%;
+        max-width: 30%;
+    }
+    #user-det-top-left > a > img{
+        width: 30px;
+        height: 30px;
+        background-color: teal;
+        border-radius: 50%;
+        padding: 6px 6px;
+    }
+    #user-det-top-left > #add-user {
+        margin-left: 1%;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;        
+        font-weight: 550;
+    }
+    #user-det-top-right > a > span {
+        background-color: var(--btn-prim);
+        color: white;
+        font-family: sans-serif;
+        font-size: 0.7em;
+        padding: 5px 10px;
+    }
+    #user-detail-bottom{
+        margin-top: 1.5%;
+        margin-right: 2%;
+        margin-left: 2%;
+        border: 1px solid rgba(0, 0, 0, 0.5);
+        border-radius: 5px;
+    }
+    #user-detail-bottom-form{
+        display: flex;
+        flex-direction: row;
+        margin-top: 1%;
+        margin-bottom: 1%;
+    }
+    #user-detail-bottom-form-reguler{
+        margin-top: 1%;
+        margin-bottom: 1%;
+    }
+    #user-det-bottom-left{
+        flex: 30%;
+        max-width: 30%;
+        margin-right: 2%;
+        margin-left: 1%;
+    }
+    #user-det-bottom-middle{
+        flex: 30%;
+        max-width: 30%;
+        margin-right: 1%;
+        margin-left: 1%;
+    }
+    #user-det-bottom-right{
+        flex: 30%;
+        max-width: 30%;
+        margin-right: 2%;
+        margin-left: 1%;
+    }
+    .form-label{
+        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        font-weight: 550;
+        font-size: 0.8em;
+    }
+    .form-label > span {
+        color: red;
+    }
+    .form-control{
+        font-family: sans-serif;
+        font-size: 0.75em;
+    }
+    #grosir-section{
+        display: flex;
+        flex-direction: row;
+    }
+    #jumlah-grosir{
+        flex: 40%;
+        max-width: 40%;
+    }
+    #total-grosir{
+        margin-left: 1%;
+        flex: 59%;
+        max-width: 59%;
+    }
+</style>
+<div class="user-detail-container">
+    {%for message in get_flashed_messages()%}
+    <div class="alert alert-success alert-dismissible show" role="alert">
+        {{message}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {%endfor%}
+    <div id="user-detail-top">
+        <div id="user-det-top-left">
+            <a href="{{url_for('barang.barang_list')}}">
+                <img src="{{url_for('static', filename='images/arrow_back_white.svg')}}" alt="">
+            </a>
+            <span id="add-user">ADD BARANG</span>
+        </div>
+        <div id="user-det-top-right">
+            <a href="{{url_for('barang.barang_list')}}">
+                <span class="btn btn-sm">Daftar Barang</span>
+            </a>
+        </div>
+    </div>
+    <div id="user-detail-bottom">
+        {%if current_user.level == 'Admin'%}
+        <form action="" method="post" enctype="multipart/form-data">
+            <div id="user-detail-bottom-form">
+                <div id="user-det-bottom-left">
+                    {{add_form.hidden_tag()}}
+                    {{add_form.kode_barang.label(class='form-label')}}
+                    {{add_form.kode_barang(class='form-control')}}
+                    <br>
+                    {{add_form.nama_barang.label(class='form-label')}}
+                    {{add_form.nama_barang(class='form-control')}}
+                    <br>
+                    {{add_form.stok.label(class='form-label')}}
+                    {{add_form.stok(class='form-control')}}
+                    <br>
+                    {{add_form.discount.label(class='form-label')}}
+                    {{add_form.discount(class='form-control')}}
+                    <br>
+                    {{add_form.submit(class='btn btn-success btn-sm')}}
+                    <span class="btn btn-danger btn-sm">Delete</span>
+                </div>
+                <div id="user-det-bottom-middle">
+                    {{add_form.status.label(class='form-label')}} (pilih status)
+                    {{add_form.status(class='form-control')}}
+                    <br>
+                    {{add_form.harga_beli.label(class='form-label')}}
+                    {{add_form.harga_beli(class='form-control')}}
+                    <br>
+                    {{add_form.harga_jual.label(class='form-label')}}
+                    {{add_form.harga_jual(class='form-control')}}
+                    <br>
+                    {{add_form.kategori.label(class='form-label')}} (pilih kategori)
+                    <select {{add_form.kategori(class='form-control')}}>
+                        {%for c in category%}
+                        <option value="{{c.nama_kategori}}">{{c.nama_kategori}}</option>
+                        {%endfor%}
+                    </select>
+                    <br>
+                </div>   
+                <div id="user-det-bottom-right">
+                    {{add_form.satuan.label(class='form-label')}} (pilih satuan)
+                    <select {{add_form.satuan(class='form-control')}}>
+                        {%for s in satuan%}
+                        <option value="{{s.satuan}}">{{s.satuan}}</option>
+                        {%endfor%}
+                    </select>
+                    <br>
+                    {{add_form.barang_pic.label(class='form-label')}}
+                    {{add_form.barang_pic(class='form-control')}}
+                    <br>
+                    {{add_form.tanggal_masuk.label(class='form-label')}}
+                    {{add_form.tanggal_masuk(class='form-control')}}
+                    <br>
+                    <div id="grosir-section">
+                        <div id="jumlah-grosir">
+                            {{add_form.jumlah_grosir.label(class='form-label')}}
+                            {{add_form.jumlah_grosir(class='form-control')}}
+                        </div>  
+                        <!-- <br> -->
+                        <div id="total-grosir">
+                            {{add_form.total_grosir.label(class='form-label')}}
+                            {{add_form.total_grosir(class='form-control')}}
+                        </div>
+                    </div>
+                </div>     
+            </div>
+        </form>
+        {%else%}
+        <div id="user-detail-bottom-form-reguler">
+            <h3>Sorry you're not authorized to access this page</h3>
+            <h5>Only admin can access this page</h5>
+        </div>
+        {%endif%}
+    </div>
+</div>
+{%endblock%}

@@ -1,0 +1,286 @@
+{%include 'side-nav.html'%}
+{%block content%}
+<style>
+:root{
+        --btn-prim:teal;
+    }
+    .user-list-container{
+        margin-left: 5%;
+    }
+    #user-list-top{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-top: 1%;
+        margin-right: 2%;
+    }
+    #user-list-top-left{
+        margin-left: 2%;
+        flex: 30%;
+        max-width: 30%;
+    }
+    #user-list-top-left > a > img{
+        width: 30px;
+        height: 30px;
+        background-color: teal;
+        border-radius: 50%;
+        padding: 6px 6px;
+    }
+    #user-list-top-left > #add-user {
+        margin-left: 1%;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;        
+        font-weight: 550;
+    }
+    #user-list-top-right > span {
+        font-family: sans-serif;
+        font-size: 0.7em;
+        background-color: blue;
+        padding: 5px 10px;
+        border-radius: 2px;
+        margin-right: 5px;
+        color: white;
+    }
+    #user-list-top-right > a > span {
+        background-color: var(--btn-prim);
+        color: white;
+        font-family: sans-serif;
+        font-size: 0.7em;
+        padding: 5px 10px;
+    }
+    #user-list-bottom{
+        display: flex;
+        margin-top: 1%;
+        margin-right: 2%;
+        margin-left: 2%;
+    }
+    .table > thead > tr > th {
+        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        font-weight: 400;
+        font-size: 0.8em;
+    }
+    .table > tbody > tr > td {
+        font-family: sans-serif;
+        font-weight: 400;
+        font-size: 0.7em;
+    }
+    #tbl-detail-btn > a > img {
+        width: 5.5vh;
+        height: 5.5vh;
+        background-color: #00ccff;
+        border-radius: 5px;
+        padding: 6px 6px;
+    }
+    #tbl-edit-btn > a > img {
+        width: 5.5vh;
+        height: 5.5vh;
+        background-color: orange;
+        border-radius: 5px;
+        padding: 6px 6px;
+    }
+    #tbl-delete-btn > span > img {
+        width: 5.5vh;
+        height: 5.5vh;
+        background-color: red;
+        border-radius: 5px;
+        padding: 6px 6px;
+    }
+    .delete-btn-pop{
+        position: fixed;
+        top:10%;
+        right: 2%;
+        /* display: flex; */
+        display: none;
+        flex-direction: column;
+        width: fit-content;
+        border-radius: 5px;
+        border: 1px solid rgba(0, 0, 0, 0.3);
+        margin-left: 10%;
+        padding: 5px 10px;
+        justify-content: center;
+        align-items: center;
+        background-color: rgba(255, 255, 255, 0.9);
+    }
+    #delete-btn-content > p {
+        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    
+    }
+    #delete-btn-choice{
+        display: flex;
+        justify-content: space-between;
+        
+    }
+    #delete-btn-choice > span {
+        font-family: sans-serif;
+        font-size: 0.7em;
+    }
+
+    .pagination{
+        margin-left: 2%;
+        margin-top: 2%;
+    }
+    .page-item{
+        margin-left: 2px;
+    }
+    .page-item a{
+        color: black;
+        text-decoration: none;
+        border-radius: 5px; 
+        padding: 2px 7px 2px 7px;
+        margin-right: 5px;
+        transition: 1s;
+    }
+    .navigation-example ul li.hovered a{
+        transform: translateY(-10px);
+        background-color: blueviolet;
+        color: white;
+        }
+        .navigation-example ul li:hover a{
+        transform: translateY(-10px);
+        background-color: #db0038;
+        color: white;
+        }
+</style>
+<div class="user-list-container">
+    <div id="user-list-top">
+        <div id="user-list-top-left">
+            <a href="{{url_for('dashboard.dashboard')}}">
+                <img src="{{url_for('static', filename='images/cottage_white.svg')}}" alt="">
+            </a>
+            <span id="add-user">DAFTAR USER</span>
+        </div>
+        <div id="user-list-top-right">
+            <span>{{count_data}}</span>
+            <a href="{{url_for('user.user_add')}}">
+                <span class="btn btn-sm">Tambah User</span>
+            </a>
+        </div>
+    </div>
+    <div id="user-list-bottom">
+        <table class="table table-hover">
+            <thead class="table-secondary">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Kode User</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Level</th>
+                    <th scope="col">Phone</th>
+                    <th scope="col">Join Date</th>
+                    <th scope="col" colspan="3">Action</th>
+                    <!-- <th scope="col">Edit</th>
+                    <th scope="col">Delete</th> -->
+                </tr>
+            </thead>
+            <tbody>
+                {%for u in user%}
+                <tr>
+                    <th scope="row"></th>
+                    <td>{{u.id}}</td>
+                    <td>{{u.name}}</td>
+                    <td>{{u.level}}</td>
+                    <td>{{u.phone}}</td>
+                    <td>{{u.join_date.date()}}</td>
+                    {%if current_user.level == 'Admin'%}
+                    <td id="tbl-detail-btn">
+                        {%if u.level == 'Admin'%}
+                        <a href="{{url_for('dashboard.dashboard_admin', id=u.id)}}">
+                            <img src="{{url_for('static', filename='images/info_white.svg')}}" alt="">
+                        </a>
+                        {%else%}
+                        <a href="{{url_for('dashboard.dashboard_user', id=u.id)}}">
+                            <img src="{{url_for('static', filename='images/info_white.svg')}}" alt="">
+                        </a>
+                        {%endif%}
+                    </td>
+                    <td id="tbl-edit-btn">
+                        <a href="{{url_for('user.user_edit', id=u.id)}}">
+                            <img src="{{url_for('static', filename='images/edit_white.svg')}}" alt="">
+                        </a>
+                    </td>
+                    <td id="tbl-delete-btn">
+                        <span>
+                            <img src="{{url_for('static', filename='images/delete_white.svg')}}" alt="">
+                        </span>
+                    </td>
+                    {%endif%}
+                    <div class="delete-btn-pop">
+                        <div id="delete-btn-content">
+                            <p>Are you sure ?</p>
+                            <div id="delete-btn-choice">
+                                <a href="{{url_for('user.user_delete', id=u.id)}}">
+                                    <span class="btn btn-danger btn-sm">Yes</span>
+                                </a>
+                                <span class="btn btn-success btn-sm btn-cancel">No</span>
+                            </div>
+                        </div>
+                    </div>
+                </tr>
+                {%endfor%}
+            </tbody>
+        </table>
+    </div>
+    <nav aria-label="Page navigation example" class="navigation-example">
+        <ul class="pagination pagination-sm">
+          <li class="page-item">
+            {%if prev_url%}
+            <a class="page-link" href="{{prev_url}}" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+              <!-- <span class="sr-only">Older Post</span> -->
+            </a>
+            {%endif%}
+          </li>
+          {%set i = count_data // 10%}
+          {%if i >=1 and count_data % 10 == 0%}      
+            {%for c in range(1,i+1)%}
+            <li class="page-item"><a class="page-link numbered" href="http://127.0.0.1:5003/user/user_list?page={{c}}">{{c}}</a></li>
+            {%endfor%}
+          {%elif i>=1 and count_data%10 != 0%}
+            {%for c in range(1,i+2)%}
+            <li class="page-item"><a class="page-link numbered" href="http://127.0.0.1:5003/user/user_list?page={{c}}">{{c}}</a></li>
+            {%endfor%}
+          {%else%}
+            <li class="page-item"><a class="page-link numbered" href="http://127.0.0.1:5003/user/user_list?page={{c}}">1</a></li>
+          {%endif%}
+          <li class="page-item">
+            {%if next_url%}
+            <a class="page-link" href="{{next_url}}" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+              <!-- <span class="sr-only">Newer Post</span> -->
+            </a>
+            {%endif%}
+          </li>
+        </ul>
+      </nav>
+</div>
+
+<script src="{{url_for('static', filename='js/pagination.js')}}"></script>
+<script>
+    
+    let arr = document.querySelectorAll('#tbl-delete-btn')
+
+    for (var i = 0;i < arr.length; i++){
+        var btn = arr[i]
+        btn.addEventListener('click', function(){
+            // alert('kontol')
+            let left = $(this).offset().left - 140
+            let top = $(this).offset().top + 40
+            // let position = (left - top).toString()
+            let pos_fix_left = left.toString().substring(0, left.toString().indexOf('.')) + 'px'
+            let pos_fix_top = top.toString().substring(0, top.toString().indexOf('.')) + 'px'
+
+            if($('.delete-btn-pop').is(':visible')){
+                $('.delete-btn-pop').css('left', pos_fix_left)
+                $('.delete-btn-pop').css('top', pos_fix_top)
+                $('.delete-btn-pop').slideUp()
+            }else{
+                $('.delete-btn-pop').css('left', pos_fix_left)
+                $('.delete-btn-pop').css('top', pos_fix_top)
+                $('.delete-btn-pop').slideDown()
+            }
+        })
+    }
+
+    $('.btn-cancel').click(function(){
+        $('.delete-btn-pop').slideUp()
+    })
+</script>
+{%endblock%}

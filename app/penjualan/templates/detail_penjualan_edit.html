@@ -1,0 +1,171 @@
+{%include 'side-nav.html'%}
+{%block content%}
+<style>
+    :root{
+        --btn-prim:teal;
+    }
+    .alert{
+        position: relative;
+        margin-left: 5%;
+        width: 400px;
+        max-width: 400px;
+        margin-top: 1%;
+        z-index: 1;
+    }
+    .detail-penjualan-edit-container{
+        margin-left: 5%;
+    }
+    #detail-penjualan-edit-top{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-top: 1%;
+        margin-right: 2%;
+    }
+    #detail-penjualan-edit-top-left{
+        margin-left: 2%;
+        flex: 30%;
+        max-width: 30%;
+    }
+    #detail-penjualan-edit-top-left > a > img{
+        width: 30px;
+        height: 30px;
+        background-color: teal;
+        border-radius: 50%;
+        padding: 6px 6px;
+    }
+    #detail-penjualan-edit-top-left > #add-detail-penjualan {
+        margin-left: 1%;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;        
+        font-weight: 550;
+    }
+    #detail-penjualan-edit-top-right > a > span {
+        background-color: var(--btn-prim);
+        color: white;
+        font-family: sans-serif;
+        font-size: 0.7em;
+        padding: 5px 10px;
+    }
+    #detail-penjualan-edit-bottom{
+        margin-top: 1.5%;
+        margin-right: 2%;
+        margin-left: 2%;
+        border: 1px solid rgba(0, 0, 0, 0.5);
+        border-radius: 5px;
+    }
+    #detail-penjualan-edit-bottom-form{
+        display: flex;
+        flex-direction: row;
+        margin-top: 1%;
+        margin-bottom: 1%;
+    }
+    #detail-penjualan-edit-bottom-form-reguler{
+        margin-top: 1%;
+        margin-bottom: 1%;
+    }
+    #detail-penjualan-edit-bottom-left{
+        flex: 30%;
+        max-width: 30%;
+        margin-right: 2%;
+        margin-left: 1%;
+    }
+    #detail-penjualan-edit-bottom-middle{
+        flex: 30%;
+        max-width: 30%;
+        margin-right: 1%;
+        margin-left: 1%;
+    }
+    #detail-penjualan-edit-bottom-right{
+        flex: 30%;
+        max-width: 30%;
+        margin-right: 2%;
+        margin-left: 1%;
+    }
+    .form-label{
+        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        font-weight: 550;
+        font-size: 0.8em;
+    }
+    .form-label > span {
+        color: red;
+    }
+    .form-control{
+        font-family: sans-serif;
+        font-size: 0.75em;
+    }
+    .btn-info{
+        color: white;
+    }
+</style>
+<div class="detail-penjualan-edit-container">
+    {%for message in get_flashed_messages()%}
+    <div class="alert alert-success alert-dismissible show" role="alert">
+        {{message}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {%endfor%}
+    <div id="detail-penjualan-edit-top">
+        <div id="detail-penjualan-edit-top-left">
+            <a href="{{url_for('penjualan.penjualan_detail', id=penjualan.id_penjualan)}}">
+                <img src="{{url_for('static', filename='images/arrow_back_white.svg')}}" alt="">
+            </a>
+            <span id="add-detail-penjualan">INVOICE HEADER</span>
+        </div>
+        <div id="detail-penjualan-edit-top-right">
+            <a href="{{url_for('penjualan.penjualan_add')}}">
+                <span class="btn btn-sm">Tambah Penjualan</span>
+            </a>
+        </div>
+    </div>
+    <div id="detail-penjualan-edit-bottom">
+        {%if current_user.level == 'Admin'%}
+        <form action="" method="post" enctype="multipart/form-data">
+            <div id="detail-penjualan-edit-bottom-form">
+                <div id="detail-penjualan-edit-bottom-left">
+                    {{edit_detail_form.hidden_tag()}}
+                    <label for="no-urut" class="form-label">No. Urut</label>
+                    <input type="text" class="form-control" id="no-urut" name="no-urut" value="{{detail_penjualan.no_urut}}" readonly>
+                    <br>
+                    <label for="kode-penjualan" class="form-label">Kode Penjualan</label>
+                    <input type="text" class='form-control kode-penjualan' id="kode-penjualan" name="kode-penjualan" value="{{detail_penjualan.kode_penjualan}}" readonly>
+                    <br>
+                    {{edit_detail_form.kode_barang.label(class='form-label')}}
+                    <input type="text" class='form-control nama-barang' id="nama-barang" name="nama-barang" value="{{detail_penjualan.barang_detail_penjualan.nama_barang}}" readonly>
+                    <br>
+                    {{edit_detail_form.jumlah_barang.label(class='form-label')}}
+                    {{edit_detail_form.jumlah_barang(class='form-control')}}
+                    <br>
+                    {{edit_detail_form.submit(class='btn btn-success btn-sm')}}
+                </div>
+                <div id="detail-penjualan-edit-bottom-middle">
+                    {{edit_detail_form.diskon_khusus.label(class='form-label')}}
+                    {%if detail_penjualan.diskon_detail_penjualan.nama_diskon == '--- CHOOSE DISKON ---'%}
+                    <input type="text" class="form-control" id="diskon-khusus" name="diskon-khusus" value="none" readonly>
+                    {%else%}
+                    <input type="text" class="form-control" id="diskon-khusus" name="diskon-khusus" value="{{detail_penjualan.diskon_detail_penjualan.nama_diskon}}" readonly>
+                    {%endif%}
+                    <br>
+                    {{edit_detail_form.total_harga.label(class='form-label')}}
+                    {{edit_detail_form.total_harga(class='form-control')}}
+                    <br>
+                    {{edit_detail_form.sub_total.label(class='form-label')}}
+                    {{edit_detail_form.sub_total(class='form-control')}}
+                    <br>
+                    {{edit_detail_form.potongan.label(class='form-label')}}
+                    {{edit_detail_form.potongan(class='form-control')}}
+                </div>   
+                <div id="detail-penjualan-edit-bottom-right">
+                    {{edit_detail_form.ppn.label(class='form-label')}}
+                    {{edit_detail_form.ppn(class='form-control')}}
+                </div>     
+            </div>
+        </form>
+        {%else%}
+        <div id="detail-penjualan-edit-bottom-form-reguler">
+            <h3>Sorry you're not authorized to access this page</h3>
+            <h5>Only admin can access this page</h5>
+        </div>
+        {%endif%}
+    </div>
+</div>
+{%endblock%}

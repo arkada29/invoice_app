@@ -1,0 +1,349 @@
+{%include 'side-nav.html' %}
+{%block content%}
+<style>
+    .penjualan-detail-container{
+        margin-left: 5%;
+    }
+    #penjualan-detail-top{
+        display: flex;
+        margin-top: 1%;
+        flex-direction: column;
+    }
+    #penjualan-detail-top-top{
+        flex: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    #detail-data-kasir{
+        flex: 25%;
+        max-width: 25%;
+        display: flex;
+        flex-direction: column;
+        margin-left: 2%;
+    }
+    #detail-data-faktur{
+        flex: 25%;
+        max-width: 25%;
+        margin-right: 2%;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+    }
+    #data-faktur-top > span{
+        position: absolute;
+        right: 0;
+    }
+    #data-faktur-bottom > span{
+        padding-top: 5%;
+        position: absolute;
+        right: 0;
+    }
+    #detail-data-kasir-top{
+        display: flex;
+        flex-direction: row;
+    }
+    #detail-data-kasir-bottom{
+        display: flex;
+        /* flex-direction: column; */
+    }
+    #detail-data-kasir-top-left{
+        flex: 50%;
+        max-width: 50%;
+        margin-right: 5px;
+        /* padding-left: 2%; */
+        /* margin-left: 10%; */
+    }
+    #detail-data-kasir-top-right{
+        flex: 50%;
+        max-width: 50%;
+        margin-right: 5px;
+    }
+    #data-kasir-label{
+        font-size: 0.9em;
+        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    }
+    #data-kasir-value{
+        font-size: 0.7em;
+        color: rgba(0, 0, 0, 0.7);
+        font-family: sans-serif;
+    }
+    #detail-data-kasir-bottom{
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+    }
+    #detail-data-kasir-bottom > #data-kasir-label{
+        font-size: 1em;
+        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    }
+    #detail-data-kasir-bottom > #data-kasir-value{
+        font-size: 0.8em;
+        padding-top: 5px;
+        color: rgba(0, 0, 0, 0.7);
+        font-family: sans-serif;
+        padding-right: 40%;
+    }
+    #penjualan-detail-top-bottom{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-left: 2%;
+        margin-top: 1%;
+        position: relative;
+    }
+    #penjualan-detail-top-bottom-left{
+        flex: 50%;
+        max-width: 50%;
+        display: flex;
+        flex-direction: column;
+    }
+    #penjualan-detail-top-bottom-right{
+        flex: 50%;
+        max-width: 50%;
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        right: 2%;
+    }
+    #penjualan-detail-middle{
+        height: 280px;
+        max-height: 290px;
+        margin-left: 2%;
+        margin-right: 2%;
+        margin-top: 1%;
+        border: 1px solid black;
+    }
+    .table-responsive{
+        overflow-y: scroll;
+        height: 100%;
+    }
+    .table > thead > tr > th {
+        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        font-weight: 400;
+        font-size: 0.8em;
+    }
+    .table > tbody > tr > td, th {
+        font-family: sans-serif;
+        font-weight: 400;
+        font-size: 0.7em;
+    }
+    #tbl-detail-btn > a > img {
+        width: 5.5vh;
+        height: 5.5vh;
+        background-color: #00ccff;
+        border-radius: 5px;
+        padding: 6px 6px;
+    }
+    #tbl-edit-btn > a > img {
+        width: 5.5vh;
+        height: 5.5vh;
+        background-color: orange;
+        border-radius: 5px;
+        padding: 6px 6px;
+    }
+    #tbl-delete-btn > span > img {
+        width: 5.5vh;
+        height: 5.5vh;
+        background-color: red;
+        border-radius: 5px;
+        padding: 6px 6px;
+    }
+    .delete-btn-pop{
+        position: fixed;
+        top:10%;
+        right: 2%;
+        /* display: flex; */
+        display: none;
+        flex-direction: column;
+        width: fit-content;
+        border-radius: 5px;
+        border: 1px solid rgba(0, 0, 0, 0.3);
+        margin-left: 10%;
+        padding: 5px 10px;
+        justify-content: center;
+        align-items: center;
+        background-color: rgba(255, 255, 255, 0.9);
+    }
+    #delete-btn-content > p {
+        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    
+    }
+    #delete-btn-choice{
+        display: flex;
+        justify-content: space-between;
+        
+    }
+    #delete-btn-choice > span {
+        font-family: sans-serif;
+        font-size: 0.7em;
+    }
+    #penjualan-detail-bottom{
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        margin-right: 2%;
+        margin-left: 2%;
+        margin-top: 1%;
+    }
+    #penjualan-detail-bottom > .btn-success{
+        color: white;
+        margin-right: 1%;
+    }
+    #penjualan-detail-bottom > .btn-warning{
+        color: white;
+        margin-right: 1%;
+    }
+    #penjualan-detail-bottom > .btn-warning:hover{
+        color: white;
+    }
+</style>
+<div class="penjualan-detail-container">
+    <div id="penjualan-detail-top">
+        <div id="penjualan-detail-top-top">
+            <div id="detail-data-kasir">
+                <div id="detail-data-kasir-top">
+                    <div id="detail-data-kasir-top-left">
+                        <span id="data-kasir-label">Kasir</span><br>
+                        <span id="data-kasir-value">{{penjualan.user_penjualan.name}}</span>
+                    </div>
+                    <div id="detail-data-kasir-top-right">
+                        <span id="data-kasir-label">Level</span>
+                        <br>
+                        <span id="data-kasir-value">{{penjualan.user_penjualan.level}}</span>
+                    </div>
+                </div>
+                <div id="detail-data-kasir-bottom">
+                    <span id="data-kasir-label">Login</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <span id="data-kasir-value">{{current_user.last_login.date()}}</span>
+                </div>
+            </div>
+            <div id="detail-data-faktur">
+                <div id="data-faktur-top">
+                    <span id="data-kasir-label">No. Invoice</span><br>
+                    
+                    <span id="data-kasir-value">{{penjualan.kode_penjualan}}</span>
+                </div>
+                <div id="data-faktur-bottom">
+                    <span id="data-kasir-label">Tanggal Invoice</span><br>
+                    <span id="data-kasir-value">{{penjualan.tanggal_penjualan.date()}}</span>
+                </div>
+            </div>
+        </div>
+        <div id="penjualan-detail-top-bottom">
+            <div id="penjualan-detail-top-bottom-left">
+                <span id="data-kasir-label">Grand Total</span>
+                <span id="data-kasir-value">{{penjualan.grand_total}}</span>
+                <span id="data-kasir-label">Barang Terjual</span>
+                <span id="data-kasir-value">{{penjualan.jumlah_penjualan}}</span>
+            </div>
+            <div id="penjualan-detail-top-bottom-right">
+                <span id="data-kasir-label">Total Bayar</span>
+                <span id="data-kasir-value">{{penjualan.total_pembayaran}}</span>
+                <span id="data-kasir-label">Kembalian</span>
+                <span id="data-kasir-value">{{penjualan.total_kembalian}}</span>
+            </div>
+        </div>
+    </div>
+    <div id="penjualan-detail-middle">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="table-secondary">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Kode Penjualan</th>
+                        <th scope="col">Jumlah Barang</th>
+                        <th scope="col">Total Harga</th>
+                        <th scope="col">Sub Total</th>
+                        <th scope="col">Potongan</th>
+                        <th scope="col">Ppn</th>
+                        <th scope="col">Nama Barang</th>
+                        <th scope="col">Nama Diskon</th>
+                        <th scope="col" colspan="3">Action</th>
+                        <!-- <th scope="col">Edit</th>
+                        <th scope="col">Delete</th> -->
+                    </tr>
+                </thead>
+                <tbody>
+                    {%for dp in detail_penjualan%}
+                    <tr>
+                        <th scope="row">{{dp.no_urut}}</th>
+                        <td>{{dp.kode_penjualan}}</td>
+                        <td>{{dp.jumlah_barang}}</td>
+                        <td>{{dp.total_harga}}</td>
+                        <td>{{dp.sub_total}}</td>
+                        <td>{{dp.potongan}}</td>
+                        <td>{{dp.ppn}}</td>
+                        <td>{{dp.barang_detail_penjualan.nama_barang}}</td>
+                        {%if dp.diskon_detail_penjualan.nama_diskon == '--- CHOOSE DISKON ---'%}
+                        <td>None</td>
+                        {%else%}
+                        <td>{{dp.diskon_detail_penjualan.nama_diskon}}</td>
+                        {%endif%}
+                        {%if current_user.level == 'Admin'%}
+                        <td id="tbl-detail-btn">
+                            <a href="{{url_for('penjualan.detail_penjualan_detail', header_id=penjualan.id_penjualan, id=dp.id_detail_penjualan)}}">
+                                <img src="{{url_for('static', filename='images/info_white.svg')}}" alt="">
+                            </a>
+                        </td>
+                        <td id="tbl-edit-btn">
+                            <a href="{{url_for('penjualan.detail_penjualan_edit', header_id=penjualan.id_penjualan ,id=dp.id_detail_penjualan)}}">
+                                <img src="{{url_for('static', filename='images/edit_white.svg')}}" alt="">
+                            </a>
+                        </td>
+                        <td id="tbl-delete-btn">
+                            <span class="button-choice" id="-{{loop.index}}">
+                                <img src="{{url_for('static', filename='images/delete_white.svg')}}" alt="">
+                            </span>
+                            <div class="delete-btn-pop" id="delete-choice-{{loop.index}}">
+                                <div id="delete-btn-content">
+                                    <p>Are you sure ?</p>
+                                    <div class="button-choice delete-btn-choice" id="delete-choice-{{loop.index}}">
+                                        <a href="{{url_for('penjualan.detail_penjualan_delete', id=dp.id_detail_penjualan)}}">
+                                            <span class="btn btn-danger btn-sm">Yes</span>
+                                        </a>
+                                        <span class="btn btn-success btn-sm btn-cancel">No</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        {%endif%}
+                    </tr>
+                    {%endfor%}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div id="penjualan-detail-bottom">
+        <a href="{{url_for('penjualan.penjualan_list')}}" class="btn btn-success btn-sm">List Penjualan</a>
+        <a href="{{url_for('penjualan.penjualan_edit', id=penjualan.id_penjualan)}}" class="btn btn-warning btn-sm">Edit</a>
+        <a href="{{url_for('penjualan.penjualan_delete', id=penjualan.id_penjualan)}}" class="btn btn-danger btn-sm">Delete</a>
+    </div>
+    
+
+</div>
+<script>
+     $('.button-choice').click(function(){
+        let left = $(this).offset().left - 140
+            let top = $(this).offset().top + 40
+            // let position = (left - top).toString()
+            let pos_fix_left = left.toString().substring(0, left.toString().indexOf('.')) + 'px'
+            let pos_fix_top = top.toString().substring(0, top.toString().indexOf('.')) + 'px'
+
+            // $('#delete-choice'+$(this).attr('id')).toggle(300)
+            if($('#delete-choice'+$(this).attr('id')).is(':visible')){
+                $('#delete-choice'+$(this).attr('id')).css('left', pos_fix_left)
+                $('#delete-choice'+$(this).attr('id')).css('top', pos_fix_top)
+                $('#delete-choice'+$(this).attr('id')).slideUp()
+            }else{
+                $('#delete-choice'+$(this).attr('id')).css('left', pos_fix_left)
+                $('#delete-choice'+$(this).attr('id')).css('top', pos_fix_top)
+                $('#delete-choice'+$(this).attr('id')).slideDown()
+            }
+    })
+
+    $('.btn-cancel').click(function(){
+        $('.delete-btn-pop').slideUp()
+    })
+</script>
+{%endblock%}

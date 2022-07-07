@@ -1,0 +1,990 @@
+{%include 'side-nav.html'%}
+{%block content%}
+<style>
+    :root{
+        --btn-prim:teal;
+    }
+    .alert{
+        position: relative;
+        margin-left: 5%;
+        width: 400px;
+        max-width: 400px;
+        margin-top: 1%;
+        z-index: 1;
+    }
+    .penjualan-add-container{
+        margin-left: 5%;
+    }
+    #penjualan-add-top{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        /* margin-top: 1%; */
+        margin-right: 2%;
+        /* border: 1px solid saddlebrown; */
+    }
+    #penjualan-add-top-left{
+        margin-left: 2%;
+        flex: 40%;
+        max-width: 40%;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        /* margin-left: 2%;
+        display: grid;
+        grid-gap:2px;
+        grid-template-columns: fit-content fit-content fit-content;
+        grid-template-areas:
+            'picture kasir level'
+            'picture login login'
+        ;
+        height:fit-content; */
+    }
+    #penjualan-pic{
+        /* grid-area: picture; */
+        flex: 15%;
+        max-width: 15%;
+        /* border: 1px solid green; */
+        margin-top: 2%;
+    }
+    #penjualan-pic > img {
+        padding-left: 2%;
+        width: 12vh;
+        height: 12vh;
+        border-radius: 50%;
+        border: 1px solid teal;
+        object-fit: cover;
+        object-position: center;
+    }
+    #penjualan-kasir-level-login{
+        flex: 45%;
+        max-width: 45%;
+        display: flex;
+        flex-direction: column;
+        /* border: 1px solid red; */
+    }
+    #penjualan-kasir-level{
+        display: flex;
+        flex-direction: row;
+    }
+
+    #penjualan-kasir{
+        padding-left: 5px;
+    }
+    #penjualan-kasir > .form-control{
+        font-family: sans-serif;
+        font-size: 0.7em;
+        border: none;
+        width: 50px;
+        height: 25px;
+    }
+    #penjualan-level{
+        padding-left: 5px;
+        /* grid-area: level; */
+    }
+    #penjualan-level > .form-control{
+        font-family: sans-serif;
+        font-size: 0.7em;
+        border: none;
+        width: 60px;
+        min-width: 60px;
+        height: 25px;
+    }
+    #penjualan-login{
+        /* grid-area: login; */
+        padding-left: 5px;
+    }
+    #penjualan-login > #penjualan-label{
+        font-size: 0.8em;
+        font-weight: 550;
+        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    }
+    #penjualan-login > #penjualan-value{
+        /* position: absolute; */
+        font-size: 0.7em;
+        font-family: sans-serif;
+        border: none;
+        /* bottom: 0; */
+    }
+    #penjualan-add-top-right{
+        flex: 55%;
+        max-width: 55%;
+        /* border: 1px solid orange; */
+        display: flex;
+        justify-content: flex-end;
+    }
+    #penjualan-add-top-right > a > span {
+        background-color: var(--btn-prim);
+        color: white;
+        font-family: sans-serif;
+        font-size: 0.7em;
+        padding: 5px 10px;
+    }
+    #penjualan-faktur-tgl > #penjualan-label {
+        font-size: 0.8em;
+        font-weight: 550;
+        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    }
+    #penjualan-faktur-tgl > #penjualan-value{
+        font-size: 0.7em;
+        font-family: sans-serif;
+        border: none;
+        width: 100px;
+    }
+
+    #penjualan-add-middle{
+        margin-left: 2%;
+        margin-right: 2%;
+        /* display: flex; */
+        border: 1px solid black;
+        height: 300px;
+    }
+    #penjualan-add-middle-middle{
+        /* display: flex; */
+        overflow-y: scroll;
+        height: 100%;
+    }
+
+
+    #penjualan-add-bottom{
+        margin-top: 0.5%;
+        margin-right: 2%;
+        margin-left: 2%;
+        /* border: 1px solid rgba(0, 0, 0, 0.5); */
+        border-radius: 5px;
+    }
+    #penjualan-add-bottom-form{
+        display: flex;
+        flex-direction: row;
+        /* margin-top: 1%; */
+        margin-bottom: 1%;
+    }
+    #penjualan-add-bottom-left{
+        flex: 40%;
+        max-width: 40%;
+        /* margin-right: 1%;
+        margin-left: 1%; */
+        display: flex;
+        flex-direction: column;
+        /* border: 1px solid burlywood; */
+    }
+    #penjualan-add-bottom-left-top, #penjualan-add-bottom-left-bottom{
+        display: flex;
+        flex-direction: row;
+    }
+    #bottom-left-top-total-harga > .form-control {
+        height: 25px;
+        width: 400px;
+    }
+    #bottom-left-top-banyak {
+        margin-left: 2%;
+    }
+    #bottom-left-top-banyak > .form-control{
+        width: 50px;
+        height: 25px;
+        padding: 0;
+    }
+    #bottom-left-bottom-jumlah-bayar > .form-control{
+        height: 25px;
+        width: 200px;
+    }
+    #bottom-left-bottom-kembalian {
+        margin-left: 5px;
+    }
+    #bottom-left-bottom-kembalian > .form-control{
+        height: 25px;
+        width: 195px;
+    }
+    #penjualan-add-bottom-middle{
+        flex: 15%;
+        max-width: 15%;
+        margin-right: 1%;
+        margin-left: 5%;
+        display: flex;
+        flex-wrap: wrap;
+    }
+    #penjualan-add-bottom-right{
+        flex: 30%;
+        max-width: 30%;
+        /* margin-right: 2%; */
+        /* margin-left: 12%; */
+        display: flex;
+        justify-content: flex-end;
+        margin-left: 5%;
+    }
+    #penjualan-add-bottom-right-content{
+        position: relative;
+        flex: 100%;
+        max-width: 100%;
+    }
+    #penjualan-add-bottom-right-content > #penjualan-value{
+        height: 25px;
+    }
+    #penjualan-value{
+        font-family: sans-serif;
+        font-size: 0.7em;
+    }
+    /* input[type=checkbox] {
+        margin-left: 7%;
+    } */
+    select{
+        font-family: sans-serif;
+        font-size: 0.7em;
+    }
+    #penjualan-add-bottom-right-content > .sub-total, 
+    #penjualan-add-bottom-right-content > .potongan,
+    #penjualan-add-bottom-right-content > #input-group{
+        position: absolute;
+        right: 0;
+    }
+    /* #penjualan-add-bottom-right-content > #diskon-khusus {
+        margin-left: 20%; */
+        /* margin-left: 15%;
+        
+    } */
+    #penjualan-add-bottom-right-content > #diskon-khusus {
+        /* margin-left: 20%; */
+        /* margin-left: 15%; */
+        position: absolute;
+        right: 0;
+        margin-top: 1%;
+    }
+    /* #penjualan-add-bottom-right-content > #input-group{
+        position: absolute;
+        right: 0;
+    } */
+    .form-label{
+        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        font-weight: 550;
+        font-size: 0.8em;
+    }
+    .form-label > span {
+        color: red;
+    }
+    .table > thead > tr > th {
+        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        font-weight: 400;
+        font-size: 0.8em;
+    }
+    .table > tbody > tr > td, th {
+        font-family: sans-serif;
+        font-weight: 400;
+        font-size: 0.7em;
+    }
+    .btn-add{
+        margin-top: 2%;
+        margin-bottom: 5%;
+        width: 100px;
+        min-width: 75px;
+        color: white;
+    }
+    .btn-add:hover{
+        color: white;
+    }
+    .btn-delete-row{
+        margin-top: 2%;
+        margin-bottom: 5%;
+        width: 100px;
+        min-width: 75px;
+    }
+    .btn-success{
+        width: 100px;
+        min-width: 50px;
+    }
+    .btn-warning{
+        color: white;
+    }
+    .btn-primary{
+        margin-left: 5px;
+    }
+</style>
+<div class="penjualan-add-container">
+    {%for message in get_flashed_messages()%}
+    <div class="alert alert-success alert-dismissible show" role="alert">
+        {{message}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {%endfor%}
+    <form action="" method="post">
+        <div id="penjualan-add-top">
+            <div id="penjualan-add-top-left">
+                <div id="penjualan-pic">
+                    <img src="{{url_for('static', filename='images/'+ current_user.profile_pic)}}" alt="">
+                </div>
+                <div id="penjualan-kasir-level-login">
+                    <div id="penjualan-kasir-level">
+                        <div id="penjualan-kasir">
+                            {{add_form.hidden_tag()}}
+                            {{add_form.nama_kasir.label(class="form-label")}}
+                            <input type="text" class="form-control" value="{{current_user.name}}" name="nama-kasir" readonly>
+                        </div>
+                        <div id="penjualan-level">
+                            {{add_form.level_kasir.label(class="form-label")}}
+                            <input type="text" class="form-control" value="{{current_user.level}}" name="level-kasir" readonly>
+                        </div>
+                    </div>
+                    <div id="penjualan-login">
+                        <span id="penjualan-label">Login</span>
+                        <span id="penjualan-value">{{date_time_string}}</span>
+                    </div>
+
+                </div>
+
+            </div>
+            <div id="penjualan-add-top-right">
+                <div id="penjualan-faktur-tgl">
+                    <span id="penjualan-label">No. Faktur</span>
+                    <input type="text" id="penjualan-value" value="{{invoice}}" name="kode-faktur" readonly>
+                    <br>
+                    <span id="penjualan-label">Tgl. Faktur</span>
+                    <input type="text" id="penjualan-value" value="{{date_time_date}}" name="kode-faktur" readonly>
+                </div>
+            </div>
+        </div>
+
+        <div id="penjualan-add-middle">
+            <div id="penjualan-add-middle-middle">
+                <table class="table">
+                    <thead class="table-secondary">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Kode Barang</th>
+                            <th scope="col">Nama Barang</th>
+                            <th scope="col">Banyak</th>
+                            <th scope="col">Harga</th>
+                            <th scope="col">Harga Diskon</th>
+                            <th scope="col">Diskon</th>
+                            <th scope="col">Total</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body">
+
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+        <div id="penjualan-add-bottom">
+            <div id="penjualan-add-bottom-form">
+                <div id="penjualan-add-bottom-left">
+                    <div id="penjualan-add-bottom-left-top">
+                        <div id="bottom-left-top-total-harga">
+                            {{add_form.total_harga.label(class="form-label")}}
+                            {{add_form.total_harga(class="form-control total-harga")}}
+                        </div>
+                        <div id="bottom-left-top-banyak">
+                            {{add_form.jumlah_barang.label(class="form-label")}}
+                            {{add_form.jumlah_barang(class="form-control jumlah-barang")}}
+                        </div>
+                    </div>
+                    <div id="penjualan-add-bottom-left-bottom">
+                        <div id="bottom-left-bottom-jumlah-bayar">
+                            {{add_form.jumlah_bayar.label(class="form-label")}}
+                            {{add_form.jumlah_bayar(class="form-control jumlah-bayar")}}
+                        </div>
+                        <div id="bottom-left-bottom-kembalian">
+                            {{add_form.jumlah_kembalian.label(class="form-label")}}
+                            {{add_form.jumlah_kembalian(class="form-control kembalian")}}
+                        </div>
+                    </div>
+                </div>
+                <div id="penjualan-add-bottom-middle">
+                    <span class="btn btn-info btn-sm btn-add">Tambah Baris</span>
+                    <br>
+                    <span class="btn btn-danger btn-sm btn-delete-row">Hapus Baris</span>
+                    <br>
+                    <input type="submit" class="btn btn-success btn-sm" disabled>
+                    <br>
+                    <a href="{{url_for('penjualan.print_layout')}}" class="btn btn-primary btn-sm">
+                        <span id="btn-print">Print</span>
+                    </a>
+                    
+                </div>
+                <div id="penjualan-add-bottom-right">
+                    <div id="penjualan-add-bottom-right-content">
+                        <span class="btn btn-warning btn-sm" id="btn-total">Total</span>
+                        {{add_form.sub_total.label(class="form-label")}}
+                        <input type="text" id="penjualan-value" class="sub-total" value="0" name="sub-total" readonly>
+                        <br>
+                        {{add_form.ppn.label(class="form-label")}}
+                        <span id="input-group">
+                        <input type="checkbox" class="ppn" id="ppn-check" disabled>
+                        <input type="text" id="penjualan-value" class="ppn-input-check" value="0" name="ppn" readonly>
+                        </span>
+                        
+                        <br>
+                        {{add_form.potongan.label(class="form-label")}}
+                        <input type="text" id="penjualan-value" class="potongan" value="0" name="potongan" readonly>
+                        <br>
+                        {{add_form.diskon_khusus.label(class="form-label")}}
+                        <select name="diskon-khusus" id="diskon-khusus">
+                            {%for d in dk%}
+                            <option id="{{d.besaran_diskon}}" value="{{d.nama_diskon}}">{{d.nama_diskon}}</option>
+                            {%endfor%}
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+
+var value = 1
+var id_value = 1
+var res_id_value = 0
+var nama_input_value = 0
+var kode_barang_value = 0
+var harga_satuan_value = 0
+var harga_satuan_diskon_value = 0
+var banyak_input_value = 0
+var diskon_input_value = 0
+var total_input_value = 0
+var select_barang_value = 0
+var banyak_grosir_value = 0
+var total_grosir_value = 0
+
+var id_un = []
+var ds_un = []
+var sat_un = []
+var sat_dis_un = []
+var tot_un = []
+var byk_gr_un = []
+var tot_gr_un = []
+var tr_value = []
+var sub_total_value = []
+
+function generateFormTable(){
+    var t_body = document.getElementById('table-body')
+
+    var td_form = []
+
+    var number = document.createElement('input')
+    number.setAttribute('type', 'text')
+    number.setAttribute('id', 'number')
+    number.setAttribute('value', value)
+    number.setAttribute('readonly', true)
+    number.style.cssText += 'border:none;\
+    width:25px;'
+    td_form.push(number)
+
+    var kode_barang = document.createElement('input')
+    kode_barang.setAttribute('type','text')
+    kode_barang.setAttribute('id', 'kode-barang-input'+kode_barang_value)
+    kode_barang.setAttribute('name', 'kode-barang-input')
+    kode_barang.style.cssText += 'border:none;\
+    color:black;\
+    padding:2px 5px;'
+    kode_barang.setAttribute('readonly', true)
+    td_form.push(kode_barang)
+
+    var nama_barang = document.createElement('input')
+    nama_barang.setAttribute('type', 'text')
+    nama_barang.setAttribute('id', 'nama-barang-input'+nama_input_value)
+    nama_barang.setAttribute('name', 'nama_barang_input')
+    nama_barang.setAttribute('placeholder', 'input nama barang')
+    nama_barang.setAttribute('autocomplete', 'off')
+    nama_barang.style.border = 'none'
+    td_form.push(nama_barang)
+
+    var banyak = document.createElement('input')
+    banyak.setAttribute('type', 'number')
+    banyak.setAttribute('id', 'banyak-input'+banyak_input_value)
+    banyak.setAttribute('name', 'banyak-input')
+    banyak.setAttribute('class', 'banyak-input')
+    banyak.setAttribute('value', "0")
+    // banyak.setAttribute('placeholder', 'jumlah')
+    banyak.style.border = 'none'
+    td_form.push(banyak)
+
+    var harga_satuan = document.createElement('input')
+    harga_satuan.setAttribute('type', 'number')
+    harga_satuan.setAttribute('id', 'harga-satuan-input'+harga_satuan_value)
+    harga_satuan.setAttribute('name', 'harga-satuan-input')
+    harga_satuan.setAttribute('value', 0)
+    harga_satuan.setAttribute('readonly', true)
+    // harga_satuan.setAttribute('placeholder', 'harga satuan')
+    harga_satuan.style.cssText += 'border:none;\
+    color:white;\
+    padding:2px 5px;\
+    background-color:gray;'
+    td_form.push(harga_satuan)
+
+    var harga_satuan_diskon = document.createElement('input')
+    harga_satuan_diskon.setAttribute('type', 'number')
+    harga_satuan_diskon.setAttribute('id', 'harga-satuan-diskon-input'+harga_satuan_diskon_value)
+    harga_satuan_diskon.setAttribute('name', 'harga-satuan-diskon-input')
+    harga_satuan_diskon.setAttribute('value', 0)
+    harga_satuan_diskon.setAttribute('readonly', true)
+    // harga_satuan.setAttribute('placeholder', 'harga satuan')
+    harga_satuan_diskon.style.cssText += 'border:none;\
+    color:white;\
+    padding:2px 5px;\
+    background-color:gray;'
+    td_form.push(harga_satuan_diskon)
+
+    var diskon = document.createElement('input')
+    diskon.setAttribute('type', 'number')
+    diskon.setAttribute('id', 'diskon-input'+diskon_input_value)
+    diskon.setAttribute('name', 'diskon-input')
+    diskon.setAttribute('value', "0")
+    diskon.setAttribute('readonly', true)
+    // diskon.setAttribute('placeholder', 'diskon')
+    diskon.style.border = 'none'
+    td_form.push(diskon)
+
+    var total_harga = document.createElement('input')
+    total_harga.setAttribute('type', 'number')
+    total_harga.setAttribute('id', 'total-harga-input'+total_input_value)
+    total_harga.setAttribute('name', 'total-harga-input')
+    total_harga.setAttribute('value', 0)
+    total_harga.setAttribute('class', 'total-harga-input')
+    // total_harga.setAttribute('placeholder', 'total harga')
+    total_harga.setAttribute('readonly', true)
+    total_harga.style.cssText += 'border:none;\
+    color:white;\
+    padding:2px 5px;\
+    background-color:gray;'
+    td_form.push(total_harga)
+
+    var banyak_grosir = document.createElement('input')
+    banyak_grosir.setAttribute('type', 'hidden')
+    banyak_grosir.setAttribute('id', 'banyak-grosir-input'+banyak_grosir_value)
+    banyak_grosir.setAttribute('name', 'banyak-grosir-input')
+    banyak_grosir.setAttribute('value', 0)
+    banyak_grosir.setAttribute('class', 'banyak-grosir-input')
+    // total_harga.setAttribute('placeholder', 'total harga')
+    banyak_grosir.setAttribute('readonly', true)
+    banyak_grosir.style.cssText += 'border:none;\
+    color:white;\
+    padding:2px 5px;\
+    background-color:gray;'
+    td_form.push(banyak_grosir)
+
+    var total_grosir = document.createElement('input')
+    total_grosir.setAttribute('type', 'hidden')
+    total_grosir.setAttribute('id', 'total-grosir-input'+total_grosir_value)
+    total_grosir.setAttribute('name', 'total-grosir-input')
+    total_grosir.setAttribute('value', 0)
+    total_grosir.setAttribute('class', 'total-grosir-input')
+    // total_harga.setAttribute('placeholder', 'total harga')
+    total_grosir.setAttribute('readonly', true)
+    total_grosir.style.cssText += 'border:none;\
+    color:white;\
+    padding:2px 5px;\
+    background-color:gray;'
+    td_form.push(total_grosir)
+
+    var result_barang = document.createElement('div')
+    result_barang.setAttribute('id', 'result-barang' + res_id_value)
+
+    for (var i = 0; i<1; i++){
+        var tr = document.createElement('tr')
+        tr.setAttribute('id', 'id_value' + id_value)
+        // tr.style.cssText += 'border:1px solid black;'
+
+        for (var j = 0; j<td_form.length; j++ ){
+
+            var td = document.createElement('td')
+            td.setAttribute('id', 'td-tabel')
+
+            if(j==2){
+                td.appendChild(result_barang)
+            }
+            if(j==3){
+                id_un.push(td_form[j])
+            }
+            if(j==4){
+                sat_un.push(td_form[j])
+            }if(j==5){
+                sat_dis_un.push(td_form[j])
+            }if(j==6){
+                ds_un.push(td_form[j])
+            }
+            if(j==7){
+                tot_un.push(td_form[j])
+            }
+            if(j==8){
+                byk_gr_un.push(td_form[j])
+            }
+            if(j==9){
+                tot_gr_un.push(td_form[j])
+            }
+            // td.style.cssText += 'border:1px solid red;'
+
+            td.append(td_form[j])
+            tr.appendChild(td)
+
+        }
+        t_body.appendChild(tr)
+
+    }
+    namaBarang()
+    getTr()
+    value++
+    id_value++
+    res_id_value++
+    nama_input_value++
+    kode_barang_value++
+    harga_satuan_value++
+    harga_satuan_diskon_value++
+    banyak_input_value++
+    diskon_input_value++
+    total_input_value++
+    select_barang_value++
+    banyak_grosir_value++
+    total_grosir_value++
+}
+
+
+function deleteRow(){
+    var val = 'id_value' + (id_value-1)
+    var tbl = document.querySelector('.table')
+    var td_tabel = document.getElementById(val)
+    var tr_delete = td_tabel.parentNode
+    tr_delete.removeChild(td_tabel)
+
+    id_value = id_value - 1
+    value = value - 1
+
+}
+
+function getTr(){
+    var tbl_body = document.getElementById('table-body')
+    var val = 'id_value' + (id_value-1)
+    var sum_tr = tbl_body.getElementsByTagName('tr')
+    // console.log(val)
+    // console.log(sum_tr.length)
+}
+
+$('.btn-add').click(function(){
+    generateFormTable()
+})
+
+$('.btn-delete-row').click(function(){
+    deleteRow()
+})
+
+
+function load_barang(name_barang){
+        // console.log('load_barang')
+        var tbl = document.querySelector('.table')
+        var kode_barang_id = 'kode-barang-input' + (kode_barang_value-1)
+        var nama_barang_id = 'nama-barang-input' + (nama_input_value-1)
+        var harga_satuan_id = 'harga-satuan-input' + (harga_satuan_value-1)
+        var harga_satuan_diskon_id = 'harga-satuan-diskon-input'+(harga_satuan_diskon_value-1)
+        var disko_barang_id = 'diskon-input'+(diskon_input_value-1)
+        var banyak_grosir_id = 'banyak-grosir-input' + (banyak_grosir_value-1)
+        var total_grosir_id = 'total-grosir-input' + (total_grosir_value-1)
+
+        var search = $('#nama-barang-input'+nama_input_value).val()
+
+        var search_data = [
+            {name_barang:name_barang}
+        ];
+        $.ajax({
+            url:"/search_barang_penjualan",
+            method:'POST',
+            contentType: 'application/json;charset=utf-8',
+            traditional: true,
+            dataType:'json',
+            data: JSON.stringify(search_data),
+            success:function(data)
+            {
+                $('#result-barang'+(res_id_value-1)).html(data);
+                var xmlString = data.htmlresponse;
+                var parser = new DOMParser();
+                var element = parser.parseFromString(xmlString, "text/html");
+                // console.log(element)
+                var len_element = element.querySelectorAll('td').length
+                var result = document.getElementById('result-barang'+(res_id_value-1))
+                var select = document.createElement('select')
+                result.appendChild(select)
+                select.setAttribute('id', 'selectBarang'+select_barang_value)
+                // console.log(select_barang_value)
+                var selectBarang = document.getElementById('selectBarang'+select_barang_value)
+
+                var class_element = element.querySelectorAll('td')
+                // var class_element_nama = class_element.getAttribute('class')
+                var barang = []
+
+                var kode_nama_barang = []
+
+                for(var i=0;i<len_element;i++){
+                    if(element.querySelectorAll('td')[i].value != 'undefined'){
+                        // console.log(element.querySelectorAll('.name-id')[i].innerHTML)
+                        if(element.querySelectorAll('.name-harga')[i] != null && element.querySelectorAll('.name-link')[i] != null)
+                            kode_nama_barang.push({
+                            harga : element.querySelectorAll('.name-harga')[i].innerHTML.trim(),
+                            diskon: element.querySelectorAll('.name-dis')[i].innerHTML.trim(),
+                            kode : element.querySelectorAll('.name-kode')[i].innerHTML.trim(),
+                            barang : element.querySelectorAll('.name-link')[i].innerHTML.trim(),
+                            jumlah_grosir: element.querySelectorAll('.jumlah-grosir')[i].innerHTML.trim(),
+                            total_grosir: element.querySelectorAll('.total-grosir')[i].innerHTML.trim()
+                            })
+                            // console.log(element.querySelectorAll('td')[i])
+                    }
+            
+                }
+
+                kode_nama_barang.unshift({
+                    harga: '',
+                    diskon:'',
+                    kode: '',
+                    barang: '-- select data --',
+                    jumlah_grosir:'',
+                    total_grosir:''
+                })
+
+                kode_nama_barang.map(function(element, index){
+                    var opt = document.createElement('option')
+                    opt.setAttribute('id', kode_nama_barang[index].harga)
+                    opt.setAttribute('data-label', kode_nama_barang[index].diskon)
+                    opt.setAttribute('value', (kode_nama_barang[index].kode))
+                    opt.setAttribute('data-jumlah-grosir', kode_nama_barang[index].jumlah_grosir)
+                    opt.setAttribute('data-total-grosir', kode_nama_barang[index].total_grosir)
+                    opt.style.fontSize = '1.2em'
+                    opt.style.fontFamily = 'sans-serif'
+                    opt.innerText = kode_nama_barang[index].barang
+                    select.appendChild(opt)
+                })
+
+                function selectIndex(){
+                    var option = selectBarang.options[selectBarang.selectedIndex];
+                    var opt_diskon = option.getAttribute('data-label')
+                    var opt_harga = option.getAttribute('id')
+                    var opt_kode = option.getAttribute('value')
+                    var opt_harga_diskon = opt_diskon//opt_harga * opt_diskon
+                    var opt_jumlah_grosir = option.getAttribute('data-jumlah-grosir')
+                    var opt_total_grosir = option.getAttribute('data-total-grosir')
+
+                    console.log(opt_jumlah_grosir)
+                    console.log('opt_total_grosir '+opt_total_grosir)
+                    console.log(opt_diskon)
+                    console.log(opt_harga)
+
+                    document.getElementById(nama_barang_id).value = option.text
+                    document.getElementById(kode_barang_id).value = opt_kode
+                    document.getElementById(disko_barang_id).value = opt_diskon//option.getAttribute('data-label')/100
+                    document.getElementById(harga_satuan_id).value = opt_harga
+                    if(opt_diskon==0){
+                        document.getElementById(harga_satuan_diskon_id).value = opt_harga
+                    }else{
+                        // console.log('wo > 0')
+                        document.getElementById(harga_satuan_diskon_id).value = opt_harga - opt_harga_diskon
+                    }
+                    document.getElementById(banyak_grosir_id).value = opt_jumlah_grosir
+                    document.getElementById(total_grosir_id).value = opt_total_grosir
+                }
+
+                selectBarang.addEventListener('change', function(){
+                    selectIndex()
+                    console.log(select)
+                })
+            }
+        })
+    }
+
+function blank(){
+    $('#result-barang'+(res_id_value-1)).html('')
+}
+
+function namaBarang(){
+    var c = 'nama-barang-input' + nama_input_value
+    $('#nama-barang-input'+nama_input_value).keyup(function(Event){
+        var search = $(this).val();
+        if(search != ''){
+            load_barang(search)
+            // console.log($('#result-barang'+res_id_value))
+        }else{
+            blank()
+        }
+    })
+
+
+
+    for(var z = 0; z<id_un.length;z++){
+        // console.log(id_un[z])
+        var by = id_un[z].getAttribute('id')
+        var ds = ds_un[z].getAttribute('id')
+        var sat = sat_un[z].getAttribute('id')
+        var sat_ds = sat_dis_un[z].getAttribute('id')
+        var tot = tot_un[z].getAttribute('id')
+        var byk_gr = byk_gr_un[z].getAttribute('id')
+        var tot_gr = tot_gr_un[z].getAttribute('id')
+        var binatang = 0
+
+        $('#'+by).keyup(function(){
+            // console.log(tot)
+            // console.log(by)
+            console.log(byk_gr)
+            console.log(tot_gr)
+
+            var diskon = parseFloat($('#'+ds).val()/100)
+
+            if(diskon==0){
+                var total_all = (parseInt($('#'+by).val()) * parseInt($('#'+sat).val()))
+                var filter_total_all = isNaN(total_all)? 0 : total_all
+                var filter_banyak = $('#'+by).val()
+                var total_grosir = $('#'+tot_gr).val()
+
+                // console.log(parseInt($('#'+by).val()))
+                // console.log(parseInt($('#'+byk_gr).val()))
+                if(parseInt($('#'+by).val()) == parseInt($('#'+byk_gr).val())){
+                    console.log('same amount')
+                    $('#'+tot).val(parseInt(total_grosir)||0)
+                    $('#'+tot).css('background-color', 'teal')
+                }else{
+                    $('#'+tot).val(filter_total_all)
+                }
+            }else{
+                var total_diskon_all = parseInt($('#'+by).val()) * parseFloat($('#'+sat_ds).val())
+                var filter_total_diskon = isNaN(total_diskon_all) ? 0 : total_diskon_all
+                var filter_banyak = $('#'+by).val()
+                var total_grosir = $('#'+tot_gr).val()
+                $('#'+tot).val(total_diskon_all)
+
+                if(parseInt($('#'+by).val()) == parseInt($('#'+byk_gr).val())){
+                    console.log('same amount')
+                    $('#'+tot).val(parseInt(total_grosir)||0)
+                    $('#'+tot).css('background-color', 'teal')
+                }else{
+                    $('#'+tot).val(filter_total_diskon)
+                }
+            }        
+        })
+    }
+
+}
+
+$('#btn-total').click(function(){
+    grandTotal()
+})
+
+$('#ppn-check').click(function(){
+    grandTotal()
+})
+
+$('.jumlah-bayar').keyup(function(){
+    jumlahBayarKembalian()
+})
+
+$('#diskon-khusus').change(function(){
+    console.log('diskon klik')
+    grandTotal()
+})
+
+function jumlahBayarKembalian(){
+    let total_harga_final = parseInt($('.total-harga').val())
+    if(parseInt($('.jumlah-bayar').val())!=0){
+        var kembalian = parseInt($('.jumlah-bayar').val()) - total_harga_final
+        $('.kembalian').val(kembalian)
+    }else{
+        $('.kembalian').val(0)   
+    }
+}
+
+function grandTotal(){
+
+    let total_harga_all = document.querySelectorAll('.total-harga-input')
+    let sum_total_harga = []
+    let banyak_total = []    
+    let banyak_total_all = document.querySelectorAll('.banyak-input')
+
+    // console.log('total_harga_all ' + total_harga_all)
+    // console.log('sum_total_harga '+sum_total_harga)
+    // console.log(' banyak_total ' + banyak_total)
+    // console.log('banyak_total_all '+banyak_total_all)
+    
+    let selectDiskon = document.getElementById('diskon-khusus')
+    let select_option_diskon = selectDiskon.options[selectDiskon.selectedIndex];
+    let select_option_diskon_value = select_option_diskon.getAttribute('id')/100
+    // console.log('dk '+select_option_diskon_value)
+    var sub_total = $('.sub-total').val()
+    var potongan = 0
+    var ppn_val = 0.11
+    var ppn_sub_total = parseFloat(sub_total * ppn_val)
+    let sub_total_potongan = 0
+
+    for(var cui=0;cui<total_harga_all.length;cui++){
+        console.log('total_harga_all'+total_harga_all[cui].value)
+        sum_total_harga.push(parseFloat(total_harga_all[cui].value))
+        console.log('sum_total_harga '+sum_total_harga)
+    }
+
+    for (var bt = 0;bt<banyak_total_all.length;bt++){
+        console.log(banyak_total_all[bt].value)
+        banyak_total.push(parseInt(banyak_total_all[bt].value))
+        console.log(banyak_total)
+    }
+
+    for(var sth = 0;sth<sum_total_harga.length;sth++){
+    let sum_sub_total = sum_total_harga.reduce((partialSum, a) => partialSum + a,0)
+            // console.log('sub total value '+sub_total_value)
+            console.log('sub_total '+sum_sub_total)
+            console.log('+++++++++++')
+            $('.sub-total').val(sum_sub_total)
+            $('.total-harga').val(sum_sub_total)
+
+            sub_total = sum_sub_total
+            // alert(sum_sub_total)
+    }
+
+    for(var sbt = 0; sbt<banyak_total.length;sbt++){
+        let sum_banyak_barang = banyak_total.reduce((partialSum, a) => partialSum+ a,0)
+            console.log(sum_banyak_barang)
+            console.log("________")
+            $('.jumlah-barang').val(sum_banyak_barang)
+    }
+
+    //check ppn and diskon khusus
+    $('.potongan').val(parseFloat(select_option_diskon_value))
+
+    if($('.sub-total').val()>0){
+        var checkbox = document.getElementById('ppn-check')
+        var submit = document.querySelector('.btn-success')
+        checkbox.removeAttribute('disabled')
+        submit.removeAttribute('disabled')
+    }
+
+    if($('.potongan').val()>0){
+        potongan = $('.potongan').val() 
+        sub_total_potongan = parseFloat(sub_total * potongan)
+        console.log('total potongan ' + sub_total_potongan)
+    }
+
+    if($('#ppn-check').is(':checked') && $('.potongan').val()>0){
+        $('.ppn-input-check').val(ppn_sub_total)
+        $('.sub-total').val(sub_total)
+        $('.total-harga').val((sub_total-sub_total_potongan)+ppn_sub_total)
+        // console.log('sub total '+sub_total)
+        // console.log('ppn_sub_total '+ppn_sub_total)
+        // console.log('sub total potongan'+sub_total_potongan)
+        // console.log('total harga '+ parseFloat((sub_total-sub_total_potongan)+ppn_sub_total))
+        jumlahBayarKembalian()
+    } else if ($('#ppn-check').is(':checked') && $('.potongan').val() == 0) {
+        $('.ppn-input-check').val(ppn_sub_total)
+        $('.sub-total').val(sub_total)
+        $('.total-harga').val(parseFloat(sub_total)+parseFloat(ppn_sub_total))
+        jumlahBayarKembalian()
+        // console.log(sub_total)
+        // console.log('ppn_sub_total '+ppn_sub_total)
+        // console.log('total harga '+(parseFloat(sub_total)+parseFloat(ppn_sub_total)))
+    } else if (!($('#ppn-check').is(':checked')) && $('.potongan').val() > 0){
+        // console.log('sub total '+sub_total)
+        // console.log('sub total potongan'+sub_total_potongan)
+        // console.log('total harga '+ parseFloat(sub_total-sub_total_potongan))
+        $('.total-harga').val(sub_total-sub_total_potongan)
+        jumlahBayarKembalian()
+    }else{
+        $('.sub-total').val(sub_total)
+        $('.total-harga').val(sub_total)
+        // console.log('total harga '+sub_total)
+        jumlahBayarKembalian()
+    }
+    
+}
+</script>
+{%endblock%}

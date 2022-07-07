@@ -1,0 +1,230 @@
+{%include 'side-nav.html'%}
+{%block content%}
+<style>
+        .container {
+            position: fixed;
+            top: 25%;
+            left: 28%;
+            margin-top: -65px;
+            margin-left: -100px;
+            border-radius: 7px;
+        }
+  
+        #makepdf {
+            display: flex;
+            box-sizing: border-box;
+            position: relative;
+            width: 220px;
+            /* height: 270px; */
+            max-height: fit-content;
+            padding: 5px;
+            /* border: 1px solid black; */
+            font-style: sans-serif;
+            background-color: #f0f0f0;
+            flex-direction: column;
+        }
+        #top{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        #top > span{
+            margin-top: 0;
+            font-size: 0.8em;
+            font-weight: 550;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        }
+        #middle{
+            display: flex;
+            flex-direction: column;
+        }
+        #middle-top{
+            margin-top: 1%;
+            display: flex;
+            flex-direction: row;
+            font-size: 0.6em;
+            font-family: sans-serif;
+            position: relative;
+        }
+        #middle-top-left{
+            flex: 50%;
+            max-width: 50%;
+        }
+        #middle-top-right{
+            position: absolute;
+            right: 0;
+            flex: 50%;
+            max-width: 50%;
+        }
+        #button {
+            background-color: #4caf50;
+            border-radius: 5px;
+            /* margin-left: 650px; */
+            margin-bottom: 5px;
+            color: white;
+        }
+  
+        h2 {
+            text-align: center;
+            color: #24650b;
+        }
+        .table {
+            margin-bottom: 0;
+        }
+        .table>:not(caption)>*>* {
+            padding: 0;
+        }
+        .table > thead > tr > th {
+        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        font-weight: 400;
+        font-size: 0.7em;
+        /* padding: 0; */
+        }
+        .table > tbody > tr > td, th {
+            font-family: sans-serif;
+            font-weight: 400;
+            font-size: 0.5em;
+        }
+        #bottom{
+            margin-top: 5px;
+            display: flex;
+            flex-direction: row;
+        }
+        #bottom-left{
+            flex: 50%;
+            max-width: 50%;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            font-weight: 550;
+            font-size: 0.5em;
+        }
+        #bottom-right{
+            flex: 50%;
+            max-width: 50%;
+            position: relative;
+            font-family: sans-serif;
+            /* font-weight: 550; */
+            font-size: 0.5em;
+        }
+        #bottom-right > span {
+            position: absolute;
+            right: 0;
+            margin-right: 5px;
+        }
+        @media print{
+            body *{
+                visibility: hidden;
+            }
+            #makepdf *{
+                visibility: visible;
+            }
+        }
+</style>
+<div class="container">
+    <div id="makepdf">
+        <div id="top">
+            <span>TOKO SEMBAKO</span>
+            <span>Jl. Sukses Makmur</span>
+        </div>
+        <div id="middle">
+            <div id="middle-top">
+                <div id="middle-top-left">
+                    <span>Kode : {{struk[0].kode_penjualan}}</span><br>
+                    <span>Kasir : {{struk[0].name}}</span>
+                </div>
+                <div id="middle-top-right">
+                    <p>{{struk[0].tanggal_penjualan.date()}}</p>
+                </div>
+            </div>
+            <div id="middle-bottom">
+                <table class="table table-hover">
+                    <thead class="">
+                        <tr>
+                            <th scope="col">No. </th>
+                            <th scope="col">Harga</th>
+                            <th scope="col">Jumlah</th>
+                            <th scope="col">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {%for j in struk %}
+                        <tr>
+                            <th scope="row">{{j.nama_barang}}</th>
+                            <td>{{j.harga_jual}}</td>
+                            <td>{{j.jumlah_barang}}</td>
+                            <td>{{j.total_harga}}</td>
+                            <td></td>
+                        </tr>
+                        {%endfor%}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div id="bottom">
+            <div id="bottom-left">
+                <span>Jml Barang</span><br>
+                <span>Diskon</span><br>
+                <span>PPn</span><br>
+                <span>Grand Total</span><br>
+                <span>--------------------</span><br>
+                <span>Total Bayar</span><br>
+                <span>Kembalian</span>
+            </div>
+            <div id="bottom-right">
+                <span>{{struk[0].jumlah_penjualan}}</span><br>
+                <span>{{struk[0].potongan}}</span><br>
+                <span>{{struk[0].ppn}}</span><br>
+                <span>{{struk[0].grand_total}}</span><br>
+                <span>--------------------</span><br>
+                <span>{{struk[0].total_pembayaran}}</span><br>
+                <span>{{struk[0].total_kembalian}}</span>
+            </div>
+        </div>
+        
+    </div>
+    <button id="button">Print PDF</button>
+</div>
+
+<script src="{{url_for('static', filename='js/html2pdf.bundle.min.js')}}"></script>
+<script>
+    var button = document.getElementById("button");
+        var makepdf = document.getElementById("makepdf");
+        var height = makepdf.offsetHeight
+  
+        button.addEventListener("click", function () {
+            // window.alert(height)
+            
+
+            // var opt = {
+            // margin:       1,
+            // filename:     "myfile.pdf",
+            // image:        { type: 'jpeg', quality: 0.98 },
+            // html2canvas:  { scale: 2 },
+            // jsPDF:        { unit: 'px', format: [220,height+10], orientation: 'portrait' }
+            // };
+            // kontol = html2pdf().set(opt).from(makepdf).save();
+
+            window.print()
+        });
+
+    
+
+    // var button = document.getElementById("button");
+    //     button.addEventListener("click", function () {
+    //         // window.alert('taek')
+    //         // const doc = new jsPDF({
+    //         //     unit:"in",
+    //         //     format:[4,2]
+    //         // });
+
+    //         var doc = new jsPDF("p", "mm", [75, 60]);
+    //         var makePDF = document.querySelector("#makepdf");
+  
+    //         // fromHTML Method
+    //         // doc.text("Hello world!", 1, 1);
+    //         // doc.save("two-by-four.pdf");
+    //         doc.fromHTML(makePDF);
+    //         doc.save("output.pdf");
+    //     });
+</script>
+{%endblock%}

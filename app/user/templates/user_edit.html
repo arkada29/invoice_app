@@ -1,0 +1,140 @@
+{%include 'side-nav.html'%}
+{%block content%}
+<style>
+    .dashboard-edit{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        justify-content: center;
+    }
+    .alert {
+        position: relative;
+        margin-left: 5%;
+        width: 400px;
+        max-width: 400px;
+        margin-top: 1%;
+        z-index: 1;
+    }
+    a{
+        color: white;
+    }
+    .dashboard-edit > #back-btn {
+        margin-left: 7%;
+        margin-top: 1%;
+        margin-bottom: 0.5%;  
+    }
+    .dashboard-edit > #back-btn > a > img {
+        width: 5.5vh;
+        height: 5.5vh;
+        border-radius: 50%;
+        background-color: teal;
+        padding: 6px 6px;
+        color: black;
+    }
+    .dashboard-edit > #back-btn > a > span {
+        color: black;
+        padding-top: 1%;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        text-transform: uppercase;
+    }
+
+    #dashboard-edit-container{
+        margin-left: 7%;
+        margin-right: 2%;
+        border-radius: 5px;
+        height: fit-content;
+        background-color: white;
+        box-shadow: 1px 1px 1px grey;
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        /* width: 400px; */
+    }
+    #dashboard-edit-container-content{
+        display: flex;
+        flex-direction: row;
+        color: black;
+        padding: 2% 1%;
+        /* margin-top: 1%; */
+        /* margin-left: auto;
+        margin-right: auto; */
+        /* margin-bottom: 1%; */
+        
+    }
+    #edit-section-left{
+        position: relative;
+        flex: 50%;
+        max-width: 50%;
+        padding: 0 3%;
+    }
+    #edit-section-right{
+        flex: 50%;
+        max-width: 50%;
+        padding: 0 3%;
+    }
+    .form-label{
+        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        font-weight: 500;
+    }
+    .form-control{
+        font-size: 0.75em;
+        color: rgba(0, 0, 0, 0.7);
+        font-family: sans-serif;
+    }
+    .btn-warning{
+        position: absolute;
+        color: white;
+        right: 35px;
+    }
+</style>
+<div class="dashboard-edit">    
+    {%for message in get_flashed_messages()%}
+    <div class="alert alert-success alert-dismissible show" role="alert">
+        {{message}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {%endfor%}
+    <span id="back-btn">
+        <a href="{{url_for('user.user_list')}}">
+            <img src="{{url_for('static', filename='images/arrow_back_white.svg')}}" alt="">
+            <span>Edit Profile</span> 
+        </a>
+    </span>
+    <div id="dashboard-edit-container">
+        <form method="post" enctype="multipart/form-data">
+            <div id="dashboard-edit-container-content">
+                <div id="edit-section-left">
+                    {{edit_form.hidden_tag()}}
+                    {{edit_form.name.label(class='form-label')}}
+                    {{edit_form.name(class='form-control', value=updated.name)}}
+                    <br>
+                    {{edit_form.phone.label(class='form-label')}}
+                    {{edit_form.phone(class='form-control', value=updated.phone)}}
+                    <br>
+                    {{edit_form.level.label(class='form-label')}}
+                    {{edit_form.level(class='form-control', value=updated.level)}}
+                    <br>
+                    {{edit_form.status.label(class='form-label')}}
+                    {{edit_form.status(class='form-control', value=updated.status)}}
+                    <br>
+                    {{edit_form.submit(class='btn btn-success btn-sm')}}
+                    {%if current_user.level == 'Admin'%}
+                    <a href="{{url_for('user.user_delete', id=updated.id)}}">
+                        <span class="btn btn-danger btn-sm">Delete</span>
+                    </a>
+                    {%endif%}
+                    <a href="{{url_for('user.user_change_password', id=updated.id)}}">
+                        <span class="btn btn-warning btn-sm">Ubah Password</span>
+                    </a>
+                </div>
+                <div id="edit-section-right">
+                    {{edit_form.profile_pic.label(class='form-label')}}
+                    {{edit_form.profile_pic(class='form-control')}}
+                    <br>
+                    {{edit_form.about.label(class='form-label')}}
+                    {{edit_form.about(class='form-control', value=updated.about)}}
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+{%endblock%}

@@ -1,0 +1,151 @@
+{%include 'side-nav.html'%}
+{%block content%}
+<style>
+    :root{
+        --btn-prim:teal;
+    }
+    .alert{
+        position: relative;
+        margin-left: 5%;
+        width: 400px;
+        max-width: 400px;
+        margin-top: 1%;
+        z-index: 1;
+    }
+    .category-edit-container{
+        margin-left: 5%;
+    }
+    #category-edit-top{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-top: 1%;
+        margin-right: 2%;
+    }
+    #category-edit-top-left{
+        margin-left: 2%;
+        flex: 30%;
+        max-width: 30%;
+    }
+    #category-edit-top-left > a > img{
+        width: 30px;
+        height: 30px;
+        background-color: teal;
+        border-radius: 50%;
+        padding: 6px 6px;
+    }
+    #category-edit-top-left > #category-list {
+        margin-left: 1%;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;        
+        font-weight: 550;
+    }
+    #category-edit-top-right > a > span {
+        background-color: var(--btn-prim);
+        color: white;
+        font-family: sans-serif;
+        font-size: 0.7em;
+        padding: 5px 10px;
+    }
+    #category-edit-bottom{
+        margin-top: 1.5%;
+        margin-right: 2%;
+        margin-left: 2%;
+        border: 1px solid rgba(0, 0, 0, 0.5);
+        border-radius: 5px;
+    }
+    #category-edit-bottom-form{
+        display: flex;
+        flex-direction: row;
+        margin-top: 1%;
+        margin-bottom: 1%;
+    }
+    #category-edit-bottom-form-reguler{
+        margin-top: 1%;
+        margin-bottom: 1%;
+    }
+    #category-edit-bottom-left{
+        flex: 30%;
+        max-width: 30%;
+        margin-right: 2%;
+        margin-left: 1%;
+    }
+    #category-edit-bottom-middle{
+        flex: 30%;
+        max-width: 30%;
+        margin-right: 1%;
+        margin-left: 1%;
+    }
+    #category-edit-bottom-right{
+        flex: 30%;
+        max-width: 30%;
+        margin-right: 2%;
+        margin-left: 1%;
+    }
+    .form-label{
+        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        font-weight: 550;
+        font-size: 0.8em;
+    }
+    .form-label > span {
+        color: red;
+    }
+    .form-control{
+        font-family: sans-serif;
+        font-size: 0.75em;
+    }
+    .btn-info{
+        color: white;
+    }
+</style>
+<div class="category-edit-container">
+    {%for message in get_flashed_messages()%}
+    <div class="alert alert-success alert-dismissible show" role="alert">
+        {{message}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {%endfor%}
+    <div id="category-edit-top">
+        <div id="category-edit-top-left">
+            <a href="{{url_for('unit.unit_change')}}">
+                <img src="{{url_for('static', filename='images/arrow_back_white.svg')}}" alt="">
+            </a>
+            <span id="category-list">UNIT CHANGE</span>
+        </div>
+        <div id="category-edit-top-right">
+            <a href="{{url_for('penjualan.penjualan_add')}}">
+                <span class="btn btn-sm">Tambah Category</span>
+            </a>
+        </div>
+    </div>
+    <div id="category-edit-bottom">
+        {%if current_user.level == 'Admin'%}
+        <form action="" method="post" enctype="multipart/form-data">
+            <div id="category-edit-bottom-form">
+                <div id="category-edit-bottom-left">
+                    {{category_edit_form.hidden_tag()}}
+                    {{category_edit_form.kode_kategori.label(class='form-label')}}
+                    <input type="text" class="form-control" id="kode-kategori" name="kode-kategori" value="{{category_edit.kode_kategori}}" readonly>
+                    {{category_edit_form.kode_kategori(class='form-control')}}
+                    <br>
+                    {{category_edit_form.nama_kategori.label(class='form-label')}}
+                    <input type="text" class="form-control" id="nama-kategori" name="nama-kategori" value="{{category_edit.nama_kategori}}" readonly>
+                    {{category_edit_form.nama_kategori(class='form-control')}}
+                    <br>
+                    {{category_edit_form.submit(class='btn btn-success btn-sm')}}
+                </div>
+                <div id="category-edit-bottom-middle">
+                   
+                </div>   
+                <div id="category-edit-bottom-right">
+                </div>     
+            </div>
+        </form>
+        {%else%}
+        <div id="category-edit-bottom-form-reguler">
+            <h3>Sorry you're not authorized to access this page</h3>
+            <h5>Only admin can access this page</h5>
+        </div>
+        {%endif%}
+    </div>
+</div>
+{%endblock%}

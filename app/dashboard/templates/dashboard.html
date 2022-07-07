@@ -1,0 +1,358 @@
+{%include 'side-nav.html'%}
+{%block content%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    /* html,body{
+        margin: 0;
+        padding: 0;
+        height: 100%;
+    } */
+    /* .dashboard-container{
+        display: flex;
+        flex-direction: column;        
+    } */
+    :root{
+        --font:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        --font2:'Courier New', Courier, monospace;
+        --cambria:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    }
+    .alert{
+        position: relative;
+        margin-left: 5%;
+        width: 400px;
+        max-width: 400px;
+        margin-top: 1%;
+        z-index: 2;
+    }
+    .db-top{
+        display: flex;
+        flex-direction: row;
+        position: relative;
+        height: 50px;
+        /* width: 1000px; */
+        /* border: 1px solid black; */
+    }
+    #db-top-welcome{
+        margin-left: 8%;
+        width: 100px;
+        width: 45%;
+        max-width: 45%;
+        /* border: 1px solid blue; */
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        height: 50px;
+    }
+    #db-top-welcome > span{
+        position: relative;
+        /* margin-top: 0.5em; */
+        margin-left: 1%;
+        font-family: var(--font2);
+        font-size: 1.8em;
+        font-weight: 550;
+        text-transform: uppercase;
+    }
+    #db-top-date {
+        width: 60%;
+        max-width: 60%;
+        /* border: 1px solid saddlebrown; */
+        height: 50px;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        margin-right: 4.5%;
+    }
+    #db-top-date > span {
+        position: relative;
+        /* margin-right: 3%; */
+        font-size: 0.7em;
+        font-family: var(--font2);
+        /* font-family: var(--font); */
+
+    }
+    .dashboard-middle{
+        /* margin-top: 2%; */
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        /* border: 1px solid brown; */
+        /* margin-right: 3%; */
+        margin-left: 4%;
+    }
+    #db-middle-barang{
+        position: relative;
+        /* margin-left: 2%; */
+        height: 100px;
+        width: 200px;
+        background-color: rgba(255, 0, 0, 0.6);
+    }
+    #db-middle-barang > span, #db-middle-jual > span, #db-middle-user > span, #db-middle-supply > span {
+        position: absolute;
+        /* left: 0; */
+        bottom: 0;
+        font-size: 2.5em;
+        padding-left: 5px;
+        font-weight: 500;
+        color: white;
+        font-family: sans-serif;
+    }
+    #db-middle-barang > img, #db-middle-user > img, #db-middle-supply > img, #db-middle-jual > img {
+        position: absolute;
+        top: 0;
+        right: 0;       
+        padding-right: 5px;
+        padding-top: 5px;
+    }
+    #db-middle-jual{
+        position: relative;
+        height: 100px;
+        width: 200px;
+        /* border: 1px solid green; */
+        background-color: rgba(60,179,113,0.8);
+    }
+
+    #db-middle-user{
+        position: relative;
+        height: 100px;
+        width: 200px;
+        /* border: 1px solid blue; */
+        background-color: rgba(0,191,255,0.8);
+    }
+    #db-middle-supply{
+        position: relative;
+        height: 100px;
+        width: 200px;
+        /* border: 1px solid yellowgreen; */
+        background-color: rgba(255,140,0,0.8);
+    }   
+    .dashboard-bottom{
+        display: flex;
+        flex-direction: row;
+        margin-top: 2%;
+        margin-left: 2.5%;
+        /* flex-wrap: wrap; */
+    }
+    #db-bottom-user-info{
+        flex: 20%;
+        max-width: 20%;
+        margin-left: 5%;
+        /* border: 1px solid salmon; */
+        
+    }
+    #db-bottom-user-info-detail{
+        margin-left: 5%;
+        display: flex;
+        flex-direction: column;
+    }
+    #user-info-name{
+        height: 8vh;
+        /* border: 1px solid green; */
+        display: flex;
+        align-items: center;
+        background-color: teal;
+    }
+    #user-info-name > img {
+        margin-left: 2%;
+        height: 30px;
+        width: 30px;
+        border-radius: 50%;
+        object-fit: cover;
+        object-position: center;
+    }
+    #user-info-name > span {
+        margin-left: 5%;
+        font-family: var(--font);
+        font-size: 0.9em;
+        letter-spacing: 0.1em;
+        color: white;
+    }
+    #user-info-detail{
+        position: relative;
+        height: 46vh;
+        border: 1px solid rgba(0, 0, 0, 0.2);
+    }
+    #detail-prop {
+        margin-left: 3%;
+        font-family: sans-serif;
+        font-size: 0.9em;
+    }
+    #detail-content {
+        position: absolute;
+        right: 0;
+        margin-right: 3%;
+        color: silver;
+        font-family: var(--cambria);
+        font-size: 0.9em;
+    }
+    /* #blank {
+        flex: 15%;
+        max-width: 15%;
+    } */
+    #db-bottom-sales-info{
+        flex: 70%;
+        max-width: 70%;
+        margin-left: 5%;
+    }
+    #db-btm-sales-top {
+        display: flex;
+        flex-direction: row;
+    }
+    #sales-top-left{
+        flex: 50%;
+        max-width: 50%;
+    }
+    #sales-top-right{
+        flex: 50%;
+        max-width: 50%;
+    }
+    #sales-top-right > span, #sales-top-left > span, #sales-bottom-left > span, #sales-bottom-right > span {
+        font-family: sans-serif;
+        font-size: 0.8em;
+        font-weight: 600;
+    }
+    #sales-top-left > span {
+        font-family: sans-serif;
+        font-size: 0.8em;
+        font-weight: 600;
+    }
+    #barang-data, #penjualan-data, #user-data, #supplier-data{
+        position: relative;
+        width: 88%;
+        max-width: 88%;
+        height: 25vh;
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        /* background-color: rgb(105,105,105); */
+        margin: 0 1px;
+    }
+    #db-btm-sales-bottom {
+        display: flex;
+        flex-direction: row;
+    }
+    #sales-bottom-left{
+        flex: 50%;
+        max-width: 50%;
+    }
+    #sales-bottom-right{
+        flex: 50%;
+        max-width: 50%;
+    }
+</style>
+<body>
+    <div class="dashboard-container">
+        {%for message in get_flashed_messages()%}
+        <div class="alert alert-success alert-dismissible show" role="alert">
+            {{message}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {%endfor%}
+        <div class="db-top">
+            <div id="db-top-welcome">
+                <span>Dashboard</span>
+            </div>
+            <div id="db-top-date">
+                <span>{{date_time_string}}</span>
+            </div>
+        </div> 
+        <div class="dashboard-middle"> 
+            <div id="db-middle-barang">
+                <span>{{count_barang}}</span>
+                <img src="{{url_for('static', filename='images/work_white_48dp.svg')}}" alt="">
+            </div>
+            <div id="db-middle-jual">
+                <span>{{count_penjualan}}</span>
+                <img src="{{url_for('static', filename='images/receipt_long_white_48dp.svg')}}" alt="">
+            </div>
+            <div id="db-middle-user">
+                <span>{{count_user}}</span>
+                <img src="{{url_for('static', filename='images/group_white_48dp.svg')}}" alt="">
+            </div>
+            <div id="db-middle-supply">
+                <span>{{count_vendor}}</span>
+                <img src="{{url_for('static', filename='images/inventory_2_white_48dp.svg')}}" alt="">
+            </div>
+        </div>
+        <div class="dashboard-bottom">
+            <div id="db-bottom-user-info">
+                <div id="db-bottom-user-info-detail">
+                    <span>Login Detail</span>
+                    <div id="user-info-name">
+                        {%if current_user.profile_pic%}
+                        <img src="{{url_for('static', filename='images/'+current_user.profile_pic)}}" alt="{{current_user.profile_pic}}">
+                        <span>{{current_user.name}}</span>
+                        {%else%}
+                        <img src="{{url_for('static', filename='images/wolf_img.jpg')}}" alt="wolf-image">
+                        <span>{{current_user.name}}</span>
+                        {%endif%}
+                    </div>
+                    <div id="user-info-detail">
+                        <br>
+                        <p>
+                            <span id="detail-prop">Level</span><span id="detail-content">{{current_user.level}}</span>
+                        </p>
+                        <p>
+                            <span id="detail-prop">Status</span><span id="detail-content">{{current_user.status}}</span>
+                        </p>
+                        <p>
+                            <span id="detail-prop">Last Login</span><span id="detail-content">{{current_user.last_login.date()}}</span>
+                        </p>
+                        <p>
+                            <span id="detail-prop">Join Date</span><span id="detail-content">{{current_user.join_date.date()}}</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div id="blank"></div>
+            <div id="db-bottom-sales-info">
+                <div id="db-btm-sales-top">
+                    <div id="sales-top-left">
+                        <span>BARANG</span>
+                        <div id="barang-data">
+                            <canvas id="canvas-barang-data"></canvas>
+                        </div>
+                    </div>
+                    <div id="sales-top-right">
+                        <span>PENJUALAN</span>
+                        <div id="penjualan-data">
+                            <canvas id="canvas-penjualan-data"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div id="db-btm-sales-bottom">
+                    <div id="sales-bottom-left">
+                        <span>USER</span>
+                        <div id="user-data">
+                            <canvas id="canvas-user-data"></canvas>
+                        </div>
+                    </div>
+                    <div id="sales-bottom-right">
+                        <span>SUPPLIER</span>
+                        <div id="supplier-data">
+                            <canvas id="canvas-vendor-data"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<script src="{{url_for('static', filename='js/dashboard_graphic.js')}}"></script>
+<script>
+$(document).ready(function(){
+    weeklyChartBarang({{barang_label|safe}}, {{barang_value|safe}});
+    weeklyChartUser({{user_value|safe}}, {{user_label|safe}});
+    weeklyChartVendor({{vendor_value|safe}}, {{vendor_label|safe}});
+    weeklyChartPenjualan({{jual_label|safe}}, {{jual_value|safe}})
+});
+
+
+</script>    
+</body>
+
+</html>
+{%endblock%}

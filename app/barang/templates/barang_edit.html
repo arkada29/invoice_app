@@ -1,0 +1,206 @@
+{%include 'side-nav.html'%}
+{%block content%}
+<style>
+    :root{
+        --btn-prim:teal;
+    }
+    .alert{
+        position: relative;
+        margin-left: 5%;
+        width: 400px;
+        max-width: 400px;
+        margin-top: 1%;
+        z-index: 1;
+    }
+    .barang-edit-container{
+        margin-left: 5%;
+    }
+    #barang-edit-top{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-top: 1%;
+        margin-right: 2%;
+    }
+    #barang-edit-top-left{
+        margin-left: 2%;
+        flex: 30%;
+        max-width: 30%;
+    }
+    #barang-edit-top-left > a > img{
+        width: 30px;
+        height: 30px;
+        background-color: teal;
+        border-radius: 50%;
+        padding: 6px 6px;
+    }
+    #barang-edit-top-left > #add-user {
+        margin-left: 1%;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;        
+        font-weight: 550;
+    }
+    #barang-edit-top-right > a > span {
+        background-color: var(--btn-prim);
+        color: white;
+        font-family: sans-serif;
+        font-size: 0.7em;
+        padding: 5px 10px;
+    }
+    #barang-edit-bottom{
+        margin-top: 1.5%;
+        margin-right: 2%;
+        margin-left: 2%;
+        border: 1px solid rgba(0, 0, 0, 0.5);
+        border-radius: 5px;
+    }
+    #barang-edit-bottom-form{
+        display: flex;
+        flex-direction: row;
+        margin-top: 1%;
+        margin-bottom: 1%;
+    }
+    #barang-edit-bottom-form-reguler{
+        margin-top: 1%;
+        margin-bottom: 1%;
+    }
+    #barang-edit-bottom-left{
+        flex: 30%;
+        max-width: 30%;
+        margin-right: 2%;
+        margin-left: 1%;
+    }
+    #barang-edit-bottom-middle{
+        flex: 30%;
+        max-width: 30%;
+        margin-right: 1%;
+        margin-left: 1%;
+    }
+    #barang-edit-bottom-right{
+        flex: 30%;
+        max-width: 30%;
+        margin-right: 2%;
+        margin-left: 1%;
+    }
+    .form-label{
+        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        font-weight: 550;
+        font-size: 0.8em;
+    }
+    .form-label > span {
+        color: red;
+    }
+    .form-control{
+        font-family: sans-serif;
+        font-size: 0.75em;
+    }
+    #grosir-section{
+        display: flex;
+        flex-direction: row;
+    }
+    #jumlah-grosir{
+        flex: 40%;
+        max-width: 40%;
+    }
+    #total-grosir{
+        margin-left: 1%;
+        flex: 59%;
+        max-width: 59%;
+    }
+</style>
+<div class="barang-edit-container">
+    {%for message in get_flashed_messages()%}
+    <div class="alert alert-success alert-dismissible show" role="alert">
+        {{message}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {%endfor%}
+    <div id="barang-edit-top">
+        <div id="barang-edit-top-left">
+            <a href="{{url_for('barang.barang_list')}}">
+                <img src="{{url_for('static', filename='images/arrow_back_white.svg')}}" alt="">
+            </a>
+            <span id="add-user">ADD BARANG</span>
+        </div>
+        <div id="barang-edit-top-right">
+            <a href="{{url_for('barang.barang_list')}}">
+                <span class="btn btn-sm">Daftar Barang</span>
+            </a>
+        </div>
+    </div>
+    <div id="barang-edit-bottom">
+        {%if current_user.level == 'Admin'%}
+        <form action="" method="post" enctype="multipart/form-data">
+            <div id="barang-edit-bottom-form">
+                <div id="barang-edit-bottom-left">
+                    {{edit_barang_form.hidden_tag()}}
+                    {{edit_barang_form.kode_barang.label(class='form-label')}}
+                    <input type="text" class='form-control kode-barang' id="disabledInput" name="kode-barang" value="{{update_barang.kode_barang}}" readonly>
+                    <!-- {{edit_barang_form.kode_barang(class='form-control')}} -->
+                    <br>
+                    {{edit_barang_form.nama_barang.label(class='form-label')}}
+                    <input type="text" class='form-control nama-barang' id="disabledInput" name="nama-barang" value="{{update_barang.nama_barang}}" readonly>
+                    <!-- {{edit_barang_form.nama_barang(class='form-control')}} -->
+                    <br>
+                    {{edit_barang_form.discount.label(class='form-label')}}
+                    {{edit_barang_form.discount(class='form-control')}}
+                    <br>
+                    {{edit_barang_form.stok.label(class='form-label')}}
+                    {{edit_barang_form.stok(class='form-control')}}
+                    <br>
+                    {{edit_barang_form.submit(class='btn btn-success btn-sm')}}
+                    <span class="btn btn-danger btn-sm">Delete</span>
+                </div>
+                <div id="barang-edit-bottom-middle">
+                    {{edit_barang_form.status.label(class='form-label')}}
+                    {{edit_barang_form.status(class='form-control')}}
+                    <br>
+                    {{edit_barang_form.harga_beli.label(class='form-label')}}
+                    {{edit_barang_form.harga_beli(class='form-control')}}
+                    <br>
+                    {{edit_barang_form.harga_jual.label(class='form-label')}}
+                    {{edit_barang_form.harga_jual(class='form-control')}}
+                    <br>
+                    {{edit_barang_form.stok_akhir.label(class='form-label')}}
+                    {{edit_barang_form.stok_akhir(class='form-control')}}
+                    <br>
+                    {{edit_barang_form.kategori.label(class='form-label')}}
+                    <input type="text" class='form-control kategori-barang' id="disabledInput" name="kategori-barang" value="{{update_barang.kategori_barang.nama_kategori}}" readonly>
+                </div>   
+                <div id="barang-edit-bottom-right">
+                    {{edit_barang_form.satuan.label(class='form-label')}}
+                    <select {{edit_barang_form.satuan(class='form-control')}}>
+                        {%for s in satuan%}
+                        <option value="{{s.satuan}}">{{s.satuan}}</option>
+                        {%endfor%}
+                    </select>
+                    <br>
+                    {{edit_barang_form.barang_pic.label(class='form-label')}}
+                    {{edit_barang_form.barang_pic(class='form-control')}}
+                    <br>
+                    {{edit_barang_form.tanggal_masuk.label(class='form-label')}}
+                    <input type="text" class="form-control" value="{{update_barang.tanggal_masuk}}" readonly>
+                    {{edit_barang_form.tanggal_masuk(class='form-control')}}
+                    <br>
+                    <div id="grosir-section">
+                        <div id="jumlah-grosir">
+                            {{edit_barang_form.jumlah_grosir.label(class='form-label')}}
+                            {{edit_barang_form.jumlah_grosir(class='form-control')}}
+                        </div>  
+                        <!-- <br> -->
+                        <div id="total-grosir">
+                            {{edit_barang_form.total_grosir.label(class='form-label')}}
+                            {{edit_barang_form.total_grosir(class='form-control')}}
+                        </div>
+                    </div>
+                </div>     
+            </div>
+        </form>
+        {%else%}
+        <div id="barang-edit-bottom-form-reguler">
+            <h3>Sorry you're not authorized to access this page</h3>
+            <h5>Only admin can access this page</h5>
+        </div>
+        {%endif%}
+    </div>
+</div>
+{%endblock%}

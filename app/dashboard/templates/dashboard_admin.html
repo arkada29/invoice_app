@@ -1,0 +1,475 @@
+{%include 'side-nav.html'%}
+{%block content%}
+<style>
+    :root{
+        --calibri:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        --courier:'Courier New', Courier, monospace;
+        --cambria:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        --serif:sans-serif
+    }
+    .alert{
+        position: relative;
+        margin-left: 5%;
+        width: 400px;
+        max-width: 400px;
+        margin-top: 1%;
+        z-index: 1;
+    }
+    a {
+        color: white;
+    }
+    .dashboard-admin-container{
+        display: flex;
+        flex-direction: column;
+        /* border: 1px solid black; */
+        margin-left: 5%;
+        margin-top: 1%;
+        margin-right: 2%;
+    }
+    #dashboard-admin-top{
+        display: flex;
+        flex-direction: row;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        margin-left: 2%;
+        /* box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.7); */
+    }
+    #db-admin-top-photo{
+        /* margin-left: 3%; */
+        flex: 10%;
+        max-width: 10%;
+        /* border: 1px solid blue; */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        /* border-right: 1px solid rgba(0, 0, 0, 0.5); */
+    }
+    #db-admin-top-photo > img {
+        width: 15vh;
+        height: 15vh;
+        border: 1px solid orangered;
+        border-radius: 50%;
+        margin: 7% 0;
+        object-fit: cover;
+        object-position: center;
+    }
+    #db-admin-top-bio{
+        flex: 80%;
+        max-width: 80%;
+        /* border: 1px solid magenta; */
+        margin-left: 1%;
+        margin-top: 0.5%;
+    }
+    #username > span {
+        /* padding-left: 1%; */
+        letter-spacing: 0.07em;
+        text-transform: capitalize;
+    }
+    #username > img {
+        width: 15px;
+        height: 15px;
+        background-color: mediumseagreen;
+        padding: 2px 2px;
+        border-radius: 50%;
+    }
+    #bio-detail{
+        display: flex;
+        flex-direction: row;
+        margin-top: 1%;
+    }
+    #bio-detail-left{
+        flex: 25%;
+        max-width: 25%;
+        display: flex;
+        flex-direction: row;
+        /* border: 1px solid rebeccapurple; */
+    }
+    #detail-kiri{
+        display: flex;
+        flex-direction: row;
+    }
+    #detail-kiri img{
+        margin-left: 5px;
+        width: 5vh;
+        height: 5vh;
+        padding: 5px 5px;
+        border-radius: 50%;
+        background-color: #db0038;
+    }
+    #detail-kanan img{
+        margin-left: 5px;
+        width: 5vh;
+        height: 5vh;
+        padding: 5px 5px;
+        border-radius: 50%;
+        background-color: mediumspringgreen;
+    }
+    #detail-kiri-level{
+        display: flex;
+        flex-direction: column;
+        margin-left: 0.3em;
+    }
+    #detail-kanan-level{
+        display: flex;
+        flex-direction: column;
+        margin-left: 0.3em;
+    }
+    #detail-kanan{
+        display: flex;
+        flex-direction: row;
+    }
+    #detail-kiri-2{
+        display: flex;
+        flex-direction: row;
+    }
+    #detail-kiri-2 img{
+        margin-left: 5px;
+        width: 5vh;
+        height: 5vh;
+        padding: 5px 5px;
+        border-radius: 50%;
+        background-color: khaki;
+    }
+    #detail-kanan-2 img{
+        margin-left: 5px;
+        width: 5vh;
+        height: 5vh;
+        padding: 5px 5px;
+        border-radius: 50%;
+        background-color: deepskyblue;
+    }
+    #detail-kiri-level-2{
+        display: flex;
+        flex-direction: column;
+        margin-left: 0.3em;
+    }
+    #detail-kanan-level-2{
+        display: flex;
+        flex-direction: column;
+        margin-left: 0.3em;
+    }
+    #detail-kanan-2{
+        display: flex;
+        flex-direction: row;
+    }
+    #barang-title,#phone-title,#last-title,#join-title{
+        position: relative;
+        top: -3px;
+        font-size: 0.8em;
+        font-weight: 600;
+        font-family: var(--cambria);
+    }
+    #barang-title-content,#phone-title-content,#last-title-content, #join-title-content{
+        position: relative;
+        top: -5px;
+        font-size: 0.7em;
+        font-family: var(--serif);
+        color: rgba(0, 0, 0, 0.5);
+    }
+    #bio-detail-right{
+        flex: 70%;
+        max-width: 70%;
+        height: 70px;
+        overflow: hidden;
+        /* padding-left: 1%; */
+        /* border: 1px solid black; */
+    }
+    #bio-detail-right > span{
+        font-family: var(--calibri);
+        font-size: 0.85em;
+        line-height: 70%;
+        color: rgba(0, 0, 0, 0.7);
+        padding-bottom: 3%;
+        text-transform: capitalize;
+    }
+
+    #dashboard-admin-bottom{
+        display: flex;
+        flex-direction: row;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        margin-left: 2%;
+        margin-top: 1%;
+        /* box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.7); */
+    }
+    #db-bottom-data{
+        flex: 50%;
+        max-width: 50%;
+    }
+    #db-bottom-data-top{
+        display: flex;
+        flex-direction: row;
+    }
+    #data-top-left{
+        position: relative;
+        flex: 40%;
+        max-width: 40%;
+        height: 23vh;
+        margin-top: 3%;
+        margin-left:5%;
+        border-radius: 5px;
+        /* border: 1px solid red; */
+        background-color: rgba(255, 0, 0, 0.6);
+        display: flex;
+        align-items: center;
+    }
+    #data-top-left > span{
+        position: absolute;
+        bottom: 0;
+        font-family: fantasy;
+        font-size: 3em;
+        font-weight: 200;
+        padding-left: 5px;
+        color: white;
+    }
+    #data-top-left > img, #data-top-right > img, #data-bottom-left > img, #data-bottom-right > img {
+        position: absolute;
+        top: 0;
+        right: 0;       
+        padding-right: 5px;
+        padding-top: 5px;
+    }
+    #data-top-right{
+        position: relative;
+        flex: 40%;
+        max-width: 40%;
+        height: 23vh;
+        margin-top: 3%;
+        margin-left:5%;
+        border-radius: 5px;
+        /* border: 1px solid mediumseagreen; */
+        background-color: rgba(60,179,113,0.8);
+        display: flex;
+        align-items: center;
+    }
+    #data-top-right span{
+        position: absolute;
+        bottom: 0;
+        font-family: fantasy;
+        font-size: 3em;
+        font-weight: 200;
+        padding-left: 5px;
+        color: white;
+    }
+    #db-bottom-data-bottom{
+        display: flex;
+        flex-direction: row;
+        margin-bottom: 2%;
+    }
+    #data-bottom-left{
+        position: relative;
+        flex: 40%;
+        max-width: 40%;
+        height: 23vh;
+        margin-top: 3%;
+        margin-left:5%;
+        border-radius: 5px;
+        /* border: 1px solid aqua; */
+        background-color: rgba(0,191,255,0.8);
+        display: flex;
+        align-items: center;
+    }
+    #data-bottom-right span{
+        position: absolute;
+        bottom: 0;
+        font-family: fantasy;
+        font-size: 3em;
+        font-weight: 200;
+        padding-left: 5px;
+        color: white;
+    }
+    /* #db-bottom-statistic{
+        flex: 50%;
+        max-width: 50%;
+    } */
+    #data-bottom-right{
+        position: relative;
+        flex: 40%;
+        max-width: 40%;
+        height: 23vh;
+        margin-top: 3%;
+        margin-left:5%;
+        border-radius: 5px;
+        /* border: 1px solid yellow; */
+        background-color: rgba(255,140,0,0.8);
+        display: flex;
+        align-items: center;
+    }
+    #data-bottom-left span{
+        position: absolute;
+        bottom: 0;
+        font-family: fantasy;
+        font-size: 3em;
+        font-weight: 200;
+        padding-left: 5px;
+        color: white;
+    }
+    #db-bottom-statistic-chart{
+        flex: 50%;
+        max-width: 50%;
+    }
+    #statistic-chart{
+        margin-top: 3%;
+        height: 49vh;
+        width: 95vh;
+        border-radius: 5px;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        /* box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2); */
+    }
+    #db-bottom-edit{
+        margin-top: 1%;
+        display: flex;
+        flex-direction: row;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        /* box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.7); */
+        margin-left: 2%;
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+    }
+    #bottom-edit{
+        flex: 50%;
+        max-width: 50%;
+    }
+    #bottom-edit > a:nth-child(1) > span {
+        /* width: 10vh; */
+        min-width: 10vh;
+        margin-top: 1%;
+        margin-bottom: 1%;
+        margin-left: 1%;
+        background-color: teal;
+        color: white;
+        border: none;
+    }
+    #bottom-edit > a > span {
+        /* width: 10vh; */
+        min-width: 10vh;
+        /* margin: 1% 0%; */
+        background-color: teal;
+        color: white;
+        border: none;
+    }
+    #date-today{
+        flex: 50%;
+        max-width: 50%;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+    }
+    #date-today > span {
+        font-size: 14px;
+        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        margin-right: 3%;
+    }
+
+</style>
+<div class="dashboard-admin-container">
+    {%for message in get_flashed_messages()%}
+    <div class="alert alert-success alert-dismissible show" role="alert">
+        {{message}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {%endfor%}
+    <div id="dashboard-admin-top">
+        <div id="db-admin-top-photo">
+            {%if current_user.profile_pic%}
+            <img src="{{url_for('static', filename='images/' + current_user.profile_pic)}}" alt="">
+            {%else%}
+            <img src="{{url_for('static', filename='images/wolf_img.jpg')}}" alt="">
+            {%endif%}
+        </div>
+        <div id="db-admin-top-bio">
+            <div id="username">
+                <span>{{user.name}}</span>
+                <img src="{{url_for('static', filename='images/done_white.svg')}}" alt="">
+            </div>
+            <div id="bio-detail">
+
+                <div id="bio-detail-left">
+                    <div id="bio-detail-left-kiri">
+                        <div id="detail-kiri">
+                            <img src="{{url_for('static', filename='images/badge_white.svg')}}" alt="">
+                            <div id="detail-kiri-level">
+                                <span id="barang-title">Level</span>
+                                <span id="barang-title-content">{{user.level}}</span>
+                            </div>
+                        </div>
+                        <div id="detail-kanan">
+                            <img alt="" src="{{url_for('static', filename='images/phone_iphone_white.svg')}}">
+                            <div id="detail-kanan-level">
+                                <span id="phone-title">Phone</span>
+                                <span id="phone-title-content">{{user.phone}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="bio-detail-left-kanan">
+                        <div id="detail-kiri-2">
+                            <img alt="" src="{{url_for('static', filename='images/calendar_today_white.svg')}}">
+                            <div id="detail-kiri-level-2">
+                                <span id="last-title">Last Login</span>
+                                <span id="last-title-content">{{user.last_login.date()}}</span>
+                            </div>
+                        </div>
+                        <div id="detail-kanan-2">
+                            <img alt="" src="{{url_for('static', filename='images/schedule_white.svg')}}">
+                            <div id="detail-kanan-level-2">
+                                <span id="join-title">Join Date</span>
+                                <span id="join-title-content">{{user.join_date.date()}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="bio-detail-right">
+                    <span>
+                        {{current_user.about_user}}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="dashboard-admin-bottom">
+        <div id="db-bottom-data">
+            <div id="db-bottom-data-top">
+                <div id="data-top-left">
+                    <span>{{count_barang}}</span>
+                    <img src="{{url_for('static', filename='images/work_white_48dp.svg')}}" alt="">
+                </div>
+                <div id="data-top-right">
+                    <span>{{count_penjualan}}</span>
+                    <img src="{{url_for('static', filename='images/receipt_long_white_48dp.svg')}}" alt="">
+                </div>
+            </div>
+            <div id="db-bottom-data-bottom">
+                <div id="data-bottom-left">
+                    <span>{{count_user}}</span>
+                    <img src="{{url_for('static', filename='images/group_white_48dp.svg')}}" alt="">
+                </div>
+                <div id="data-bottom-right">
+                    <span>{{count_vendor}}</span>
+                    <img src="{{url_for('static', filename='images/inventory_2_white_48dp.svg')}}" alt="">
+                </div>
+            </div>
+        </div>
+        <div id="db-bottom-statistic-chart">
+            <div id="statistic-chart"></div>
+        </div>
+    </div>
+    <div id="db-bottom-edit">
+        <div id="bottom-edit">
+            <a href="{{url_for('user.user_edit', id=1)}}">
+                <span class="btn btn-info btn-sm">Edit</span>
+            </a>
+            <a href="{{url_for('user.user_add')}}">
+                <span class="btn btn-info btn-sm">Tambah User</span>
+            </a>
+            <a href="{{url_for('user.user_list')}}">
+                <span class="btn btn-info btn-sm">Daftar User</span>
+            </a>
+        </div>
+        <div id="date-today">
+            <span>{{date_time_string}}</span>
+        </div>
+    </div>
+</div>
+{%endblock%}

@@ -1,0 +1,161 @@
+{%include 'side-nav.html'%}
+{%block content%}
+<style>
+    :root{
+        --btn-prim:teal;
+    }
+    .alert{
+        position: relative;
+        margin-left: 5%;
+        width: 400px;
+        max-width: 400px;
+        margin-top: 1%;
+        z-index: 1;
+    }
+    .penjualan-edit-container{
+        margin-left: 5%;
+    }
+    #penjualan-edit-top{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-top: 1%;
+        margin-right: 2%;
+    }
+    #penjualan-edit-top-left{
+        margin-left: 2%;
+        flex: 30%;
+        max-width: 30%;
+    }
+    #penjualan-edit-top-left > a > img{
+        width: 30px;
+        height: 30px;
+        background-color: teal;
+        border-radius: 50%;
+        padding: 6px 6px;
+    }
+    #penjualan-edit-top-left > #add-penjualan {
+        margin-left: 1%;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;        
+        font-weight: 550;
+    }
+    #penjualan-edit-top-right > a > span {
+        background-color: var(--btn-prim);
+        color: white;
+        font-family: sans-serif;
+        font-size: 0.7em;
+        padding: 5px 10px;
+    }
+    #penjualan-edit-bottom{
+        margin-top: 1.5%;
+        margin-right: 2%;
+        margin-left: 2%;
+        border: 1px solid rgba(0, 0, 0, 0.5);
+        border-radius: 5px;
+    }
+    #penjualan-edit-bottom-form{
+        display: flex;
+        flex-direction: row;
+        margin-top: 1%;
+        margin-bottom: 1%;
+    }
+    #penjualan-edit-bottom-form-reguler{
+        margin-top: 1%;
+        margin-bottom: 1%;
+    }
+    #penjualan-edit-bottom-left{
+        flex: 30%;
+        max-width: 30%;
+        margin-right: 2%;
+        margin-left: 1%;
+    }
+    #penjualan-edit-bottom-middle{
+        flex: 30%;
+        max-width: 30%;
+        margin-right: 1%;
+        margin-left: 1%;
+    }
+    #penjualan-edit-bottom-right{
+        flex: 30%;
+        max-width: 30%;
+        margin-right: 2%;
+        margin-left: 1%;
+    }
+    .form-label{
+        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        font-weight: 550;
+        font-size: 0.8em;
+    }
+    .form-label > span {
+        color: red;
+    }
+    .form-control{
+        font-family: sans-serif;
+        font-size: 0.75em;
+    }
+    .btn-info{
+        color: white;
+    }
+</style>
+<div class="penjualan-edit-container">
+    {%for message in get_flashed_messages()%}
+    <div class="alert alert-success alert-dismissible show" role="alert">
+        {{message}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {%endfor%}
+    <div id="penjualan-edit-top">
+        <div id="penjualan-edit-top-left">
+            <a href="{{url_for('penjualan.penjualan_list')}}">
+                <img src="{{url_for('static', filename='images/arrow_back_white.svg')}}" alt="">
+            </a>
+            <span id="add-penjualan">ADD PENJUALAN</span>
+        </div>
+        <div id="penjualan-edit-top-right">
+            <a href="{{url_for('penjualan.penjualan_add')}}">
+                <span class="btn btn-sm">Tambah Penjualan</span>
+            </a>
+        </div>
+    </div>
+    <div id="penjualan-edit-bottom">
+        {%if current_user.level == 'Admin'%}
+        <form action="" method="post" enctype="multipart/form-data">
+            <div id="penjualan-edit-bottom-form">
+                <div id="penjualan-edit-bottom-left">
+                    {{edit_form.hidden_tag()}}
+                    <label for="kode-penjualan">Kode Penjualan</label><br>
+                    <input type="text" class='form-control kode-penjualan' id="kode-penjualan" name="kode-penjualan" value="{{penjualan.kode_penjualan}}" readonly>
+                    <br>
+                    {{edit_form.tanggal_faktur.label(class='form-label')}}
+                    <input type="text" class='form-control tanggal-faktur' id="tanggal-faktur" name="tanggal-faktur" value="{{penjualan.tanggal_penjualan.date()}}" readonly>
+                    <br>
+                    {{edit_form.nama_kasir.label(class='form-label')}}
+                    <input type="text" class="form-control" id="nama-user" name="nama-user" value="{{penjualan.user_penjualan.name}}" readonly>
+                    <br>
+                    {{edit_form.jumlah_barang.label(class='form-label')}}
+                    {{edit_form.jumlah_barang(class='form-control')}}
+                    <br>
+                    {{edit_form.submit(class='btn btn-success btn-sm')}}
+                    <a href="{{url_for('penjualan.penjualan_detail', id=penjualan.id_penjualan)}}" class="btn btn-info btn-sm">Detail Invoice</a>
+                </div>
+                <div id="penjualan-edit-bottom-middle">
+                    {{edit_form.jumlah_bayar.label(class='form-label')}}
+                    {{edit_form.jumlah_bayar(class='form-control')}}
+                    <br>
+                    {{edit_form.jumlah_kembalian.label(class='form-label')}}
+                    {{edit_form.jumlah_kembalian(class='form-control')}}
+                    <br>
+                </div>   
+                <div id="penjualan-edit-bottom-right">
+                </div>     
+            </div>
+        </form>
+        {%else%}
+        <div id="penjualan-edit-bottom-form-reguler">
+            <h3>Sorry you're not authorized to access this page</h3>
+            <h5>Only admin can access this page</h5>
+        </div>
+        {%endif%}
+    </div>
+</div>
+{%endblock%}

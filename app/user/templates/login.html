@@ -1,0 +1,129 @@
+{%include 'library.html'%}
+{%block content%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOKO SEMBAKO</title>
+    <!-- <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.min.css')}}">
+    <script type="text/javascript" src="{{url_for('static', filename='js/jquery-3.6.0.min.js')}}"></script> -->
+</head>
+<style>
+    *{
+        box-sizing: border-box;
+    }
+    :root{
+        --color:teal;
+        --color2:#db0038;
+        --textColor:white
+        
+    }
+    @keyframes banner{
+        0%{
+            transform: translateY(50%);
+            opacity: 0;
+        }
+        100%{
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+    body{
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        justify-content: center;
+        align-items: center;
+        background-image: linear-gradient(120deg, var(--color), var(--color2));
+    }
+    #banner{
+        position: relative;
+        margin-bottom: 3%;
+        animation: 1s ease-out 0s 1 banner;
+    }
+    #banner p{
+        font-size: 3em;
+    }
+    .login{
+        margin-bottom: 5px;
+    }
+    .login > .btn{
+        color: var(--textColor);
+        background-color: var(--color);
+        border: none;
+    }
+    #login_form{
+        display: none;
+        border-radius: 5px;
+        padding: 5px 15px;
+        width: 75vh;
+        height: fit-content;
+    }
+</style>
+<body>
+    {%for message in get_flashed_messages()%}
+    <div class="alert alert-success alert-dismissible show" role="alert">
+        {{message}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {%endfor%}
+    <div id="banner">
+        <p>Welcome to Toko Sembako</p>
+    </div>
+    <div class="login">
+        <span id="btnLogin" class="btn btn-info btn-sm">Login</span>
+    </div>
+    <div id="login_form" class="signin-form">
+        <form action="" method="post" id="signin-form">
+            {{form.hidden_tag()}}
+            {{form.username.label(class='form-label')}}
+            {{form.username(class='form-control', autocomplete="off")}}
+            <br>
+            {{form.password.label(class='form-label')}}
+            {{form.password(class='form-control', autocomplete="off")}}
+            <br>
+            <input
+                type="hidden"
+                name="next"
+                value="{{ request.args.get('next', '') }}"
+            />
+            <br>
+            {{form.submit(class='btn btn-success btn-sm')}}
+        </form>
+    </div>
+
+    
+
+</body>
+<script>
+var loginClass = document.querySelector('.login')
+var loginForm = document.getElementById('login_form')
+var login = document.getElementById('btnLogin')
+
+loginClass.addEventListener('click', function(){
+    if(window.getComputedStyle(loginForm).display === 'none'){
+        $('#login_form').slideDown()
+        $('#btnLogin').css('background-color', 'red')
+        $('#btnLogin').text('close')
+    }else{
+        $('#login_form').slideUp()
+        // login.classList.add('btn')
+        $('#btnLogin').css('background-color', '#3CB371')
+        $('#btnLogin').text('Login')
+    }
+})
+// $('.login').click(function(){
+//     $('#login_form').slideDown()
+//     // if($('#login_form').is(':visible')){
+//     //     $('#login_form').slideDown(100)
+//     // }else{
+//     //     $('#login_form').slideUp(100)
+//     // }
+// })
+</script>
+</html>
+{%endblock%}

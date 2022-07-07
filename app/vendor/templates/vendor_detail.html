@@ -1,0 +1,241 @@
+{%include 'side-nav.html'%}
+{%block content%}
+<style>
+    :root{
+        --btn-prim:teal;
+    }
+    .alert{
+        position: relative;
+        margin-left: 5%;
+        width: 400px;
+        max-width: 400px;
+        margin-top: 1%;
+        z-index: 1;
+    }
+    .vendor-detail-container{
+        margin-left: 5%;
+    }
+    #vendor-detail-top{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-top: 1%;
+        margin-right: 2%;
+    }
+    #vendor-detail-top-left{
+        margin-left: 2%;
+        flex: 30%;
+        max-width: 30%;
+    }
+    #vendor-detail-top-left > a > img{
+        width: 30px;
+        height: 30px;
+        background-color: teal;
+        border-radius: 50%;
+        padding: 6px 6px;
+    }
+    #vendor-detail-top-left > #add-vendor {
+        margin-left: 1%;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;        
+        font-weight: 550;
+    }
+    #vendor-detail-top-right > a > span {
+        background-color: var(--btn-prim);
+        color: white;
+        font-family: sans-serif;
+        font-size: 0.7em;
+        padding: 5px 10px;
+    }
+
+    #vendor-detail-middle{
+        margin-top: 1%;
+        margin-left: 2%;
+        margin-right: 2%;
+    }
+    #vendor-detail-middle-form{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    #vendor-detail-middle-left{
+        flex: 20%;
+        max-width: 20%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }   
+    #vendor-detail-mid-picture{
+        flex: 40%;
+        max-width: 40%;
+        margin-top: 2%;
+        margin-left: 5%;
+    }
+    #vendor-detail-mid-picture > img {
+        width: 15vh;
+        height: 15vh;
+        border-radius: 5px;
+        object-fit: cover;
+        object-position: center;
+    }
+    #vendor-detail-mid-name{
+        flex: 50%;
+        max-width: 50%;
+        margin-left: 2%;
+    }
+    #det-name-label{
+        font-size: 0.8em;
+        font-weight: 550;
+        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    }
+    #det-name-val{
+        font-size: 0.7em;
+        font-family: sans-serif;
+        text-transform: uppercase;
+    }
+    #vendor-detail-middle-right{
+        flex: 50%;
+        max-width: 50%;
+        display: flex;
+        justify-content: flex-end;
+    }
+    #vendor-detail-mid-date-kat{
+        padding-right: 2%;
+    }
+    #det-date-label{
+        font-size: 0.8em;
+        font-weight: 550;
+        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    }
+    #det-date-value{
+        font-size: 0.7em;
+        font-family: sans-serif;
+        background-color: grey;
+        color: white;
+        padding: 3px 7px;
+    }
+
+
+    #vendor-detail-bottom{
+        margin-top: 1.5%;
+        margin-right: 2%;
+        margin-left: 2%;
+        border: 1px solid rgba(0, 0, 0, 0.5);
+        border-radius: 5px;
+    }
+    #vendor-detail-bottom-form{
+        display: flex;
+        flex-direction: row;
+        margin-top: 1%;
+        margin-bottom: 1%;
+    }
+    #vendor-detail-bottom-form-reguler{
+        margin-top: 1%;
+        margin-bottom: 1%;
+    }
+    #vendor-detail-bottom-left{
+        flex: 30%;
+        max-width: 30%;
+        /* margin-right: 2%; */
+        margin-left: 1%;
+    }
+    #vendor-detail-bottom-middle{
+        flex: 30%;
+        max-width: 30%;
+        /* margin-right: 1%;
+        margin-left: 1%; */
+    }
+    #vendor-detail-bottom-right{
+        flex: 30%;
+        max-width: 30%;
+        margin-right: 2%;
+        margin-left: 1%;
+    }
+    .btn-warning{
+        color: white;
+    }
+</style>
+<div class="vendor-detail-container">
+    <!-- {%for message in get_flashed_messages()%}
+    <div class="alert alert-success alert-dismissible show" role="alert">
+        {{message}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {%endfor%} -->
+    <div id="vendor-detail-top">
+        <div id="vendor-detail-top-left">
+            <a href="{{url_for('vendor.vendor_list')}}">
+                <img src="{{url_for('static', filename='images/arrow_back_white.svg')}}" alt="">
+            </a>
+            <span id="add-vendor">DETAIL VENDOR</span>
+        </div>
+        <div id="vendor-detail-top-right">
+            <a href="{{url_for('vendor.vendor_list')}}">
+                <span class="btn btn-sm">Daftar Vendor</span>
+            </a>
+        </div>
+    </div>
+    <div id="vendor-detail-middle">
+        <div id="vendor-detail-middle-form">
+            <div id="vendor-detail-middle-left">
+                <div id="vendor-detail-mid-name">
+                    <span id="det-name-label">Nama Vendor</span><br>
+                    <span id="det-name-val">{{detail_vendor.nama_vendor}}</span><br>
+                    <span id="det-name-label">Nama Barang</span><br>
+                    <span id="det-name-val">{{detail_vendor.nama_barang}}</span>
+                </div>
+            </div>
+            <div id="vendor-detail-middle-right">
+                <div id="vendor-detail-mid-date-kat">
+                    <span id="det-name-label">Tanggal Drop</span><br>
+                    <span id="det-date-value">{{detail_vendor.created_date.date()}}</span><br>
+                    <span id="det-name-label">Kategori</span><br>
+                    <span id="det-date-value">{{detail_vendor.kategori_vendor.nama_kategori}}</span>
+                </div>
+            </div>     
+        </div>
+</div>
+    <div id="vendor-detail-bottom">
+            <div id="vendor-detail-bottom-form">
+                <div id="vendor-detail-bottom-left">
+                    <span id="det-name-label">Jumlah</span><br>
+                    <span id="det-date-value">{{detail_vendor.jumlah}}</span>
+                    <br>
+                    <br>
+                    <span id="det-name-label">Terjual</span><br>
+                    <span id="det-date-value">{{detail_vendor.terjual}}</span>
+                    <br>
+                    <br>
+                    <span id="det-name-label">Sisa</span><br>
+                    <span id="det-date-value">{{detail_vendor.sisa}}</span>
+                    <br>
+                    <br>
+                    <span id="det-name-label">Harga Satuan</span><br>
+                    <span id="det-date-value">{{detail_vendor.harga_satuan}}</span>
+                    <br>
+                    <br>
+                    <a href="{{url_for('vendor.vendor_edit', id=detail_vendor.id_vendor)}}">
+                        <span class="btn btn-warning btn-sm">Edit</span>
+                    </a>
+                    <a href="{{url_for('vendor.vendor_delete', id=detail_vendor.id_vendor)}}">
+                        <span class="btn btn-danger btn-sm">Delete</span>
+                    </a>
+                </div>
+                <div id="vendor-detail-bottom-middle">
+                    <span id="det-name-label">Harga Total</span><br>
+                    <span id="det-date-value">{{detail_vendor.harga_total}}</span>
+                    <br>
+                    <br>
+                    <span id="det-name-label">Satuan</span><br>
+                    <span id="det-date-value">{{detail_vendor.satuan_vendor.satuan}}</span>
+                    <br>
+                    <br>
+                    <span id="det-name-label">User</span><br>
+                    <span id="det-date-value">{{detail_vendor.user_vendor.name}}</span>
+                    <br>
+                </div>   
+                <div id="vendor-detail-bottom-right">
+                </div>     
+            </div>
+    </div>
+</div>
+{%endblock%}

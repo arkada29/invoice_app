@@ -1,0 +1,153 @@
+{%include 'side-nav.html'%}
+{%block content%}
+<style>
+    :root{
+        --btn-prim:teal;
+    }
+    .alert{
+        position: relative;
+        margin-left: 5%;
+        width: 400px;
+        max-width: 400px;
+        margin-top: 1%;
+        z-index: 1;
+    }
+    .user-detail-container{
+        margin-left: 5%;
+    }
+    #user-detail-top{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-top: 1%;
+        margin-right: 2%;
+    }
+    #user-det-top-left{
+        margin-left: 2%;
+        flex: 30%;
+        max-width: 30%;
+    }
+    #user-det-top-left > a > img{
+        width: 30px;
+        height: 30px;
+        background-color: teal;
+        border-radius: 50%;
+        padding: 6px 6px;
+    }
+    #user-det-top-left > #add-user {
+        margin-left: 1%;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;        
+        font-weight: 550;
+    }
+    #user-det-top-right > a > span {
+        background-color: var(--btn-prim);
+        color: white;
+        font-family: sans-serif;
+        font-size: 0.7em;
+        padding: 5px 10px;
+    }
+    #user-detail-bottom{
+        margin-top: 1.5%;
+        margin-right: 2%;
+        margin-left: 2%;
+        border: 1px solid rgba(0, 0, 0, 0.5);
+        border-radius: 5px;
+    }
+    #user-detail-bottom-form{
+        display: flex;
+        flex-direction: row;
+        margin-top: 1%;
+        margin-bottom: 1%;
+    }
+    #user-detail-bottom-form-reguler{
+        margin-top: 1%;
+        margin-bottom: 1%;
+    }
+    #user-det-bottom-left{
+        flex: 45%;
+        max-width: 45%;
+        margin-right: 4%;
+        margin-left: 1%;
+    }
+    #user-det-bottom-right{
+        flex: 45%;
+        max-width: 45%;
+        margin-right: 4%;
+        margin-left: 1%;
+    }
+    .form-label{
+        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        font-weight: 550;
+        font-size: 0.8em;
+    }
+    .form-control{
+        font-family: sans-serif;
+        font-size: 0.75em;
+    }
+</style>
+<div class="user-detail-container">
+    {%for message in get_flashed_messages()%}
+    <div class="alert alert-success alert-dismissible show" role="alert">
+        {{message}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {%endfor%}
+        <!-- {% for field, errors in edit_form.errors.items() %}
+          <div class="alert alert-danger" role="alert">
+            {{','.join(errors)}}
+          </div>                  
+        {% endfor %} -->
+    <div id="user-detail-top">
+        <div id="user-det-top-left">
+            <a href="{{url_for('dashboard.dashboard')}}">
+                <img src="{{url_for('static', filename='images/cottage_white.svg')}}" alt="">
+            </a>
+            <span id="add-user">ADD USER</span>
+        </div>
+        <div id="user-det-top-right">
+            <a href="{{url_for('user.user_list')}}">
+                <span class="btn btn-sm">Daftar User</span>
+            </a>
+        </div>
+    </div>
+    <div id="user-detail-bottom">
+        {%if current_user.level == 'Admin'%}
+        <form action="" method="post">
+            <div id="user-detail-bottom-form">
+                <div id="user-det-bottom-left">
+                    {{edit_form.hidden_tag()}}
+                    {{edit_form.name.label(class='form-label')}}
+                    {{edit_form.name(class='form-control')}}
+                    <br>
+                    {{edit_form.phone.label(class='form-label')}}
+                    {{edit_form.phone(class='form-control')}}
+                    <br>
+                    {{edit_form.level.label(class='form-label')}}
+                    {{edit_form.level(class='form-control')}}
+                    <br>
+                    {{edit_form.status.label(class='form-label')}}
+                    {{edit_form.status(class='form-control')}}
+                    <br>
+                    <br>
+                    {{edit_form.submit(class='btn btn-success btn-sm')}}
+                    <span class="btn btn-danger btn-sm">Delete</span>
+                </div>
+                <div id="user-det-bottom-right">
+                    {{edit_form.password_hash.label(class='form-label')}}
+                    {{edit_form.password_hash(class='form-control')}}
+                    <br>
+                    {{edit_form.password_hash_match.label(class='form-label')}}
+                    {{edit_form.password_hash_match(class='form-control')}}
+                    <br>
+                </div>        
+            </div>
+        </form>
+        {%else%}
+        <div id="user-detail-bottom-form-reguler">
+            <h3>Sorry you're not authorized to access this page</h3>
+            <h5>Only admin can access this page</h5>
+        </div>
+        {%endif%}
+    </div>
+</div>
+{%endblock%}
