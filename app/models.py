@@ -162,7 +162,7 @@ class DetailPenjualan(db.Model):
     updated_date = db.Column(db.DateTime)
 
     #foreign
-    kode_barang = db.Column(db.Integer, db.ForeignKey('barang.kode_barang'))
+    kode_barang = db.Column(db.String(10), db.ForeignKey('barang.kode_barang'))
     kode_penjualan = db.Column(db.Integer, db.ForeignKey('penjualan.kode_penjualan'))
     # id_penjualan = db.Column(db.Integer, db.ForeignKey('penjualan.id_penjualan'))
     kode_diskon = db.Column(db.Integer, db.ForeignKey('diskon_khusus.kode_diskon'))
