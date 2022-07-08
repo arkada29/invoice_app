@@ -55,8 +55,8 @@ def login():
 def user_add():
     edit_form = UserForm() 
     if edit_form.validate_on_submit():
-        user = User.query.filter_by(name=edit_form.name.data).first()
         try:
+            user = User.query.filter_by(name=edit_form.name.data).first()
             # if not user:
             if user:
                 flash("username exist try another")
