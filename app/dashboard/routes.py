@@ -129,8 +129,8 @@ def staticGraphChart():
     #                 .order_by(Penjualan.id_penjualan.desc())\
     #                 .all()
     barang = db.session.query(func.sum(Penjualan.jumlah_penjualan), cast(Penjualan.tanggal_penjualan, Date))\
-                    .filter(cast(Penjualan.tanggal_penjualan, Date)==current_date_string)\
-                    .filter(cast(Penjualan.tanggal_penjualan, Date)==previous_date)\
+                    .filter(cast(Penjualan.tanggal_penjualan, Date)==cast(current_date_string,Date))\
+                    .filter(cast(Penjualan.tanggal_penjualan, Date)==cast(previous_date, Date))\
                     .group_by(cast(Penjualan.tanggal_penjualan, Date))\
                     .order_by(Penjualan.id_penjualan.desc())\
                     .all()
@@ -157,14 +157,14 @@ def staticGraphChart():
     #             .all()
 
     vendor = db.session.query(Vendor.terjual, cast(Vendor.tanggal_taruh, Date))\
-            .filter(cast(Vendor.tanggal_taruh, Date)==current_date_string)\
-            .filter(cast(Vendor.tanggal_taruh, Date)==previous_date)\
+            .filter(cast(Vendor.tanggal_taruh, Date)==cast(current_date_string, Date))\
+            .filter(cast(Vendor.tanggal_taruh, Date)==cast(previous_date, Date))\
             .group_by(cast(Vendor.tanggal_taruh, Date))\
             .all()
 
     penjualan = db.session.query(func.Count(Penjualan.kode_penjualan), cast(Penjualan.tanggal_penjualan, Date))\
-                .filter(cast(Penjualan.tanggal_penjualan, Date)==current_date_string)\
-                .filter(cast(Penjualan.tanggal_penjualan, Date)==previous_date)\
+                .filter(cast(Penjualan.tanggal_penjualan, Date)==cast(current_date_string, Date))\
+                .filter(cast(Penjualan.tanggal_penjualan, Date)==cast(previous_date, Date))\
                 .group_by(cast(Penjualan.tanggal_penjualan, Date))\
                 .order_by(Penjualan.id_penjualan.desc())\
                 .all()
