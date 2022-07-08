@@ -12,7 +12,7 @@ class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(200), nullable=False, unique=True)
     password_hash = db.Column(db.String(128))
-    about_user = db.Column(db.Text(255), nullable=True)
+    about_user = db.Column(db.Text, nullable=True)
     status = db.Column(db.String(50))
     level = db.Column(db.String(10))
     phone = db.Column(db.String(14), nullable=True)
