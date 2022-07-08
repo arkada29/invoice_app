@@ -74,7 +74,7 @@ class DiskonKhusus(db.Model):
 class Barang(db.Model):
     __tablename__ = 'barang'
     id_barang = db.Column(db.Integer, primary_key=True)
-    kode_barang = db.Column(db.String(10), nullable=False)
+    kode_barang = db.Column(db.String(10), nullable=False, unique=True)
     nama_barang = db.Column(db.String(255), nullable=False)
     harga_jual = db.Column(db.Float(20, True, 2))
     harga_beli = db.Column(db.Float(20, True, 2))
