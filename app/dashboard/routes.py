@@ -122,27 +122,50 @@ def staticGraphChart():
     #         .group_by(func.Date(Barang.created_date))\
     #         .all()
 
-    barang = db.session.query(func.sum(Penjualan.jumlah_penjualan), func.Date(Penjualan.tanggal_penjualan))\
-                    .filter(func.Date(Penjualan.tanggal_penjualan==current_date_string))\
-                    .filter(func.Date(Penjualan.tanggal_penjualan==previous_date))\
-                    .group_by(func.Date(Penjualan.tanggal_penjualan))\
+    # barang = db.session.query(func.sum(Penjualan.jumlah_penjualan), func.Date(Penjualan.tanggal_penjualan))\
+    #                 .filter(func.Date(Penjualan.tanggal_penjualan==current_date_string))\
+    #                 .filter(func.Date(Penjualan.tanggal_penjualan==previous_date))\
+    #                 .group_by(func.Date(Penjualan.tanggal_penjualan))\
+    #                 .order_by(Penjualan.id_penjualan.desc())\
+    #                 .all()
+    barang = db.session.query(func.sum(Penjualan.jumlah_penjualan), cast(Penjualan.tanggal_penjualan, Date))\
+                    .filter(cast(Penjualan.tanggal_penjualan, Date)==current_date_string)\
+                    .filter(cast(Penjualan.tanggal_penjualan, Date)==previous_date)\
+                    .group_by(cast(Penjualan.tanggal_penjualan, Date))\
                     .order_by(Penjualan.id_penjualan.desc())\
                     .all()
 
-    user = db.session.query(func.Count(User.id), func.Date(User.join_date))\
-        .group_by(func.Date(User.join_date))\
+    # user = db.session.query(func.Count(User.id), func.Date(User.join_date))\
+    #     .group_by(func.Date(User.join_date))\
+    #     .all()   
+
+    user = db.session.query(func.Count(User.id), cast(User.join_date, Date))\
+        .group_by(cast(User.join_date, Date))\
         .all()   
 
-    vendor = db.session.query(Vendor.terjual, func.Date(Vendor.tanggal_taruh))\
-            .filter(func.Date(Vendor.tanggal_taruh==current_date_string))\
-            .filter(func.Date(Vendor.tanggal_taruh==previous_date))\
-            .group_by(func.Date(Vendor.tanggal_taruh))\
+    # vendor = db.session.query(Vendor.terjual, func.Date(Vendor.tanggal_taruh))\
+    #         .filter(func.Date(Vendor.tanggal_taruh==current_date_string))\
+    #         .filter(func.Date(Vendor.tanggal_taruh==previous_date))\
+    #         .group_by(func.Date(Vendor.tanggal_taruh))\
+    #         .all()
+
+    # penjualan = db.session.query(func.Count(Penjualan.kode_penjualan), func.Date(Penjualan.tanggal_penjualan))\
+    #             .filter(func.Date(Penjualan.tanggal_penjualan==current_date_string))\
+    #             .filter(func.Date(Penjualan.tanggal_penjualan==previous_date))\
+    #             .group_by(func.Date(Penjualan.tanggal_penjualan))\
+    #             .order_by(Penjualan.id_penjualan.desc())\
+    #             .all()
+
+    vendor = db.session.query(Vendor.terjual, cast(Vendor.tanggal_taruh, Date))\
+            .filter(cast(Vendor.tanggal_taruh, Date)==current_date_string)\
+            .filter(cast(Vendor.tanggal_taruh, Date)==previous_date)\
+            .group_by(cast(Vendor.tanggal_taruh, Date))\
             .all()
 
-    penjualan = db.session.query(func.Count(Penjualan.kode_penjualan), func.Date(Penjualan.tanggal_penjualan))\
-                .filter(func.Date(Penjualan.tanggal_penjualan==current_date_string))\
-                .filter(func.Date(Penjualan.tanggal_penjualan==previous_date))\
-                .group_by(func.Date(Penjualan.tanggal_penjualan))\
+    penjualan = db.session.query(func.Count(Penjualan.kode_penjualan), cast(Penjualan.tanggal_penjualan, Date))\
+                .filter(cast(Penjualan.tanggal_penjualan, Date)==current_date_string)\
+                .filter(cast(Penjualan.tanggal_penjualan, Date)==previous_date)\
+                .group_by(cast(Penjualan.tanggal_penjualan, Date))\
                 .order_by(Penjualan.id_penjualan.desc())\
                 .all()
 
