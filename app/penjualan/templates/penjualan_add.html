@@ -308,9 +308,15 @@
     <form action="" method="post">
         <div id="penjualan-add-top">
             <div id="penjualan-add-top-left">
+                {%if current_user.profile_pic%}
                 <div id="penjualan-pic">
                     <img src="{{url_for('static', filename='images/'+ current_user.profile_pic)}}" alt="">
                 </div>
+                {%else%}
+                <div id="penjualan-pic">
+                    <img src="{{url_for('static', filename='images/wolf_img.jpg' )}}" alt="">
+                </div>
+                {%endif%}
                 <div id="penjualan-kasir-level-login">
                     <div id="penjualan-kasir-level">
                         <div id="penjualan-kasir">

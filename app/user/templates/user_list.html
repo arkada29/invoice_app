@@ -7,6 +7,14 @@
     .user-list-container{
         margin-left: 5%;
     }
+    .alert{
+        position: relative;
+        margin-left: 5%;
+        width: 400px;
+        max-width: 400px;
+        margin-top: 1%;
+        z-index: 1;
+    }
     #user-list-top{
         display: flex;
         flex-direction: row;
@@ -141,6 +149,12 @@
         }
 </style>
 <div class="user-list-container">
+    {%for message in get_flashed_messages()%}
+    <div class="alert alert-success alert-dismissible show" role="alert">
+        {{message}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {%endfor%}
     <div id="user-list-top">
         <div id="user-list-top-left">
             <a href="{{url_for('dashboard.dashboard')}}">

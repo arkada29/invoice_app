@@ -118,7 +118,6 @@
         </div> -->
     </div>
     <div id="diskon-khusus-add-bottom">
-        {%if current_user.level == 'Admin'%}
         <form action="" method="post" enctype="multipart/form-data">
             <div id="diskon-khusus-add-bottom-form">
                 <div id="diskon-khusus-add-bottom-left">
@@ -141,12 +140,6 @@
                 </div>     
             </div>
         </form>
-        {%else%}
-        <div id="diskon-khusus-add-bottom-form-reguler">
-            <h3>Sorry you're not authorized to access this page</h3>
-            <h5>Only admin can access this page</h5>
-        </div>
-        {%endif%}
     </div>
 </div>
 {%endblock%}

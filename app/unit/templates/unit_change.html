@@ -189,7 +189,6 @@
                                 <th scope="row">{{s.id_satuan}}</th>
                                 <td>{{s.satuan}}</td>
                                 <td>{{s.created_date}}</td>
-                                {%if current_user.level == 'Admin'%}
                                 <td id="tbl-detail-btn">
                                     <a href="">
                                         <img src="{{url_for('static', filename='images/info_white.svg')}}" alt="">
@@ -216,7 +215,6 @@
                                         </div>
                                     </div>
                                 </td>
-                            {%endif%}
                             </tr>
                             {%endfor%}
                         </tbody>

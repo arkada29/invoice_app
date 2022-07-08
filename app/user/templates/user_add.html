@@ -46,12 +46,13 @@
         font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;        
         font-weight: 550;
     }
-    #user-det-top-right > a > span {
+    #user-det-top-left > a > span {
         background-color: var(--btn-prim);
         color: white;
         font-family: sans-serif;
         font-size: 0.7em;
         padding: 5px 10px;
+        border: 1px solid red;
     }
     #user-detail-bottom{
         margin-top: 1.5%;
@@ -107,19 +108,22 @@
         {% endfor %} -->
     <div id="user-detail-top">
         <div id="user-det-top-left">
+            {%if current_user.is_authenticated%}
             <a href="{{url_for('dashboard.dashboard')}}">
+                <span class="btn btn-sm">Dashboard</span>
+            </a>
+            {%else%}
+            <a href="{{url_for('user.login')}}">
                 <img src="{{url_for('static', filename='images/cottage_white.svg')}}" alt="">
             </a>
-            <span id="add-user">ADD USER</span>
+            <span id="add-user">LOGIN</span>
+            {%endif%}
         </div>
         <div id="user-det-top-right">
-            <!-- <a href="{{url_for('user.user_list')}}">
-                <span class="btn btn-sm">Daftar User</span>
-            </a> -->
+            
         </div>
     </div>
     <div id="user-detail-bottom">
-        {%if current_user.level == 'Admin'%}
         <form action="" method="post">
             <div id="user-detail-bottom-form">
                 <div id="user-det-bottom-left">
@@ -150,12 +154,6 @@
                 </div>        
             </div>
         </form>
-        {%else%}
-        <div id="user-detail-bottom-form-reguler">
-            <h3>Sorry you're not authorized to access this page</h3>
-            <h5>Only admin can access this page</h5>
-        </div>
-        {%endif%}
     </div>
 </div>
 {%endblock%}
