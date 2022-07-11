@@ -39,6 +39,7 @@ def barang_add():
                         kode_barang=add_form.kode_barang.data,
                         nama_barang=add_form.nama_barang.data,
                         stok=add_form.stok.data,
+                        stok_akhir=add_form.stok.data,
                         diskon=add_form.discount.data,
                         status=add_form.status.data,
                         harga_jual=add_form.harga_jual.data,
