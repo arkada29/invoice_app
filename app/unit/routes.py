@@ -15,7 +15,7 @@ def unit_change():
     satuan_form = SatuanForm()
     diskon_form = DiskonForm()
     category_form = CategoryForm()
-    return render_template('unit_Change.html',
+    return render_template('unit_change.html',
                 satuan=satuan,
                 category=category,
                 diskon=diskon,
