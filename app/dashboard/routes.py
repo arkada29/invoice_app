@@ -36,9 +36,9 @@ def dashboard():
         .group_by(func.Date(User.join_date))\
         .all()   
 
-    vendor = db.session.query(Vendor.terjual, func.Date(Vendor.tanggal_taruh))\
-            .group_by(func.Date(Vendor.tanggal_taruh))\
-            .all()
+    # vendor = db.session.query(Vendor.terjual, func.Date(Vendor.tanggal_taruh))\
+    #         .group_by(func.Date(Vendor.tanggal_taruh))\
+    #         .all()
 
     return render_template('dashboard.html',
                             count_user=count_user,
@@ -53,7 +53,7 @@ def dashboard():
                             vendor_label=vendor_label,
                             vendor_value=vendor_value,
                             user=user,
-                            vendor=vendor,
+                            # vendor=vendor,
                             jual_label=jual_label,
                             jual_value=jual_value
                             )
