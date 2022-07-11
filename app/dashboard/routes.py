@@ -114,7 +114,7 @@ def staticGraphChart():
     current_date = datetime.datetime.now()
     current_date_string = current_date.strftime('%m/%d/%Y')
     now_object = datetime.datetime.strptime(current_date_string, '%m/%d/%Y')
-    previous_date = datetime.timedelta(days=8)
+    previous_date = current_date - datetime.timedelta(days=8)
     
 
     # barang = db.session.query(func.sum(Barang.stok), func.Date(Barang.created_date))\
