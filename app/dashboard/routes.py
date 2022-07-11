@@ -114,7 +114,8 @@ def staticGraphChart():
     current_date = datetime.datetime.now()
     current_date_string = current_date.strftime('%m/%d/%Y')
     now_object = datetime.datetime.strptime(current_date_string, '%m/%d/%Y')
-    previous_date = datetime.timedelta(days=7)
+    previous_date = datetime.timedelta(days=8)
+    
 
     # barang = db.session.query(func.sum(Barang.stok), func.Date(Barang.created_date))\
     #         .filter(func.Date(Barang.created_date==current_date_string))\
@@ -128,19 +129,14 @@ def staticGraphChart():
     #                 .group_by(func.Date(Penjualan.tanggal_penjualan))\
     #                 .order_by(Penjualan.id_penjualan.desc())\
     #                 .all()
-    barang = db.session.query(func.sum(Penjualan.jumlah_penjualan), cast(Penjualan.tanggal_penjualan, Date))\
-                    .filter(cast(Penjualan.tanggal_penjualan, Date)==cast(current_date_string,Date))\
-                    .filter(cast(Penjualan.tanggal_penjualan, Date)==cast(previous_date, Date))\
-                    .group_by(cast(Penjualan.tanggal_penjualan, Date))\
-                    .order_by(Penjualan.id_penjualan.desc())\
-                    .all()
+    barang = db.session.query(func.sum(DetailPenjualan.jumlah_barang), func.Date(DetailPenjualan.created_date))\
+        .filter(func.Date(DetailPenjualan.created_date).between(previous_date,current_date))\
+        .group_by(func.Date(DetailPenjualan.created_date))\
+        .order_by(func.Date(DetailPenjualan.created_date))\
+        .all()
 
-    # user = db.session.query(func.Count(User.id), func.Date(User.join_date))\
-    #     .group_by(func.Date(User.join_date))\
-    #     .all()   
-
-    user = db.session.query(func.Count(User.id), cast(User.join_date, Date))\
-        .group_by(cast(User.join_date, Date))\
+    user = db.session.query(func.Count(User.id), func.Date(User.join_date))\
+        .group_by(func.Date(User.join_date))\
         .all()   
 
     # vendor = db.session.query(Vendor.terjual, func.Date(Vendor.tanggal_taruh))\
@@ -156,17 +152,14 @@ def staticGraphChart():
     #             .order_by(Penjualan.id_penjualan.desc())\
     #             .all()
 
-    vendor = db.session.query(Vendor.terjual, cast(Vendor.tanggal_taruh, Date))\
-            .filter(cast(Vendor.tanggal_taruh, Date)==cast(current_date_string, Date))\
-            .filter(cast(Vendor.tanggal_taruh, Date)==cast(previous_date, Date))\
-            .group_by(cast(Vendor.tanggal_taruh, Date))\
+    vendor = db.session.query(Vendor.terjual, func.Date(Vendor.tanggal_taruh))\
+            .filter(func.Date(Vendor.tanggal_taruh).between(previous_date, current_date_string))\
+            .group_by(func.Date(Vendor.tanggal_taruh))\
             .all()
 
-    penjualan = db.session.query(func.Count(Penjualan.kode_penjualan), cast(Penjualan.tanggal_penjualan, Date))\
-                .filter(cast(Penjualan.tanggal_penjualan, Date)==cast(current_date_string, Date))\
-                .filter(cast(Penjualan.tanggal_penjualan, Date)==cast(previous_date, Date))\
-                .group_by(cast(Penjualan.tanggal_penjualan, Date))\
-                .order_by(Penjualan.id_penjualan.desc())\
+    penjualan = db.session.query(func.Count(Penjualan.kode_penjualan), func.Date(Penjualan.tanggal_penjualan))\
+                .filter(func.Date(Penjualan.tanggal_penjualan).between(previous_date, current_date))\
+                .group_by(func.Date(Penjualan.tanggal_penjualan))\
                 .all()
 
     for value, label in barang:
