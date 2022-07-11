@@ -152,7 +152,7 @@ def staticGraphChart():
     #             .order_by(Penjualan.id_penjualan.desc())\
     #             .all()
 
-    vendor = db.session.query(Vendor.terjual, func.Date(Vendor.tanggal_taruh))\
+    vendor = db.session.query(func.sum(Vendor.terjual), func.Date(Vendor.tanggal_taruh))\
             .filter(func.Date(Vendor.tanggal_taruh).between(previous_date, current_date_string))\
             .group_by(func.Date(Vendor.tanggal_taruh))\
             .all()
