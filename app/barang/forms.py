@@ -17,7 +17,7 @@ class BarangForm(FlaskForm):
     kategori = StringField('Kategori')
     satuan  = StringField('Satuan')
     barang_pic = FileField('Foto Barang')
-    tanggal_masuk = DateField('Tanggal Masuk')
+    tanggal_masuk = DateField('Tanggal Masuk', validators=[DataRequired()])
     jumlah_grosir = IntegerField('Jumlah Grosir Barang')
     total_grosir = DecimalField('Total Harga Grosir')
     submit = SubmitField('Submit')

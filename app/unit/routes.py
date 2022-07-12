@@ -11,7 +11,7 @@ from datetime import date, datetime
 def unit_change():
     satuan = Satuan.query.all()
     category = Category.query.all()
-    diskon = DiskonKhusus.query.filter(DiskonKhusus.id_diskon_khusus!=1).all()
+    diskon = DiskonKhusus.query.all()
     satuan_form = SatuanForm()
     diskon_form = DiskonForm()
     category_form = CategoryForm()
@@ -73,6 +73,20 @@ def satuan_edit(id):
                     satuan_edit_form=satuan_edit_form,
                     satuan_edit=satuan_edit)
 
+@bp.route('/unit_change/satuan/delete/<int:id>', methods=['GET', 'POST'])
+def satuan_delete(id):
+    if current_user.level == 'Admin':
+        satuan_delete = Satuan.query.get_or_404(id)
+        try:
+            db.session.delete(satuan_delete)
+            db.session.commit()
+            flash('Satuan has been deleted')
+            return redirect(url_for('unit.unit_change'))
+        except:
+            db.session.rollback()
+            flash('Problem occured. cannot delete satuan')
+            return redirect(url_for('unit.unit_change'))
+
 @bp.route('/unit_change/diskon_khusus/add', methods=['GET', 'POST'])
 def diskon_khusus_add():
     diskon_khusus = DiskonKhusus.query.all()
@@ -128,6 +142,20 @@ def diskon_khusus_edit(id):
                     diskon_khusus=diskon_khusus,
                     diskon_khusus_form=diskon_khusus_form)
 
+@bp.route('/unit_change/diskon_khusus/delete/<int:id>', methods=['GET', 'POST'])
+def diskon_khusus_delete(id):
+    if current_user.level == 'Admin':
+        diskon_to_delete = DiskonKhusus.query.get_or_404(id)
+        try:
+            db.session.delete(diskon_to_delete)
+            db.session.commit()
+            flash('Diskon khusus has been deleted')
+            return redirect(url_for('unit.unit_change'))
+        except:
+            db.session.rollback()
+            flash('Problem occured. cannot delete Diskon khusus')
+            return redirect(url_for('unit.unit_change'))
+
 @bp.route('/unit_change/category/add', methods=['GET', 'POST'])
 def category_add():
     category_add_form = CategoryForm()
@@ -178,3 +206,17 @@ def category_edit(id):
     return render_template('category_edit.html',
                     category_edit=category_edit,
                     category_edit_form=category_edit_form)
+
+@bp.route('/unit_change/category/delete/<int:id>', methods=['GET', 'POST'])
+def category_delete(id):
+    if current_user.level == 'Admin':
+        category_delete = Category.query.get_or_404(id)
+        try:
+            db.session.delete(category_delete)
+            db.session.commit()
+            flash('Category has been deleted')
+            return redirect(url_for('unit.unit_change'))
+        except:
+            db.session.rollback()
+            flash('Problem occured. cannot delete Category')
+            return redirect(url_for('unit.unit_change'))

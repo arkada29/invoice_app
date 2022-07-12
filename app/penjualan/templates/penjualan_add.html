@@ -426,9 +426,13 @@
                         <br>
                         {{add_form.diskon_khusus.label(class="form-label")}}
                         <select name="diskon-khusus" id="diskon-khusus">
+                            {%if dk%}
                             {%for d in dk%}
                             <option id="{{d.besaran_diskon}}" value="{{d.nama_diskon}}">{{d.nama_diskon}}</option>
                             {%endfor%}
+                            {%else%}
+                            <option id="0" value="0">0</option>
+                            {%endif%}
                         </select>
                     </div>
                 </div>

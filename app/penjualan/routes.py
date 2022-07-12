@@ -5,7 +5,7 @@ from app.models import Barang, User, Satuan, Category, DiskonKhusus, Vendor, Pen
 from app.penjualan.forms import PenjualanForm
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 from datetime import date, datetime
-from sqlalchemy import Float
+from sqlalchemy import Float, func
 # from weasyprint import HTML
 import io
 import pandas as pd
@@ -19,13 +19,15 @@ def penjualan_add():
     date_time_string = date_time.strftime("%A, %d-%m-%Y %H:%M:%S") 
     date_time_date = date_time.strftime("%d-%m-%Y") 
     invoice = increment_invoice_number()
+    kode_diskon = ''
     if request.method == 'POST':
         user = request.form['nama-kasir']
         diskon = request.form['diskon-khusus']
         user_id = db.session.query(User.id).filter_by(name=user).first()[0]
         # print(user)
         # print(user_id)
-        kode_diskon = db.session.query(DiskonKhusus.kode_diskon).filter_by(nama_diskon=diskon).first()[0]
+        if diskon != '0':
+            kode_diskon = db.session.query(DiskonKhusus.kode_diskon).filter_by(nama_diskon=diskon).first()[0]
         # print(diskon)
         # print(kode_diskon)
         kode_barang = request.form.getlist('kode-barang-input')
@@ -76,7 +78,7 @@ def penjualan_add():
             db.session.commit()
             return redirect(url_for('penjualan.penjualan_add'))
         except Exception as e:
-            print(e)
+            # print(e)
             flash('Oops something wrong')
             return redirect(url_for('penjualan.penjualan_add'))
 
@@ -149,17 +151,17 @@ def penjualan_list():
 
 @bp.route('/penjualan/penjualan_delete/<int:id>')
 @login_required
-def penjualan_delete():
+def penjualan_delete(id):
     if current_user.level == 'Admin':
         penjualan_to_delete = Penjualan.query.get_or_404(id)
         try:
             db.session.delete(penjualan_to_delete)
             db.session.commit()
-            flash('Barang has been deleted')
+            flash('Invoice has been deleted')
             return redirect(url_for('penjualan.penjualan_list'))
         except:
             db.session.rollback()
-            flash('Problem occured. cannot delete barang user')
+            flash('Problem occured. cannot delete Invoice')
             return redirect(url_for('penjualan.penjualan_list'))
 
 @bp.route('/detail_penjualan/detail/<int:header_id>/<int:id>')
@@ -214,10 +216,21 @@ def detail_penjualan_edit(header_id, id):
                             detail_penjualan=detail_penjualan,
                             penjualan=penjualan)
 
-@bp.route('/penjualan/detail_penjualan/delete/<int:id>')
+@bp.route('/penjualan/detail_penjualan/delete/<int:header_id>/<int:id>')
 @login_required
-def detail_penjualan_delete(id):
-    pass
+def detail_penjualan_delete(header_id, id):
+    if current_user.level == 'Admin':
+        penjualan = Penjualan.query.get_or_404(header_id)
+        penjualan_to_delete = DetailPenjualan.query.get_or_404(id)
+        try:
+            db.session.delete(penjualan_to_delete)
+            db.session.commit()
+            flash('Invoice detail has been deleted')
+            return redirect(url_for('penjualan.penjualan_detail'), header_id=penjualan.id_penjualan)
+        except:
+            db.session.rollback()
+            flash('Problem occured. cannot delete Invoice detail')
+            return redirect(url_for('penjualan.penjualan_detail'), header_id=penjualan.id_penjualan)
 
 @bp.route('/search_barang_penjualan', methods=['GET','POST'])
 def search_barang_penjualan():
@@ -228,9 +241,9 @@ def search_barang_penjualan():
         if search_word == '':
             barang_collection = ()
         else:
-            print(search_word)
+            # print(search_word)
             barang_collection = ()
-            barang = Barang.query.filter(Barang.nama_barang.like('%'+str(search_word[0]['name_barang'])+'%')).all()
+            barang = Barang.query.filter(func.lower(Barang.nama_barang).like('%'+str(search_word[0]['name_barang'])+'%')).all()
             for b in barang:
                 barang_collection = list(barang_collection)
                 row_dict = {column: str(getattr(b, column)) for column in b.__table__.c.keys()}
@@ -273,12 +286,12 @@ def print_layout():
 
 def increment_invoice_number():
     last_invoice = db.session.query(Penjualan.kode_penjualan).order_by(Penjualan.id_penjualan.desc()).first()
-    print(last_invoice)
+    # print(last_invoice)
     if not last_invoice:
          return 'TSB1'
     invoice_no = last_invoice.kode_penjualan
     invoice_int = int(invoice_no.split('TSB')[-1])
-    print(invoice_int)
+    # print(invoice_int)
     new_invoice_int = invoice_int + 1
     new_invoice_no = 'TSB' + str(new_invoice_int)
     return new_invoice_no

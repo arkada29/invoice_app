@@ -6,6 +6,14 @@
         display: flex;
         flex-direction: column;
     }
+    .alert{
+        position: relative;
+        margin-left: 5%;
+        width: 400px;
+        max-width: 400px;
+        margin-top: 1%;
+        z-index: 1;
+    }
     #unit-change-container-top{
         position: relative;
         display: flex;
@@ -155,6 +163,12 @@
 
 </style>
 <div class="unit-change-container">
+    {%for message in get_flashed_messages()%}
+    <div class="alert alert-success alert-dismissible show" role="alert">
+        {{message}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {%endfor%}
     <div id="unit-change-container-top">
         <div id="unit-change-container-dashboard">
             <a href="{{url_for('dashboard.dashboard')}}">
@@ -207,7 +221,7 @@
                                         <div id="delete-btn-content">
                                             <p>Are you sure ?</p>
                                             <div class="button-choice delete-btn-choice" id="delete-choice-satuan-{{loop.index}}">
-                                                <a href="">
+                                                <a href="{{url_for('unit.satuan_delete', id=s.id_satuan)}}">
                                                     <span class="btn btn-danger btn-sm">Yes</span>
                                                 </a>
                                                 <span class="btn btn-success btn-sm btn-cancel-satuan" id="-{{loop.index}}">No</span>
@@ -270,7 +284,7 @@
                                         <div id="delete-btn-content">
                                             <p>Are you sure ?</p>
                                             <div class="button-choice delete-btn-choice" id="delete-choice-diskon-{{loop.index}}">
-                                                <a href="">
+                                                <a href="{{url_for('unit.diskon_khusus_delete', id=d.id_diskon_khusus)}}">
                                                     <span class="btn btn-danger btn-sm">Yes</span>
                                                 </a>
                                                 <span class="btn btn-success btn-sm btn-cancel-diskon" id="-{{loop.index}}">No</span>
@@ -331,7 +345,7 @@
                                         <div id="delete-btn-content">
                                             <p>Are you sure ?</p>
                                             <div class="button-choice delete-btn-choice" id="delete-choice-category-{{loop.index}}">
-                                                <a href="">
+                                                <a href="{{url_for('unit.category_delete', id=c.id_kategori)}}">
                                                     <span class="btn btn-danger btn-sm">Yes</span>
                                                 </a>
                                                 <span class="btn btn-success btn-sm btn-cancel-category" id="-{{loop.index}}">No</span>

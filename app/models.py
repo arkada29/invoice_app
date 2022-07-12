@@ -1,4 +1,3 @@
-from email.policy import default
 from sqlalchemy import UniqueConstraint
 from app import db
 from datetime import datetime

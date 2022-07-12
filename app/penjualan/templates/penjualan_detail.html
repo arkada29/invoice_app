@@ -299,7 +299,7 @@
                                 <div id="delete-btn-content">
                                     <p>Are you sure ?</p>
                                     <div class="button-choice delete-btn-choice" id="delete-choice-{{loop.index}}">
-                                        <a href="{{url_for('penjualan.detail_penjualan_delete', id=dp.id_detail_penjualan)}}">
+                                        <a href="{{url_for('penjualan.detail_penjualan_delete', header_id=penjualan.id_penjualan, id=dp.id_detail_penjualan)}}">
                                             <span class="btn btn-danger btn-sm">Yes</span>
                                         </a>
                                         <span class="btn btn-success btn-sm btn-cancel">No</span>
