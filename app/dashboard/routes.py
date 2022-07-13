@@ -6,14 +6,15 @@ from app.user.forms import UserForm
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 # from datetime import datetime
 from sqlalchemy.sql.expression import func, between
-from sqlalchemy import cast, Date, and_, UniqueConstraint
-import datetime
+from sqlalchemy import cast, Date, and_, UniqueConstraint, String
+# import datetime
+from datetime import datetime, timedelta
 import calendar
 
 @bp.route('/dashboard')
 @login_required
 def dashboard():
-    date_time = datetime.datetime.now()
+    date_time = datetime.now()
     date_time_string = date_time.strftime("%A, %d-%m-%Y %H:%M:%S") 
     count_user = db.session.query(User.id).count()
     count_barang = db.session.query(Barang.id_barang).count()
@@ -62,7 +63,7 @@ def dashboard():
 @login_required
 def dashboard_admin(id):
     form = UserForm()
-    date_time = datetime.datetime.now()
+    date_time = datetime.now()
     date_time_string = date_time.strftime("%A, %d-%m-%Y %H:%M:%S") 
     count_user = db.session.query(User.id).count()
     count_barang = db.session.query(Barang.id_barang).count()
@@ -84,7 +85,7 @@ def dashboard_admin(id):
 @login_required
 def dashboard_user(id):
     form = UserForm()
-    date_time = datetime.datetime.now()
+    date_time = datetime.now()
     date_time_string = date_time.strftime("%A, %d-%m-%Y %H:%M:%S") 
     count_user = db.session.query(User.id).count()
     count_barang = db.session.query(Barang.id_barang).count()
@@ -111,10 +112,10 @@ def staticGraphChart():
     jual_label = []
     jual_value = []
 
-    current_date = datetime.datetime.now()
+    current_date = datetime.now()
     current_date_string = current_date.strftime('%m/%d/%Y')
-    now_object = datetime.datetime.strptime(current_date_string, '%m/%d/%Y')
-    previous_date = current_date - datetime.timedelta(days=8)
+    now_object = datetime.strptime(current_date_string, '%m/%d/%Y')
+    previous_date = current_date - timedelta(days=8)
     
 
     # barang = db.session.query(func.sum(Barang.stok), func.Date(Barang.created_date))\
@@ -129,13 +130,13 @@ def staticGraphChart():
     #                 .group_by(func.Date(Penjualan.tanggal_penjualan))\
     #                 .order_by(Penjualan.id_penjualan.desc())\
     #                 .all()
-    barang = db.session.query(func.sum(DetailPenjualan.jumlah_barang), func.Date(DetailPenjualan.created_date))\
+    barang = db.session.query(func.sum(DetailPenjualan.jumlah_barang), cast(func.Date(DetailPenjualan.created_date), String))\
         .filter(func.Date(DetailPenjualan.created_date).between(previous_date,current_date))\
         .group_by(func.Date(DetailPenjualan.created_date))\
         .order_by(func.Date(DetailPenjualan.created_date))\
         .all()
 
-    user = db.session.query(func.Count(User.id), func.Date(User.join_date))\
+    user = db.session.query(func.Count(User.id), cast(func.Date(User.join_date), String))\
         .group_by(func.Date(User.join_date))\
         .all()   
 
@@ -152,12 +153,12 @@ def staticGraphChart():
     #             .order_by(Penjualan.id_penjualan.desc())\
     #             .all()
 
-    vendor = db.session.query(func.sum(Vendor.terjual), func.Date(Vendor.tanggal_taruh))\
-            .filter(func.Date(Vendor.tanggal_taruh).between(previous_date, current_date_string))\
+    vendor = db.session.query(func.sum(Vendor.terjual), cast(func.Date(Vendor.tanggal_taruh), String))\
+            .filter(func.Date(Vendor.tanggal_taruh).between(previous_date, current_date))\
             .group_by(func.Date(Vendor.tanggal_taruh))\
             .all()
 
-    penjualan = db.session.query(func.Count(Penjualan.kode_penjualan), func.Date(Penjualan.tanggal_penjualan))\
+    penjualan = db.session.query(func.Count(Penjualan.kode_penjualan), cast(func.Date(Penjualan.tanggal_penjualan), String))\
                 .filter(func.Date(Penjualan.tanggal_penjualan).between(previous_date, current_date))\
                 .group_by(func.Date(Penjualan.tanggal_penjualan))\
                 .all()
@@ -174,7 +175,7 @@ def staticGraphChart():
         vendor_add.append(add)
         vendor_value.append(value)
 
-    for value, label  in penjualan:
+    for value, label in penjualan:
         jual_value.append(value)
         jual_label.append(label)
 
