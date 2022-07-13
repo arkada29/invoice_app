@@ -180,7 +180,7 @@
                     {%if barang_detail.barang_pic%}
                     <img src="{{url_for('static', filename='images/'+ barang_detail.barang_pic)}}" alt="">
                     {%else%}
-                    <img src="{{url_for('static', filename='images/wolf_img.jpg')}}" alt="">
+                    <img src="{{url_for('static', filename='images/bread-vector.jpg')}}" alt="">
                     {%endif%}
                 </div>
                 <div id="barang-det-mid-name">
@@ -205,6 +205,10 @@
                 <div id="barang-det-bottom-left">
                     <span id="det-name-label">Stok</span><br>
                     <span id="det-date-value">{{barang_detail.stok}}</span>
+                    <br>
+                    <br>
+                    <span id="det-name-label">Stok Akhir</span><br>
+                    <span id="det-date-value">{{barang_detail.stok_akhir}}</span>
                     <br>
                     <br>
                     <span id="det-name-label">Diskon</span><br>
@@ -236,6 +240,12 @@
                     <br>
                 </div>   
                 <div id="barang-det-bottom-right">
+                    <span id="det-name-label">Jumlah Grosir</span><br>
+                    <span id="det-date-value">{{barang_detail.jumlah_grosir}}</span>
+                    <br>
+                    <br>
+                    <span id="det-name-label">Harga Grosir</span><br>
+                    <span id="det-date-value">{{barang_detail.harga_grosir}}</span>
                 </div>     
             </div>
     </div>

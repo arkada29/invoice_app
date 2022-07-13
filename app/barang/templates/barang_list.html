@@ -183,6 +183,7 @@
                     <th scope="col">Harga Jual</th>
                     <th scope="col">Harga Beli</th>
                     <th scope="col">Stok</th>
+                    <th scope="col">Stok Akhir</th>
                     <th scope="col">Diskon</th>
                     <th scope="col" colspan="3">Action</th>
                     <!-- <th scope="col">Edit</th>
@@ -192,7 +193,7 @@
             <tbody>
                 {%for b in barang%}
                 <tr>
-                    <th scope="row"></th>
+                    <th scope="row">{{b.id_barang}}</th>
                     <td>{{b.kode_barang}}</td>
                     <td>{{b.nama_barang}}</td>
                     <td>{{b.satuan_bareng.satuan}}</td>
@@ -200,6 +201,7 @@
                     <td>{{b.harga_jual}}</td>
                     <td>{{b.harga_beli}}</td>
                     <td>{{b.stok}}</td>
+                    <td>{{b.stok_akhir}}</td>
                     <td>{{b.diskon}}</td>
                     {%if current_user.level == 'Admin'%}
                     <td id="tbl-detail-btn">
