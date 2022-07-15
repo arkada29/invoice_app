@@ -58,15 +58,15 @@
         justify-content: space-between;
     }
     #barang-det-middle-left{
-        flex: 20%;
-        max-width: 20%;
+        flex: 40%;
+        max-width: 40%;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
     }   
     #barang-det-mid-picture{
-        flex: 40%;
-        max-width: 40%;
+        flex: 20%;
+        max-width: 20%;
         margin-top: 2%;
         margin-left: 5%;
     }
@@ -78,8 +78,8 @@
         object-position: center;
     }
     #barang-det-mid-name{
-        flex: 50%;
-        max-width: 50%;
+        flex: 70%;
+        max-width: 70%;
         /* margin-left: 5%; */
     }
     #det-name-label{
@@ -165,7 +165,7 @@
             <a href="{{url_for('barang.barang_list')}}">
                 <img src="{{url_for('static', filename='images/arrow_back_white.svg')}}" alt="">
             </a>
-            <span id="add-barang">ADD BARANG</span>
+            <span id="add-barang">BARANG DETAIL</span>
         </div>
         <div id="barang-det-top-right">
             <a href="{{url_for('barang.barang_list')}}">
